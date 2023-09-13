@@ -28,6 +28,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chevrotain/cst-dts-gen@npm:10.5.0":
+  version: 10.5.0
+  resolution: "@chevrotain/cst-dts-gen@npm:10.5.0"
+  dependencies:
+    "@chevrotain/gast": 10.5.0
+    "@chevrotain/types": 10.5.0
+    lodash: 4.17.21
+  checksum: 3ff851d5cbccc509269bb77078dafd7acfcd2e128e7d362718cde728f3fa95f4dd58eb1eea67ecf11453fba70bded97df55c5ba31ed93fb2dec4324663bd2eee
+  languageName: node
+  linkType: hard
+
+"@chevrotain/gast@npm:10.5.0":
+  version: 10.5.0
+  resolution: "@chevrotain/gast@npm:10.5.0"
+  dependencies:
+    "@chevrotain/types": 10.5.0
+    lodash: 4.17.21
+  checksum: 35183e7067bc936db9ecfea7624ee3178634618cf1518ea3470b4ed208fb19454dc3ed990a0de2dab80794251398a857ad17d26cc552eac497a2aa974f76b86d
+  languageName: node
+  linkType: hard
+
+"@chevrotain/types@npm:10.5.0":
+  version: 10.5.0
+  resolution: "@chevrotain/types@npm:10.5.0"
+  checksum: 72f7b48de1888ab14831108da4b0ab3ef244e1101a4094240382e4983a9e71aae6f8a87e09b819854d1028cee08f97b7d2a81fce935742c55d2bc497b7cad350
+  languageName: node
+  linkType: hard
+
+"@chevrotain/utils@npm:10.5.0":
+  version: 10.5.0
+  resolution: "@chevrotain/utils@npm:10.5.0"
+  checksum: f3ae9e0fea2e928a1a4930311d3ef04f45c29fa58ba4d5d2ca43c33355ac47f95ce99a98d6496706e2e7f773ef684a9a7e7cbd7b77c00af9158f08c82d88212b
+  languageName: node
+  linkType: hard
+
+"@dimforge/rapier3d-compat@npm:0.11.2, @dimforge/rapier3d-compat@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "@dimforge/rapier3d-compat@npm:0.11.2"
+  checksum: f0fbf99feaef4ea3b5cb3d81892c1caf14bd35c89c90ce31462f3707f068f5677d5a2c845efdefa2951a90b276a6ba63a9453f139badda66c4b322b661bf6b81
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -423,6 +465,37 @@ __metadata:
     react-native:
       optional: true
   checksum: 7da8c29d015039fe22381a7e804d4ac4e3c4d4ed33a05e81ea9dfc9c1ce764b37842f4c91da8f780ade2b202c32633ef16c4ecd7308662dba4465ea846db7afa
+  languageName: node
+  linkType: hard
+
+"@react-three/postprocessing@npm:^2.15.1":
+  version: 2.15.1
+  resolution: "@react-three/postprocessing@npm:2.15.1"
+  dependencies:
+    maath: ^0.6.0
+    n8ao: ^1.6.6
+    postprocessing: ^6.32.1
+    three-stdlib: ^2.23.4
+  peerDependencies:
+    "@react-three/fiber": ">=8.0"
+    react: ">=18.0"
+    three: ">= 0.138.0"
+  checksum: 5f6a226445e94902e1238cd54120307f32ba3f2f3160817cf54a0471c63329c537c24e28a0c8f348f0737a18d3409a3a0971e7e26dabf747963d15ac116b7af7
+  languageName: node
+  linkType: hard
+
+"@react-three/rapier@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@react-three/rapier@npm:1.1.1"
+  dependencies:
+    "@dimforge/rapier3d-compat": 0.11.2
+    three-stdlib: 2.23.9
+    use-asset: 1.0.4
+  peerDependencies:
+    "@react-three/fiber": ">=8.9.0"
+    react: ">=18.0.0"
+    three: ">=0.139.0"
+  checksum: 45af3f07819414964d15e233770766a937e63a71663c9bff7647dfd650c4f7ad01dd3a5734d28524339fa5798c592bbfb2ac9486f570dee2e65e1861243dbe1c
   languageName: node
   linkType: hard
 
@@ -1106,6 +1179,20 @@ __metadata:
     ansi-styles: ^4.1.0
     supports-color: ^7.1.0
   checksum: fe75c9d5c76a7a98d45495b91b2172fa3b7a09e0cc9370e5c8feb1c567b85c4288e2b3fded7cfdd7359ac28d6b3844feb8b82b8686842e93d23c827c417e83fc
+  languageName: node
+  linkType: hard
+
+"chevrotain@npm:^10.1.2":
+  version: 10.5.0
+  resolution: "chevrotain@npm:10.5.0"
+  dependencies:
+    "@chevrotain/cst-dts-gen": 10.5.0
+    "@chevrotain/gast": 10.5.0
+    "@chevrotain/types": 10.5.0
+    "@chevrotain/utils": 10.5.0
+    lodash: 4.17.21
+    regexp-to-ast: 0.5.0
+  checksum: b641f149f60979a29eff2434d745e9565a7c89422b601d554bcf8f047f7d8ff776b9a54b1b36085a622e3f1ed7eb4b8721b5a5348d90ae2567ce7594b10f25aa
   languageName: node
   linkType: hard
 
@@ -2855,6 +2942,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -3121,6 +3215,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"n8ao@npm:^1.6.6":
+  version: 1.6.8
+  resolution: "n8ao@npm:1.6.8"
+  peerDependencies:
+    postprocessing: ">=6.30.0"
+    three: ">=0.137"
+  checksum: b1d42d8b5f662e8c40c9a754172e0bd8870f4f6d7ad673cc82ef068d797422a3190e8648c32cad7896242bc6f54ecdbad830b13b98a8fc0427e3cbbbecf17b22
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.3.4, nanoid@npm:^3.3.6":
   version: 3.3.6
   resolution: "nanoid@npm:3.3.6"
@@ -3197,6 +3301,13 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: f4873dab8888ed4dae14d36d7cf8dc54cd042695cf7ee41d05e8757f463d11952a594eb066143cc2f7253ea1d41c6efe681cdc3ab8c2fa6eb0815fa5a94de3dc
+  languageName: node
+  linkType: hard
+
+"nipplejs@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "nipplejs@npm:0.10.1"
+  checksum: ba7e5252e643c4fba601dd562a9f89455a4a8a3675094c348465e155278a0ff867142f87ec4ee2f35c1929529b92774167368d8089b7e8a8c0352350b2f9d769
   languageName: node
   linkType: hard
 
@@ -3596,6 +3707,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postprocessing@npm:^6.32.1":
+  version: 6.33.0
+  resolution: "postprocessing@npm:6.33.0"
+  peerDependencies:
+    three: ">= 0.138.0 < 0.156.0"
+  checksum: a82cf04d96791f3275b0d696cc7454e7e50ef28e2c3a6fd02478bb4461eb1846f33e78eda6bbf7433666b224b20506045c4369cccad93f91fd6f1c64251f555a
+  languageName: node
+  linkType: hard
+
 "potpack@npm:^1.0.1":
   version: 1.0.2
   resolution: "potpack@npm:1.0.2"
@@ -3772,6 +3892,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regexp-to-ast@npm:0.5.0":
+  version: 0.5.0
+  resolution: "regexp-to-ast@npm:0.5.0"
+  checksum: 72e32f2a1217bb22398ac30867ddd43e16943b6b569dd4eb472de47494c7a39e34f47ee3e92ad4cbf92308f98997da366fe094a0e58eb6b93eab0ee956fff86d
+  languageName: node
+  linkType: hard
+
 "regexp.prototype.flags@npm:^1.5.0":
   version: 1.5.1
   resolution: "regexp.prototype.flags@npm:1.5.1"
@@ -3885,8 +4012,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "rudbeckiaz-next@workspace:."
   dependencies:
+    "@dimforge/rapier3d-compat": ^0.11.2
     "@react-three/drei": ^9.83.9
     "@react-three/fiber": ^8.14.1
+    "@react-three/postprocessing": ^2.15.1
+    "@react-three/rapier": ^1.1.1
     "@types/node": 20.6.0
     "@types/react": 18.2.21
     "@types/react-dom": 18.2.7
@@ -3897,12 +4027,14 @@ __metadata:
     eslint-config-next: 13.4.19
     functions-have-names: ^1.2.3
     next: 13.4.19
+    nipplejs: ^0.10.1
     postcss: 8.4.29
     react: 18.2.0
     react-dom: 18.2.0
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: 3.3.3
     three: ^0.156.1
+    three-stdlib: ^2.25.1
     typescript: 5.2.2
   languageName: unknown
   linkType: soft
@@ -4395,7 +4527,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three-stdlib@npm:^2.25.1":
+"three-stdlib@npm:2.23.9":
+  version: 2.23.9
+  resolution: "three-stdlib@npm:2.23.9"
+  dependencies:
+    "@types/draco3d": ^1.4.0
+    "@types/offscreencanvas": ^2019.6.4
+    "@types/webxr": ^0.5.2
+    chevrotain: ^10.1.2
+    draco3d: ^1.4.1
+    fflate: ^0.6.9
+    ktx-parse: ^0.4.5
+    mmd-parser: ^1.0.4
+    opentype.js: ^1.3.3
+    potpack: ^1.0.1
+    zstddec: ^0.0.2
+  peerDependencies:
+    three: ">=0.128.0"
+  checksum: bebd4723b74b7ab58aa7e4f9911e7a319bdd367070ef9d2206236fb91ae5dcad80374cd98fa909cb7d60b4a9192c77a71f3cd68b863fdaa60194697411b072b0
+  languageName: node
+  linkType: hard
+
+"three-stdlib@npm:^2.23.4, three-stdlib@npm:^2.25.1":
   version: 2.25.1
   resolution: "three-stdlib@npm:2.25.1"
   dependencies:
@@ -4636,6 +4789,17 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
+  languageName: node
+  linkType: hard
+
+"use-asset@npm:1.0.4":
+  version: 1.0.4
+  resolution: "use-asset@npm:1.0.4"
+  dependencies:
+    fast-deep-equal: ^3.1.3
+  peerDependencies:
+    react: ">=17.0"
+  checksum: dc87a1ca3aa0af05765255b80c9f027c42b533da3e887362af17e7d9423edfedf11d48d00a181e32b067f66c5036d0442d551394d6f7540e3f5dc6a1a3ebfa9a
   languageName: node
   linkType: hard
 
