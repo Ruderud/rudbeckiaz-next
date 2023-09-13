@@ -8,7 +8,7 @@ type LightingGridProps = ThreeElements['group'] & {
 };
 
 export const LightingGrid = ({ length, width, thickness, ...props }: LightingGridProps) => {
-  const [map, metallicMap, normalMap, roughnessMap] = useLoader(THREE.TextureLoader, [
+  const [map, metallicMap, normalMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_BaseColor.png',
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Metallic.png',
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Normal.png',
@@ -40,12 +40,7 @@ export const LightingGrid = ({ length, width, thickness, ...props }: LightingGri
   const outerGridY = new THREE.CapsuleGeometry(thickness, width - thickness / 2, 4, 8);
   const outerGridZ = new THREE.CapsuleGeometry(thickness, width - thickness / 2, 4, 8);
   const innerGrid = new THREE.CapsuleGeometry(thickness, width - thickness / 2, 4, 8);
-  const innerSlashGrid = new THREE.CapsuleGeometry(
-    thickness,
-    width * Math.sqrt(2) - thickness / 2,
-    4,
-    8
-  );
+  const innerSlashGrid = new THREE.CapsuleGeometry(thickness, width * Math.sqrt(2) - thickness / 2, 4, 8);
 
   const material = new THREE.MeshStandardMaterial({
     map,
@@ -100,21 +95,13 @@ export const LightingGrid = ({ length, width, thickness, ...props }: LightingGri
     const left = Array.from({ length: Math.floor(length / width) }).map((_, index) => {
       const vec = new THREE.Vector3();
 
-      vec.set(
-        index * width - length / 2 + width / 2,
-        isVertical ? -width / 2 : 0,
-        isVertical ? 0 : -width / 2
-      );
+      vec.set(index * width - length / 2 + width / 2, isVertical ? -width / 2 : 0, isVertical ? 0 : -width / 2);
       return vec;
     });
 
     const right = Array.from({ length: Math.floor(length / width) }).map((_, index) => {
       const vec = new THREE.Vector3();
-      vec.set(
-        index * width - length / 2 + width / 2,
-        isVertical ? width / 2 : 0,
-        isVertical ? 0 : width / 2
-      );
+      vec.set(index * width - length / 2 + width / 2, isVertical ? width / 2 : 0, isVertical ? 0 : width / 2);
       return vec;
     });
 

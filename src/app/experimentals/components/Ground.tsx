@@ -3,7 +3,7 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useLoader } from '@react-three/fiber';
 
 export function Ground() {
-  const [map] = useLoader(THREE.TextureLoader, ['/assets/grass.jpg']);
+  const [map] = useLoader(THREE.TextureLoader as any, ['/assets/grass.jpg']);
   map.wrapS = THREE.RepeatWrapping;
   map.wrapT = THREE.RepeatWrapping;
   map.anisotropy = 4;

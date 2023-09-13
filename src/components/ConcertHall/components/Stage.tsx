@@ -12,7 +12,7 @@ const STAGE = {
 
 export const Stage = (props: ThreeElements['group']) => {
   const { rotation } = props;
-  const [map, normalMap, roughnessMap] = useLoader(THREE.TextureLoader, [
+  const [map, normalMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
     '/textures/ParquetFlooring10_1K_BaseColor.png',
     '/textures/ParquetFlooring10_1K_Normal.png',
     '/textures/ParquetFlooring10_1K_Roughness.png',
@@ -56,21 +56,12 @@ export const Stage = (props: ThreeElements['group']) => {
         </mesh>
         <mesh receiveShadow>
           <boxGeometry args={[STAGE.width, STAGE.height, STAGE.length]} />
-          <meshStandardMaterial
-            roughness={1}
-            metalness={0.2}
-            bumpScale={0.05}
-            displacementScale={0}
-            needsUpdate
-          />
+          <meshStandardMaterial roughness={1} metalness={0.2} bumpScale={0.05} displacementScale={0} needsUpdate />
         </mesh>
       </group>
 
       {/* Stage Metarials */}
-      <Speaker.FrontFill
-        position={[5, 0.85 + 0.25 - 0.2, -8.9]}
-        rotation={[-Math.PI / 6, Math.PI / 9, Math.PI / 15]}
-      />
+      <Speaker.FrontFill position={[5, 0.85 + 0.25 - 0.2, -8.9]} rotation={[-Math.PI / 6, Math.PI / 9, Math.PI / 15]} />
       <Speaker.FrontFill
         position={[3, 0.85 + 0.25 - 0.2, -8.7]}
         rotation={[-Math.PI / 6, Math.PI / 12, Math.PI / 20]}
