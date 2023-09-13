@@ -3,3 +3,5 @@ export * from './DarkModeButton';
 export * from './icons';
 export * from './Background';
 export * from './ConcertHall';
+export * from './AxisTunnel';
+export * from './IntroScroll';
