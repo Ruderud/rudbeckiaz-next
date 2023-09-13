@@ -4033,9 +4033,10 @@ __metadata:
     react-dom: 18.2.0
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: 3.3.3
-    three: ^0.156.1
+    three: 0.154.0
     three-stdlib: ^2.25.1
     typescript: 5.2.2
+    zustand: ^4.4.1
   languageName: unknown
   linkType: soft
 
@@ -4568,10 +4569,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.156.1":
-  version: 0.156.1
-  resolution: "three@npm:0.156.1"
-  checksum: 18b3381efadb6a2bb10ca09f6de0cea8f6f5369acc7bd5531dfdc80f60c3d075e28151f56194dd19144352e646a50664a243111060985e1f428bff9484461d08
+"three@npm:0.154.0":
+  version: 0.154.0
+  resolution: "three@npm:0.154.0"
+  checksum: 90ad3cafef8b866641366977ab7189d56f7352c6cdc014cbab946544e42782ec4ea7e56b959b43590433a0fcdc4bd8f8029b18a75074ba10005182c5a73bcc88
   languageName: node
   linkType: hard
 
@@ -4803,6 +4804,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:^1.0.2":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -4992,5 +5002,25 @@ __metadata:
     react:
       optional: true
   checksum: 18f025b1b666a311121d3855303ff58e6a21fd107920ca474307e86984c13338d6c4cfa5cdf13382a9e0f76821f2554a12d4d200a98a66b58637e729f149797b
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "zustand@npm:4.4.1"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    "@types/react": ">=16.8"
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
   languageName: node
   linkType: hard

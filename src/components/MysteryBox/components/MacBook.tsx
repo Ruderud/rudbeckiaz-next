@@ -112,8 +112,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
 
   const screenPosition = [0, 0, -2.8] as [x: number, y: number, z: number];
 
-  //TODO: useLoader에서의 로더타입과 THREE.TextureLoader 타입불일치 문제 해결
-  const [map] = useLoader(THREE.TextureLoader as any, ['/mac-background.png']);
+  const [map] = useLoader(THREE.TextureLoader, ['/mac-background.png']);
   map.flipY = false;
   const screenMaterial = new THREE.MeshStandardMaterial({ map, metalness: 0, roughness: 1, roughnessMap: map });
 

@@ -1,4 +1,5 @@
-import * as THREE from 'three';
+'use client';
+
 import { Edges, Environment, MeshPortalMaterial, useGLTF, useScroll } from '@react-three/drei';
 import { ThreeElements, useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
@@ -63,7 +64,6 @@ export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
           <octahedronGeometry />
         </Side>
         <Side rotation={[0, -Math.PI / 2, 0]} bg="rgb(97, 219, 251)" index={4}>
-          {/* <icosahedronGeometry /> */}
           <mesh geometry={nodes.React.geometry} rotation={[Math.PI / 2, 0, Math.PI / 2]} />
         </Side>
         <Side rotation={[0, Math.PI / 2, 0]} bg="hotpink" index={5}>

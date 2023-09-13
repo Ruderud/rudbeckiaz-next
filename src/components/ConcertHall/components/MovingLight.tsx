@@ -135,7 +135,7 @@ type MovingLightProps = ThreeElements['group'] & {
 };
 
 export const MovingLight = ({ target, color, activted = false, ...props }: MovingLightProps) => {
-  const [map, metallicMap, normalMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
+  const [map, metallicMap, normalMap, roughnessMap] = useLoader(THREE.TextureLoader, [
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_BaseColor.png',
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Metallic.png',
     '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Normal.png',

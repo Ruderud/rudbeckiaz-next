@@ -76,7 +76,7 @@ type SideWallProps = ThreeElements['group'] & {
 };
 
 const Side = ({ location, length, upper, lower, ...props }: SideWallProps) => {
-  const [map, dispMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
+  const [map, dispMap, roughnessMap] = useLoader(THREE.TextureLoader, [
     '/textures/concrete_wall_008_diff_1k.jpg',
     '/textures/concrete_wall_008_disp_1k.jpg',
     '/textures/concrete_wall_008_rough_1k.jpg',

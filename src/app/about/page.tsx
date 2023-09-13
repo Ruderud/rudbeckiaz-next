@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { SkillChip } from './components';
-import { Metadata } from 'next';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Rud - about',
   description: 'Rud-about',
 };

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { ThreeElements } from '@react-three/fiber';
+import { ThreeElements, useLoader } from '@react-three/fiber';
 
 export const SpeakerHolderGrid = (props: ThreeElements['group']) => {
   const verticalGridPositions = [
@@ -49,10 +49,21 @@ export const SpeakerHolderGrid = (props: ThreeElements['group']) => {
       })}
       {horizontalGridPositions.map(({ position, rotation }, index) => {
         return (
-          <mesh key={index} position={position} rotation={rotation} geometry={horizontalGrid} material={material} />
+          <mesh
+            key={index}
+            position={position}
+            rotation={rotation}
+            geometry={horizontalGrid}
+            material={material}
+          />
         );
       })}
-      <mesh position={[0, -3, 0]} rotation={[Math.PI / 2, 0, 0]} geometry={bottomPlate} material={material} />
+      <mesh
+        position={[0, -3, 0]}
+        rotation={[Math.PI / 2, 0, 0]}
+        geometry={bottomPlate}
+        material={material}
+      />
     </group>
   );
 };

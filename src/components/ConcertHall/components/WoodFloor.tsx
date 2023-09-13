@@ -3,7 +3,7 @@ import { ThreeElements, useLoader } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 
 export const WoodFloor = (props: ThreeElements['mesh']) => {
-  const [map, bumpMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
+  const [map, bumpMap, roughnessMap] = useLoader(THREE.TextureLoader, [
     '/textures/hardwood2_diffuse.jpg',
     '/textures/hardwood2_bump.jpg',
     '/textures/hardwood2_roughness.jpg',
