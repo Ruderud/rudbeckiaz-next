@@ -5,7 +5,7 @@ import { reportError } from '@/utils';
 import { SignalingChannel } from './utils';
 import Minecraft from './components/Mincraft';
 import { RoomList } from './components/RoomList';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { Button } from './components/Button';
 
 const queryClient = new QueryClient({
@@ -21,8 +21,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-//TODO: QueryClientProvider => react-query말고 tanstack query사용하기
 
 export default function ExperimentalsPage() {
   return (
