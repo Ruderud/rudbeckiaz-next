@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useEffect, useState } from 'react';
-import { Moon, Sun } from './icons';
+import { Moon, Sun } from './Icon';
 import { GlobalContext } from 'context/GlobalContext';
 
 export const DarkModeButton = () => {

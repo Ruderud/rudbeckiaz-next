@@ -1,9 +1,9 @@
 'use client';
 
 import { ErrorBoundary } from 'react-error-boundary';
-import { useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
-import { Button } from './Button';
 import { Suspense } from 'react';
+import { useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
+import { Button } from '@/components/Ui/Button';
 
 export const RoomList = () => {
   const { data } = useGetRoomsQuery();
