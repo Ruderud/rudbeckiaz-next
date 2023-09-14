@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   compiler: {
-    removeConsole: true,
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
   output: 'export',
 };

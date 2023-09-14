@@ -7,6 +7,7 @@ import Minecraft from './components/Mincraft';
 import { RoomList } from './components/RoomList';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { Button } from './components/Button';
+import { useRef, useState } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,8 @@ const queryClient = new QueryClient({
 });
 
 export default function ExperimentalsPage() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
   return (
     <main className="p-5 flex flex-row gap-10 bg-color-[#ff00ff">
       <QueryClientProvider client={queryClient}>
@@ -39,9 +42,42 @@ export default function ExperimentalsPage() {
           <RoomList />
 
           <div>
-            <Button color="green">Create Room</Button>
+            <Button
+              color="green"
+              onClick={(event) => {
+                console.log(dialogRef.current);
+                dialogRef.current?.showModal();
+              }}
+            >
+              Create Room
+            </Button>
           </div>
         </div>
+
+        <dialog
+          ref={dialogRef}
+          className="flex flex-col gap-2"
+          onClick={(event) => {
+            if (event.target instanceof HTMLDialogElement && event.target.nodeName === 'DIALOG')
+              dialogRef.current?.close();
+          }}
+        >
+          <div className="text-2xl">CREATE ROOM</div>
+          <input
+            type="text"
+            onChange={(e) => {
+              console.log(e.target.value);
+            }}
+          />
+          <Button
+            color="green"
+            onClick={() => {
+              dialogRef.current?.close();
+            }}
+          >
+            Close
+          </Button>
+        </dialog>
       </QueryClientProvider>
     </main>
   );
