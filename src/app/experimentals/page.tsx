@@ -6,6 +6,7 @@ import { SignalingChannel } from './utils';
 import Minecraft from './components/Mincraft';
 import { RoomList } from './components/RoomList';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { Button } from './components/Button';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,9 +35,14 @@ export default function ExperimentalsPage() {
             <input type="text" />
           </form>
         </div>
-        <div>
+
+        <div className="flex flex-col grow ">
           <div className="text-2xl">MINECRAFT ONLINE ROOMS</div>
           <RoomList />
+
+          <div>
+            <Button color="green">Create Room</Button>
+          </div>
         </div>
       </QueryClientProvider>
     </main>
