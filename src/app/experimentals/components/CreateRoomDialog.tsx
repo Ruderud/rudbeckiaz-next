@@ -96,10 +96,6 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
   } = useForm<CreateRoomForm>();
 
   const onSubmit: SubmitHandler<CreateRoomForm> = async (data) => {
-    const isVerified = confirm('Are you sure?');
-    if (!isVerified) {
-      return;
-    }
     console.log('submitCreateRoomForm', data);
 
     const { message } = await mutateAsync({
