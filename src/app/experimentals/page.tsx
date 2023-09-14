@@ -10,6 +10,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { FormEventHandler, useRef, useState } from 'react';
 import { Button } from '@/components/Ui/Button';
 import { CreateRoomDialog } from './components/CreateRoomDialog';
+import { UserSection } from './components/UserSection';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,13 +35,7 @@ export default function ExperimentalsPage() {
   return (
     <main className="p-5 flex flex-row gap-10 bg-color-[#ff00ff">
       <QueryClientProvider client={queryClient}>
-        <div>
-          <div className="text-2xl">USER SETTINGS</div>
-          <form className="flex flex-col gap-2">
-            <label>Name</label>
-            <input type="text" />
-          </form>
-        </div>
+        <UserSection />
 
         <div className="flex flex-col grow ">
           <div className="text-2xl">MINECRAFT ONLINE ROOMS</div>
