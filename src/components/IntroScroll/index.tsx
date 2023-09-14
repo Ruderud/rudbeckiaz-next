@@ -83,7 +83,7 @@ const Scenes = () => {
 
   return (
     <Suspense fallback={null}>
-      {/* <BackGroundScene isStaticPage={false} /> */}
+      <BackGroundScene isStaticPage={false} />
 
       {/* <mesh material={model.materials['material_0']} geometry={model.nodes['mesh_0'].geometry} /> */}
       <MysteryBox />

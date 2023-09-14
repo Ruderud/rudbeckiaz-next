@@ -37,8 +37,11 @@
     "typescript": "5.2.2",
     "zustand": "^4.4.1"
   },
-  "packageManager": "yarn@3.6.3",
   "devDependencies": {
-    "functions-have-names": "^1.2.3"
-  }
+    "debug": "^4.3.4",
+    "follow-redirects": "^1.15.2",
+    "functions-have-names": "^1.2.3",
+    "supports-color": "^9.4.0"
+  },
+  "packageManager": "yarn@3.6.3"
 }
