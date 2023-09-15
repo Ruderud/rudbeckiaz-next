@@ -11,20 +11,7 @@ import { FormEventHandler, useRef, useState } from 'react';
 import { Button } from '@/components/Ui/Button';
 import { CreateRoomDialog } from './components/CreateRoomDialog';
 import { UserSection } from './components/UserSection';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      refetchOnWindowFocus: false,
-      cacheTime: 5 * 60 * 1000,
-      retry: 1,
-      retryDelay: 500,
-      suspense: true,
-    },
-  },
-});
+import { minecraftQueryClient } from './hooks/queryClient';
 
 export default function ExperimentalsPage() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -34,7 +21,7 @@ export default function ExperimentalsPage() {
 
   return (
     <main className="p-5 flex flex-row gap-10 bg-color-[#ff00ff">
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={minecraftQueryClient}>
         <UserSection />
 
         <div className="flex flex-col grow ">

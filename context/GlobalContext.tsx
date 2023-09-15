@@ -1,5 +1,6 @@
 'use client';
 
+import { SnackbarProvider } from 'notistack';
 import { Dispatch, ReactNode, createContext, useEffect, useState } from 'react';
 
 type GlobalContext = {
@@ -33,7 +34,7 @@ export const GlobalContextProvider = ({ children }: { children: ReactNode }) => 
         setIsDarkMode,
       }}
     >
-      {children}
+      <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
     </GlobalContext.Provider>
   );
 };
