@@ -1,3 +1,5 @@
+'use client';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateUserIdMutation } from '../hooks/useCreateUserIdMutation';
 import { Button } from '@/components/Ui/Button';
