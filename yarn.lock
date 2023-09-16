@@ -3906,6 +3906,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-ssr-prepass@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "react-ssr-prepass@npm:1.5.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: efe89b9f8b2053474613f56dfdbeb41d8ee2e572bf819a39377d95d3e4a9acf8a4a16e28d8d8034cb9ac2b316d11dc9e62217743e4322046d08175eb3b4fed3e
+  languageName: node
+  linkType: hard
+
 "react-use-measure@npm:^2.1.1":
   version: 2.1.1
   resolution: "react-use-measure@npm:2.1.1"
@@ -4124,12 +4133,13 @@ __metadata:
     react-error-boundary: ^4.0.11
     react-hook-form: ^7.46.1
     react-query: "npm:@tanstack/react-query@^4"
+    react-ssr-prepass: ^1.5.0
     supports-color: ^9.4.0
     tailwind-scrollbar-hide: ^1.1.7
     tailwindcss: 3.3.3
     three: 0.154.0
     three-stdlib: ^2.25.1
-    typescript: 5.2.2
+    typescript: ^5.2.2
     zustand: ^4.4.1
   languageName: unknown
   linkType: soft
@@ -4821,7 +4831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.2.2":
+"typescript@npm:^5.2.2":
   version: 5.2.2
   resolution: "typescript@npm:5.2.2"
   bin:
@@ -4831,7 +4841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@5.2.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
   bin:

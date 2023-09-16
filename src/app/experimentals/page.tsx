@@ -1,54 +1,53 @@
-'use client';
-
 import { axiosInstance } from '@/api/axiosInstance';
 import { reportError } from '@/utils';
 import { SignalingChannel } from './utils';
 import Minecraft from './components/Mincraft';
 import { RoomList } from './components/RoomList';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-
-import { FormEventHandler, Suspense, useRef, useState } from 'react';
-import { Button } from '@/components/Ui/Button';
-import { CreateRoomDialog } from './components/CreateRoomDialog';
-import { UserSection } from './components/UserSection';
-import { minecraftQueryClient } from './hooks/queryClient';
+import Providers from './providers';
+import { getRooms } from './hooks/useGetRoomsQuery';
+import getQueryClient from '../getQueryClient';
+import { Hydrate, dehydrate } from '@tanstack/react-query';
+import ssrPrepass from 'react-ssr-prepass';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Suspense } from 'react';
 
-export default function ExperimentalsPage() {
-  const dialogRef = useRef<HTMLDialogElement>(null);
+export default async function ExperimentalsPage() {
+  const queryClient = getQueryClient();
 
-  const handleDialogOpen = () => dialogRef.current?.showModal();
-  const handleDialogClose = () => dialogRef.current?.close();
+  try {
+    await queryClient.prefetchQuery(['rooms'], getRooms);
+  } catch (error) {
+    return <div>{JSON.stringify(error)}</div>;
+  }
+
+  // const initialRoomsData = await getRooms();
+  const dehydratedState = dehydrate(queryClient);
+  console.log('dehydratedState', dehydratedState);
 
   return (
-    <main className="p-5 flex flex-row gap-10 bg-color-[#ff00ff">
-      <QueryClientProvider client={minecraftQueryClient}>
-        <ErrorBoundary
+    <main className="p-5 flex flex-row gap-10">
+      <Providers>
+        <Hydrate state={dehydratedState}>
+          {/* <ErrorBoundary
           fallback={<div>someThing wrong</div>}
           onError={(error, errorInfo) => {
-            console.log(error, errorInfo);
-            window.localStorage.removeItem('userId');
-            window.location.reload();
+            // console.log(error, errorInfo);
+            // window.localStorage.removeItem('userId');
+            // window.location.reload();
           }}
         >
           <Suspense fallback={'Load Exist User info'}>
             <UserSection />
           </Suspense>
-        </ErrorBoundary>
+        </ErrorBoundary> */}
 
-        <div className="flex flex-col grow ">
-          <div className="text-2xl">MINECRAFT ONLINE ROOMS</div>
-          <RoomList />
-
-          <div>
-            <Button color="green" onClick={handleDialogOpen}>
-              Create Room
-            </Button>
-          </div>
-        </div>
-
-        <CreateRoomDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
-      </QueryClientProvider>
+          <ErrorBoundary fallback={<div>Something wrong...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <RoomList />
+            </Suspense>
+          </ErrorBoundary>
+        </Hydrate>
+      </Providers>
     </main>
   );
 }

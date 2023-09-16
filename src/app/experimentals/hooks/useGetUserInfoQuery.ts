@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/api/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
 import { useSuspendedQuery } from '@toss/react-query';
 
@@ -10,6 +11,7 @@ type ApiResponse = {
   userData: {
     id: string;
     userName: string;
+    nameCode: string;
   };
 };
 

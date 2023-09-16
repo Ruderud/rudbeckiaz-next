@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
-import { minecraftQueryClient } from './queryClient';
+// import { minecraftQueryClient } from '../getQueryClient';
 
 type ApiParams = {
   userName: string;
@@ -22,6 +22,6 @@ const createUserId = async (params: ApiParams) => {
 export const useCreateUserIdMutation = () =>
   useMutation(createUserId, {
     onSuccess: (data) => {
-      minecraftQueryClient.invalidateQueries(['user']);
+      // minecraftQueryClient.invalidateQueries(['user']);
     },
   });

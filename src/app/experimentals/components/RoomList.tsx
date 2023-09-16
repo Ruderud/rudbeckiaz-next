@@ -1,28 +1,54 @@
 'use client';
 
 import { ErrorBoundary } from 'react-error-boundary';
-import { Suspense } from 'react';
-import { useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
+import { Suspense, useRef } from 'react';
+import { InitialRoomsData, getRooms, useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
 import { Button } from '@/components/Ui/Button';
+import { useQuery } from '@tanstack/react-query';
+import { CreateRoomDialog } from './CreateRoomDialog';
 
-export const RoomList = () => {
-  const { data } = useGetRoomsQuery();
+type Room = {
+  id: string;
+  roomName: string;
+  host: string;
+};
+
+type RoolListProps = {
+  initialRoomsData?: InitialRoomsData;
+};
+
+export const RoomList = ({ initialRoomsData }: RoolListProps) => {
+  const { data } = useGetRoomsQuery(initialRoomsData);
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleDialogOpen = () => dialogRef.current?.showModal();
+  const handleDialogClose = () => dialogRef.current?.close();
+
   return (
-    <ErrorBoundary fallback={<div>Now Error!!</div>}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ol>
-          {data.Items.map((room) => {
-            return (
-              <li className="flex grow-1 justify-between items-center p-1" key={room.id}>
-                <div className="font-bold">{room.roomName}</div>
-                <Button color="blue" textSize="sm">
-                  JOIN
-                </Button>
-              </li>
-            );
-          })}
-        </ol>
-      </Suspense>
-    </ErrorBoundary>
+    <div className="flex flex-col grow ">
+      <div className="text-2xl">MINECRAFT ONLINE ROOMS</div>
+
+      <ol>
+        {data?.Items.map((room) => {
+          return (
+            <li className="flex grow-1 justify-between items-center p-1" key={room.id}>
+              <div className="font-bold">{room.roomName}</div>
+              <Button color="blue" textSize="sm">
+                JOIN
+              </Button>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div>
+        <Button color="green" onClick={handleDialogOpen}>
+          Create Room
+        </Button>
+      </div>
+
+      <CreateRoomDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
+    </div>
   );
 };

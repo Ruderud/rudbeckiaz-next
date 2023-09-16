@@ -58,6 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
               "@tanstack/react-query",\
               "virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:4.35.3"\
             ]],\
+            ["react-ssr-prepass", "virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:1.5.0"],\
             ["supports-color", "npm:9.4.0"],\
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\
@@ -5077,6 +5078,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["react-ssr-prepass", [\
+        ["npm:1.5.0", {\
+          "packageLocation": "./.yarn/cache/react-ssr-prepass-npm-1.5.0-c07b4142ee-efe89b9f8b.zip/node_modules/react-ssr-prepass/",\
+          "packageDependencies": [\
+            ["react-ssr-prepass", "npm:1.5.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:1.5.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-ssr-prepass-virtual-ae59f3cb79/0/cache/react-ssr-prepass-npm-1.5.0-c07b4142ee-efe89b9f8b.zip/node_modules/react-ssr-prepass/",\
+          "packageDependencies": [\
+            ["react-ssr-prepass", "virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:1.5.0"],\
+            ["@types/react", "npm:18.2.21"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["react-use-measure", [\
         ["npm:2.1.1", {\
           "packageLocation": "./.yarn/cache/react-use-measure-npm-2.1.1-7e53301142-b8e8939229.zip/node_modules/react-use-measure/",\
@@ -5293,6 +5316,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
               "@tanstack/react-query",\
               "virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:4.35.3"\
             ]],\
+            ["react-ssr-prepass", "virtual:d277fbfa9df80f0cd8dd683772792988762f37c600289c4961a786931ecc2532cb23f2a25f8da67875e7285e01bfdad4ee4dcb08b5d48a91524966b1c5029b98#npm:1.5.0"],\
             ["supports-color", "npm:9.4.0"],\
             ["tailwind-scrollbar-hide", "npm:1.1.7"],\
             ["tailwindcss", "npm:3.3.3"],\

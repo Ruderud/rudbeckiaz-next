@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
 import { type } from 'os';
-import { minecraftQueryClient } from './queryClient';
+import { minecraftQueryClient } from '../providers';
 
 type ApiParams = {
   host: string;
@@ -21,6 +21,6 @@ const createRoom = async (params: ApiParams) => {
 export const useCreateRoomMutation = () =>
   useMutation(createRoom, {
     onSuccess: (data) => {
-      minecraftQueryClient.invalidateQueries(['room']);
+      minecraftQueryClient.invalidateQueries(['rooms']);
     },
   });

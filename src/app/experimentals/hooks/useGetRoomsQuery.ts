@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/api/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 import { useSuspendedQuery } from '@toss/react-query';
 
 type Room = {
@@ -13,9 +14,14 @@ type ApiResponse = {
   ScannedCount: string;
 };
 
-const getRooms = async () => {
+export type InitialRoomsData = ApiResponse;
+
+export const getRooms = async () => {
   const { data } = await axiosInstance().get<ApiResponse>('/room');
   return data;
 };
 
-export const useGetRoomsQuery = () => useSuspendedQuery(['room'], getRooms);
+export const useGetRoomsQuery = (initialData?: ApiResponse) =>
+  useSuspendedQuery(['rooms'], getRooms, {
+    initialData,
+  });
