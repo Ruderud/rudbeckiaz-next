@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactNode, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -21,8 +21,41 @@ export const minecraftQueryClient = new QueryClient({
   },
 });
 
+type UserData = {
+  id: string;
+  userName: string;
+};
+
+type MinecraftContext = {
+  storedId: string | null;
+  setStoredId: Dispatch<SetStateAction<string | null>>;
+  userData?: UserData;
+  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+};
+
+export const MinecraftContext = createContext<MinecraftContext>({
+  storedId: null,
+  setStoredId: () => {},
+  userData: undefined,
+  setUserData: () => {},
+});
+
 export default function Providers({ children }: ProvidersProps) {
   const [queryClient] = useState(minecraftQueryClient);
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  const [storedId, setStoredId] = useState<string | null>(window.localStorage.getItem('userId'));
+  const [userData, setUserData] = useState<UserData | undefined>(undefined);
+
+  return (
+    <MinecraftContext.Provider
+      value={{
+        storedId,
+        setStoredId,
+        userData,
+        setUserData,
+      }}
+    >
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </MinecraftContext.Provider>
+  );
 }

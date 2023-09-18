@@ -1,10 +1,8 @@
 import { axiosInstance } from '@/api/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
-
 import { useSuspendedQuery } from '@toss/react-query';
 
 type ApiParams = {
-  id: string | null;
+  id?: string | null;
 };
 
 type ApiResponse = {
@@ -21,8 +19,6 @@ const getUserInfo = async (params: ApiParams) => {
 };
 
 export const useGetUserInfoQuery = (params: ApiParams) =>
-  useSuspendedQuery({
-    queryKey: ['user', params.id],
-    queryFn: () => getUserInfo(params),
+  useSuspendedQuery(['user', params.id], () => getUserInfo(params), {
     enabled: !!params.id,
   });
