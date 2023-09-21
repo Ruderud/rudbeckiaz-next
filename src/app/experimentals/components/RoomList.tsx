@@ -27,7 +27,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
   const handleDialogClose = () => dialogRef.current?.close();
 
   const createSignalingChannel = useCallback(() => {
-    const baseUrl = String('wss://h5mrfosj61.execute-api.us-east-1.amazonaws.com');
+    const baseUrl = String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL);
     const channel = new SignalingChannel({
       signalingUrl: baseUrl,
       pathname: '/dev',

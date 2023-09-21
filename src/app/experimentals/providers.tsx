@@ -43,8 +43,12 @@ export const MinecraftContext = createContext<MinecraftContext>({
 export default function Providers({ children }: ProvidersProps) {
   const [queryClient] = useState(minecraftQueryClient);
 
-  const [storedId, setStoredId] = useState<string | null>(window.localStorage.getItem('userId'));
+  const [storedId, setStoredId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
+
+  useEffect(() => {
+    setStoredId(window.localStorage.getItem('userId'));
+  }, []);
 
   return (
     <MinecraftContext.Provider
