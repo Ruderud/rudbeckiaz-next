@@ -2,6 +2,7 @@ import { reportError } from '@/utils';
 
 type SignalingChannelParams = {
   signalingUrl: string;
+  pathname?: string;
   onMessage?: (data: MessageEvent) => void;
   onClosed?: (data: CloseEvent) => void;
   onOpen?: (data: Event) => void;
@@ -9,10 +10,10 @@ type SignalingChannelParams = {
 export class SignalingChannel {
   signalingUrl?: URL;
   webSocket?: WebSocket;
-  constructor({ signalingUrl, onMessage, onClosed, onOpen }: SignalingChannelParams) {
+  constructor({ signalingUrl, pathname = '/', onMessage, onClosed, onOpen }: SignalingChannelParams) {
     this.signalingUrl = new URL(signalingUrl);
     this.signalingUrl.protocol = this.checkHTTPS(signalingUrl) ? 'wss' : 'ws';
-    this.signalingUrl.pathname = '/ws';
+    this.signalingUrl.pathname = pathname;
     this.webSocket = new WebSocket(this.signalingUrl);
     this.webSocket.addEventListener('message', onMessage || this.onMessage);
     this.webSocket.addEventListener('open', onOpen || this.onOpen);
@@ -20,9 +21,14 @@ export class SignalingChannel {
   }
 
   private checkHTTPS = (url: string) => {
-    const protocolPattern = /^(http|https):\/\//;
+    const wsProtocolPattern = /^(ws|wss):\/\//;
+    const httpProtocolPattern = /^(http|https):\/\//;
+
     try {
-      if (!protocolPattern.test(url)) throw new Error('Invalid URL');
+      if (wsProtocolPattern.test(url)) {
+        return url.match(/^wss:/) !== null ? true : false;
+      }
+      if (!httpProtocolPattern.test(url)) throw new Error('Invalid URL');
       return url.match(/^https:/) !== null ? true : false;
     } catch (error) {
       reportError(error, 'checkHTTPS: ');

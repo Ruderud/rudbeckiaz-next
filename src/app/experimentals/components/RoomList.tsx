@@ -1,10 +1,11 @@
 'use client';
 
 import { ErrorBoundary } from 'react-error-boundary';
-import { Suspense, useRef } from 'react';
+import { Suspense, useCallback, useRef, useState } from 'react';
 import { InitialRoomsData, getRooms, useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
 import { Button } from '@/components/Ui/Button';
 import { CreateRoomDialog } from './CreateRoomDialog';
+import { SignalingChannel } from '../utils';
 
 type Room = {
   id: string;
@@ -18,11 +19,25 @@ type RoolListProps = {
 
 export const RoomList = ({ initialRoomsData }: RoolListProps) => {
   const { data } = useGetRoomsQuery(initialRoomsData);
+  const [signalingChannel, setSignalingChannel] = useState<SignalingChannel | null>(null);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleDialogOpen = () => dialogRef.current?.showModal();
   const handleDialogClose = () => dialogRef.current?.close();
+
+  const createSignalingChannel = useCallback(() => {
+    const baseUrl = String('wss://h5mrfosj61.execute-api.us-east-1.amazonaws.com');
+    const channel = new SignalingChannel({
+      signalingUrl: baseUrl,
+      pathname: '/dev',
+      onMessage: (MessageEvent: MessageEvent) => {
+        console.log('MessageEvent', MessageEvent);
+      },
+    });
+
+    setSignalingChannel(channel);
+  }, []);
 
   return (
     <div className="flex flex-col grow ">
@@ -34,7 +49,15 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
             <li className="flex grow-1 justify-between items-center p-1" key={room.id}>
               <div className="font-bold">{room.roomName}</div>
 
-              <Button color="blue" textSize="sm">
+              <Button
+                color="blue"
+                textSize="sm"
+                onClick={() => {
+                  signalingChannel?.send({
+                    foo: 'bar',
+                  });
+                }}
+              >
                 JOIN
               </Button>
             </li>
@@ -45,6 +68,9 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
       <div>
         <Button color="green" onClick={handleDialogOpen}>
           Create Room
+        </Button>
+        <Button color="blue" textSize="sm" onClick={createSignalingChannel}>
+          Signal Channel
         </Button>
       </div>
 
