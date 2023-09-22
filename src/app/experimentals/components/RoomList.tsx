@@ -20,6 +20,7 @@ type RoolListProps = {
 export const RoomList = ({ initialRoomsData }: RoolListProps) => {
   const { data } = useGetRoomsQuery(initialRoomsData);
   const [signalingChannel, setSignalingChannel] = useState<SignalingChannel | null>(null);
+  const [eventLogs, setEventLogs] = useState<string[]>([]);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -33,6 +34,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
       pathname: '/dev',
       onMessage: (MessageEvent: MessageEvent) => {
         console.log('MessageEvent', MessageEvent);
+        setEventLogs((prev) => [...prev, JSON.stringify(MessageEvent.data)]);
       },
     });
 
@@ -73,6 +75,8 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
           Signal Channel
         </Button>
       </div>
+
+      <div>{JSON.stringify(eventLogs)}</div>
 
       <CreateRoomDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
     </div>
