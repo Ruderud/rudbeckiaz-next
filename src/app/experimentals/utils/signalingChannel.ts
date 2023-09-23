@@ -31,7 +31,11 @@ export class SignalingChannel {
       if (!httpProtocolPattern.test(url)) throw new Error('Invalid URL');
       return url.match(/^https:/) !== null ? true : false;
     } catch (error) {
-      reportError(error, 'checkHTTPS: ');
+      reportError({
+        error,
+        prefix: 'checkHTTPS: ',
+        notice: false,
+      });
       return false;
     }
   };

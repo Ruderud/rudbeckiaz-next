@@ -1,16 +1,13 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useSuspendedQuery } from '@toss/react-query';
+import { UserData } from '../utils/types';
 
 type ApiParams = {
   id?: string | null;
 };
 
 type ApiResponse = {
-  userData: {
-    id: string;
-    userName: string;
-    nameCode: string;
-  };
+  userData: UserData;
 };
 
 const getUserInfo = async (params: ApiParams) => {

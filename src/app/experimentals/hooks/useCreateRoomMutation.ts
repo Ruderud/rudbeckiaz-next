@@ -1,10 +1,10 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
-import { type } from 'os';
 import { minecraftQueryClient } from '../providers';
+import { UserData } from '../utils/types';
 
 type ApiParams = {
-  host: string;
+  host: UserData;
   roomName: string;
   isPrivate: boolean;
 };

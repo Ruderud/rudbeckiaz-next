@@ -1,7 +1,7 @@
 'use client';
 
 import { ErrorBoundary } from 'react-error-boundary';
-import { Suspense, useCallback, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { InitialRoomsData, getRooms, useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
 import { Button } from '@/components/Ui/Button';
 import { CreateRoomDialog } from './CreateRoomDialog';
@@ -20,21 +20,19 @@ type RoolListProps = {
 export const RoomList = ({ initialRoomsData }: RoolListProps) => {
   const { data } = useGetRoomsQuery(initialRoomsData);
   const [signalingChannel, setSignalingChannel] = useState<SignalingChannel | null>(null);
-  const [eventLogs, setEventLogs] = useState<string[]>([]);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleDialogOpen = () => dialogRef.current?.showModal();
   const handleDialogClose = () => dialogRef.current?.close();
 
-  const createSignalingChannel = useCallback(() => {
+  useEffect(() => {
     const baseUrl = String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL);
     const channel = new SignalingChannel({
       signalingUrl: baseUrl,
       pathname: '/dev',
       onMessage: (MessageEvent: MessageEvent) => {
         console.log('MessageEvent', MessageEvent);
-        setEventLogs((prev) => [...prev, JSON.stringify(MessageEvent.data)]);
       },
     });
 
@@ -54,6 +52,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
               <Button
                 color="blue"
                 textSize="sm"
+                disabled={signalingChannel === null}
                 onClick={() => {
                   signalingChannel?.send({
                     foo: 'bar',
@@ -68,15 +67,10 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
       </ol>
 
       <div>
-        <Button color="green" onClick={handleDialogOpen}>
+        <Button color="green" disabled={signalingChannel === null} onClick={handleDialogOpen}>
           Create Room
         </Button>
-        <Button color="blue" textSize="sm" onClick={createSignalingChannel}>
-          Signal Channel
-        </Button>
       </div>
-
-      <div>{JSON.stringify(eventLogs)}</div>
 
       <CreateRoomDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
     </div>

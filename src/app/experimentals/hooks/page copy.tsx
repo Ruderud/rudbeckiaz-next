@@ -49,7 +49,6 @@ export default function ExperimentalsPage() {
         console.log('AddIceCandidate success.');
       } catch (error) {
         const prefixMessage = 'Failed to add Ice Candidate: ';
-        reportError(error, prefixMessage);
       }
     },
     [localConnection, remoteConnection]
@@ -120,7 +119,6 @@ export default function ExperimentalsPage() {
       return offerOptions;
     } catch (error) {
       const prefixMessage = 'Failed to create session description: ';
-      reportError(error, prefixMessage);
     }
   };
 

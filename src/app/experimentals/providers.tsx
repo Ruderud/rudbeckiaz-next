@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
+import { UserData } from './utils/types';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -20,11 +21,6 @@ export const minecraftQueryClient = new QueryClient({
     },
   },
 });
-
-type UserData = {
-  id: string;
-  userName: string;
-};
 
 type MinecraftContext = {
   storedId: string | null;
