@@ -1,43 +1,25 @@
 'use client';
 
-import { ErrorBoundary } from 'react-error-boundary';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { InitialRoomsData, getRooms, useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
+import { useContext, useRef } from 'react';
+import { InitialRoomsData, useGetRoomsQuery } from '../hooks/useGetRoomsQuery';
 import { Button } from '@/components/Ui/Button';
 import { CreateRoomDialog } from './CreateRoomDialog';
-import { SignalingChannel } from '../utils';
-
-type Room = {
-  id: string;
-  roomName: string;
-  host: string;
-};
+import { MinecraftContext } from '../providers';
+import { useRouter } from 'next/navigation';
 
 type RoolListProps = {
   initialRoomsData?: InitialRoomsData;
 };
 
 export const RoomList = ({ initialRoomsData }: RoolListProps) => {
+  const { signalingChannel } = useContext(MinecraftContext);
   const { data } = useGetRoomsQuery(initialRoomsData);
-  const [signalingChannel, setSignalingChannel] = useState<SignalingChannel | null>(null);
+  const router = useRouter();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleDialogOpen = () => dialogRef.current?.showModal();
   const handleDialogClose = () => dialogRef.current?.close();
-
-  useEffect(() => {
-    const baseUrl = String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL);
-    const channel = new SignalingChannel({
-      signalingUrl: baseUrl,
-      pathname: '/dev',
-      onMessage: (MessageEvent: MessageEvent) => {
-        console.log('MessageEvent', MessageEvent);
-      },
-    });
-
-    setSignalingChannel(channel);
-  }, []);
 
   return (
     <div className="flex flex-col grow ">
@@ -54,9 +36,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
                 textSize="sm"
                 disabled={signalingChannel === null}
                 onClick={() => {
-                  signalingChannel?.send({
-                    foo: 'bar',
-                  });
+                  router.push(`/experimentals?room=${room.id}`);
                 }}
               >
                 JOIN

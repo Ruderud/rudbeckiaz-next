@@ -1,10 +1,11 @@
-import { Button } from '@/components/Ui/Button';
-import { ForwardRefRenderFunction, RefObject, forwardRef, useContext, useRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { Button } from '@/components/Ui/Button';
+import { reportError } from '@/utils';
 import { useCreateRoomMutation } from '../hooks/useCreateRoomMutation';
 import { MinecraftContext } from '../providers';
-import { enqueueSnackbar } from 'notistack';
-import { reportError } from '@/utils';
+import { useRouter } from 'next/navigation';
 
 type CreateRoomDialogProps = {
   handleDialogClose: () => void;
@@ -22,6 +23,7 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
   const { userData } = useContext(MinecraftContext);
   const { handleDialogClose } = props;
   const { mutateAsync } = useCreateRoomMutation();
+  const router = useRouter();
 
   const {
     register,
@@ -32,11 +34,12 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
   const onSubmit: SubmitHandler<CreateRoomForm> = async (data) => {
     try {
       if (!userData) throw new Error('User Data is not found');
-      await mutateAsync({
+      const res = await mutateAsync({
         host: userData,
         ...data,
       });
       handleDialogClose();
+      router.push(`/experimentals?room=${res.roomData.id}`);
     } catch (error) {
       reportError({
         error,

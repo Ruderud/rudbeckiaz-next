@@ -1,8 +1,10 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useCallback, useEffect, useState } from 'react';
 import { UserData } from './utils/types';
+import { useSignalingChannel } from './hooks/useSignalingChannel';
+import { SignalingChannel } from './utils';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -27,6 +29,7 @@ type MinecraftContext = {
   setStoredId: Dispatch<SetStateAction<string | null>>;
   userData?: UserData;
   setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  signalingChannel: SignalingChannel | null;
 };
 
 export const MinecraftContext = createContext<MinecraftContext>({
@@ -34,6 +37,7 @@ export const MinecraftContext = createContext<MinecraftContext>({
   setStoredId: () => {},
   userData: undefined,
   setUserData: () => {},
+  signalingChannel: null,
 });
 
 export default function Providers({ children }: ProvidersProps) {
@@ -46,6 +50,8 @@ export default function Providers({ children }: ProvidersProps) {
     setStoredId(window.localStorage.getItem('userId'));
   }, []);
 
+  const signalingChannel = useSignalingChannel();
+
   return (
     <MinecraftContext.Provider
       value={{
@@ -53,6 +59,7 @@ export default function Providers({ children }: ProvidersProps) {
         setStoredId,
         userData,
         setUserData,
+        signalingChannel,
       }}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

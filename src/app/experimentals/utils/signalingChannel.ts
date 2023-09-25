@@ -52,10 +52,9 @@ export class SignalingChannel {
     console.log('Signal Channel closed');
   }
 
-  // setOnMessage(newOnMessageCallBack: (data: MessageEvent) => void) {
-  //   this.webSocket?.removeEventListener('message', this.onMessage);
-  //   this.webSocket?.addEventListener('message', newOnMessageCallBack);
-  // }
+  setOnMessage(onMessage: (data: MessageEvent) => void) {
+    this.webSocket?.addEventListener('message', onMessage);
+  }
 
   send(data: unknown) {
     if (!this.webSocket) {
@@ -65,7 +64,19 @@ export class SignalingChannel {
     if (this.webSocket instanceof WebSocket) {
       this.webSocket.send(JSON.stringify(data));
     }
-    console.log('send: ', JSON.stringify(data));
+    // console.log('send: ', JSON.stringify(data));
+  }
+
+  async asyncSend(data: unknown) {
+    if (!this.webSocket) {
+      console.log("ws doesn't exist");
+      return;
+    }
+    if (this.webSocket instanceof WebSocket) {
+      await new Promise(() => {
+        this.webSocket?.send(JSON.stringify(data));
+      });
+    }
   }
 
   close() {

@@ -1,12 +1,6 @@
 import { axiosInstance } from '@/api/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
 import { useSuspendedQuery } from '@toss/react-query';
-
-type Room = {
-  id: string;
-  roomName: string;
-  host: string;
-};
+import { Room } from '../utils/types';
 
 type ApiResponse = {
   Count: string;
