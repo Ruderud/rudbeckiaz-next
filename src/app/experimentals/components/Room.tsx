@@ -61,16 +61,25 @@ export const Room = () => {
       try {
         const { candidate } = event;
         console.log('candidate Fire at', new Date().toISOString());
+        console.log('candidate', candidate);
         if (!candidate) {
           console.log('candidate is null');
           return;
         }
+
         await localConnection.addIceCandidate(candidate);
       } catch (error) {
         reportError({
           error,
           prefix: 'Failed to add Ice Candidate: ',
         });
+      }
+    };
+
+    localConnection.ontrack = (event) => {
+      const remoteVideo = document.querySelector<HTMLVideoElement>('#remoteVideo');
+      if (remoteVideo) {
+        remoteVideo.srcObject = event.streams[0];
       }
     };
 
@@ -90,7 +99,7 @@ export const Room = () => {
 
       switch (data.type) {
         case 'SEND_OFFER':
-          console.log(`### SEND_OFFER ###`);
+          console.log(`### SEND_OFFER ###`, new Date().toISOString());
           console.log('offer from', data.payload.userData.userName);
           console.log('offer', data.payload.offer);
           await localConnection.setRemoteDescription(data.payload.offer);
@@ -98,6 +107,14 @@ export const Room = () => {
           if (localConnection.remoteDescription?.type === 'offer') {
             const offerAnswer = await localConnection.createAnswer();
             await localConnection.setLocalDescription(offerAnswer);
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
+            if (localVideo) {
+              localVideo.srcObject = stream;
+            }
+            stream.getTracks().forEach((track) => {
+              localConnection.addTrack(track, stream);
+            });
             signalingChannel.send({
               type: 'SEND_ANSWER',
               payload: {
@@ -112,6 +129,10 @@ export const Room = () => {
           console.log(`### SEND_ANSWER ###`);
           console.log('Answer from', data.payload.userData.userName);
           console.log('answer', data.payload.answer);
+          if (localConnection.signalingState === 'stable') {
+            console.log('now stable');
+            return;
+          }
 
           await localConnection.setRemoteDescription(data.payload.answer);
           break;
@@ -141,6 +162,16 @@ export const Room = () => {
           if (signalingChannel && localConnection) {
             const roomId = search;
             const offer = await localConnection.createOffer();
+
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
+            if (localVideo) {
+              localVideo.srcObject = stream;
+            }
+            stream.getTracks().forEach((track) => {
+              localConnection.addTrack(track, stream);
+            });
+
             await localConnection.setLocalDescription(offer);
             console.log('setLocalDescription Fire at', new Date().toISOString());
             signalingChannel.send({
@@ -188,6 +219,9 @@ export const Room = () => {
           );
         })}
       </div>
+
+      <video id="localVideo" playsInline autoPlay muted></video>
+      <video id="remoteVideo" playsInline autoPlay></video>
     </div>
   );
 };
