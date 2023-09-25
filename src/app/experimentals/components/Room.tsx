@@ -14,6 +14,12 @@ type Message = {
   message: string;
 };
 
+const wait = (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
 export const Room = () => {
   const { signalingChannel, userData } = useContext(MinecraftContext);
   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
@@ -26,7 +32,8 @@ export const Room = () => {
   const search = searchParams.get('room');
 
   const [localConnection, setLocalConnection] = useState<RTCPeerConnection | null>(null);
-  //   const [remoteConnection, setRemoteConnection] = useState<RTCPeerConnection | null>(null);
+
+  const [offer, setOffer] = useState<RTCSessionDescriptionInit | null>(null);
 
   useEffect(() => {
     if (!signalingChannel) return;
@@ -58,16 +65,27 @@ export const Room = () => {
     setSendChannel(sendChannel);
 
     localConnection.onicecandidate = async (event) => {
+      console.log('candidate Fire at', new Date().toISOString());
       try {
-        const { candidate } = event;
-        console.log('candidate Fire at', new Date().toISOString());
-        console.log('candidate', candidate);
-        if (!candidate) {
-          console.log('candidate is null');
-          return;
-        }
-
-        await localConnection.addIceCandidate(candidate);
+        signalingChannel.send({
+          type: 'SEND_CANDIDATE',
+          payload: {
+            candidate: event.candidate,
+            userData,
+          },
+        });
+        // const { candidate } = event;
+        // // console.log('candidate', candidate);
+        // if (!candidate) {
+        //   console.log('candidate is null');
+        //   return;
+        // }
+        // if (!localConnection.remoteDescription) {
+        //   console.log('remoteDescription is null');
+        //   return;
+        // }
+        // console.log('remoteDescription', localConnection.remoteDescription);
+        // await localConnection.addIceCandidate(candidate);
       } catch (error) {
         reportError({
           error,
@@ -76,12 +94,12 @@ export const Room = () => {
       }
     };
 
-    localConnection.ontrack = (event) => {
-      const remoteVideo = document.querySelector<HTMLVideoElement>('#remoteVideo');
-      if (remoteVideo) {
-        remoteVideo.srcObject = event.streams[0];
-      }
-    };
+    // localConnection.ontrack = (event) => {
+    //   const remoteVideo = document.querySelector<HTMLVideoElement>('#remoteVideo');
+    //   if (remoteVideo) {
+    //     remoteVideo.srcObject = event.streams[0];
+    //   }
+    // };
 
     setLocalConnection(localConnection);
   }, [signalingChannel, userData]);
@@ -101,30 +119,39 @@ export const Room = () => {
         case 'SEND_OFFER':
           console.log(`### SEND_OFFER ###`, new Date().toISOString());
           console.log('offer from', data.payload.userData.userName);
-          console.log('offer', data.payload.offer);
+          //   console.log('offer', data.payload.offer);
           await localConnection.setRemoteDescription(data.payload.offer);
-          console.log("remoteDescription's type", localConnection.remoteDescription?.type);
-          if (localConnection.remoteDescription?.type === 'offer') {
-            const offerAnswer = await localConnection.createAnswer();
-            await localConnection.setLocalDescription(offerAnswer);
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
-            if (localVideo) {
-              localVideo.srcObject = stream;
-            }
-            stream.getTracks().forEach((track) => {
-              localConnection.addTrack(track, stream);
-            });
-            signalingChannel.send({
-              type: 'SEND_ANSWER',
-              payload: {
-                answer: offerAnswer,
-                userData,
-              },
-            });
-          }
+          // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+          // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
+          // if (localVideo) {
+          //   localVideo.srcObject = stream;
+          // }
+          // stream.getTracks().forEach((track) => {
+          //   localConnection.addTrack(track, stream);
+          // });
 
+          const offerAnswer = await localConnection.createAnswer();
+          await localConnection.setLocalDescription(offerAnswer);
+
+          signalingChannel.send({
+            type: 'SEND_ANSWER',
+            payload: {
+              answer: offerAnswer,
+              userData,
+            },
+          });
           break;
+
+        case 'SEND_CANDIDATE':
+          console.log(`### SEND_CANDIDATE ###`);
+          if (!data.payload.candidate) return;
+          if (!localConnection.remoteDescription) {
+            console.log('remoteDescription is null');
+            return;
+          }
+          await localConnection.addIceCandidate(data.payload.candidate);
+          break;
+
         case 'SEND_ANSWER':
           console.log(`### SEND_ANSWER ###`);
           console.log('Answer from', data.payload.userData.userName);
@@ -141,7 +168,7 @@ export const Room = () => {
           break;
       }
     });
-  }, [signalingChannel, localConnection, userData]);
+  }, [signalingChannel, localConnection, userData, offer]);
 
   return (
     <div>
@@ -159,20 +186,20 @@ export const Room = () => {
       <Button
         color="blue"
         onClick={async () => {
+          console.log('localConnection', localConnection?.remoteDescription);
           if (signalingChannel && localConnection) {
             const roomId = search;
             const offer = await localConnection.createOffer();
 
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
-            if (localVideo) {
-              localVideo.srcObject = stream;
-            }
-            stream.getTracks().forEach((track) => {
-              localConnection.addTrack(track, stream);
-            });
+            // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
+            // if (localVideo) {
+            //   localVideo.srcObject = stream;
+            // }
+            // stream.getTracks().forEach((track) => {
+            //   localConnection.addTrack(track, stream);
+            // });
 
-            await localConnection.setLocalDescription(offer);
             console.log('setLocalDescription Fire at', new Date().toISOString());
             signalingChannel.send({
               type: 'SEND_OFFER',
@@ -182,6 +209,7 @@ export const Room = () => {
                 userData,
               },
             });
+            await localConnection.setLocalDescription(offer);
           }
         }}
       >
@@ -220,8 +248,8 @@ export const Room = () => {
         })}
       </div>
 
-      <video id="localVideo" playsInline autoPlay muted></video>
-      <video id="remoteVideo" playsInline autoPlay></video>
+      {/* <video id="localVideo" playsInline autoPlay muted></video>
+      <video id="remoteVideo" playsInline autoPlay></video> */}
     </div>
   );
 };
