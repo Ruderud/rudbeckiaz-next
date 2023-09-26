@@ -15,7 +15,6 @@ type Message = {
 export const Room = () => {
   const { signalingChannel, userData } = useContext(MinecraftContext);
   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
-  const [receiveChannel, setReceiveChannel] = useState<RTCDataChannel | null>(null);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>('');
@@ -24,8 +23,6 @@ export const Room = () => {
   const search = searchParams.get('room');
 
   const [pc, setPc] = useState<RTCPeerConnection | null>(null);
-
-  const [offer, setOffer] = useState<RTCSessionDescriptionInit | null>(null);
 
   useEffect(() => {
     if (!signalingChannel) return;
@@ -40,24 +37,24 @@ export const Room = () => {
     });
 
     const sendChannel = pc.createDataChannel('sendDataChannel');
-    // const receiveChannel = pc.createDataChannel('receiveDataChannel');
     pc.ondatachannel = (e) => {
       const receiveChannel = e.channel;
       receiveChannel.onmessage = (e) => {
         const messageData = JSON.parse(e.data) as Message;
         setMessages((prev) => [...prev, messageData]);
       };
-      setReceiveChannel(receiveChannel);
     };
 
-    sendChannel.onopen = (event) => {
-      console.log('sendChannel open', event);
+    sendChannel.onopen = () => {
+      console.log('sendChannel open');
+    };
+    sendChannel.onclose = () => {
+      console.log('sendChannel close');
     };
 
     setSendChannel(sendChannel);
 
-    pc.onicecandidate = async (event) => {
-      console.log('candidate Fire at', new Date().toISOString());
+    pc.onicecandidate = (event) => {
       try {
         signalingChannel.send({
           type: 'SEND_CANDIDATE',
@@ -66,22 +63,11 @@ export const Room = () => {
             userData,
           },
         });
-        // const { candidate } = event;
-        // // console.log('candidate', candidate);
-        // if (!candidate) {
-        //   console.log('candidate is null');
-        //   return;
-        // }
-        // if (!pc.remoteDescription) {
-        //   console.log('remoteDescription is null');
-        //   return;
-        // }
-        // console.log('remoteDescription', pc.remoteDescription);
-        // await pc.addIceCandidate(candidate);
       } catch (error) {
         reportError({
           error,
           prefix: 'Failed to add Ice Candidate: ',
+          notice: true,
         });
       }
     };
@@ -110,8 +96,6 @@ export const Room = () => {
       switch (data.type) {
         case 'SEND_OFFER':
           console.log(`### SEND_OFFER ###`, new Date().toISOString());
-          console.log('offer from', data.payload.userData.userName);
-          //   console.log('offer', data.payload.offer);
           await pc.setRemoteDescription(data.payload.offer);
           // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
           // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
@@ -137,22 +121,13 @@ export const Room = () => {
         case 'SEND_CANDIDATE':
           console.log(`### SEND_CANDIDATE ###`);
           if (!data.payload.candidate) return;
-          if (!pc.remoteDescription) {
-            console.log('remoteDescription is null');
-            return;
-          }
+          if (!pc.remoteDescription) return;
           await pc.addIceCandidate(data.payload.candidate);
           break;
 
         case 'SEND_ANSWER':
           console.log(`### SEND_ANSWER ###`);
-          console.log('Answer from', data.payload.userData.userName);
-          console.log('answer', data.payload.answer);
-          if (pc.signalingState === 'stable') {
-            console.log('now stable');
-            return;
-          }
-
+          if (pc.signalingState === 'stable') return;
           await pc.setRemoteDescription(data.payload.answer);
           break;
 
@@ -160,7 +135,7 @@ export const Room = () => {
           break;
       }
     });
-  }, [signalingChannel, pc, userData, offer]);
+  }, [signalingChannel, pc, userData]);
 
   return (
     <div>
@@ -177,8 +152,8 @@ export const Room = () => {
 
       <Button
         color="blue"
+        disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
         onClick={async () => {
-          console.log('pc', pc?.remoteDescription);
           if (signalingChannel && pc) {
             const roomId = search;
             const offer = await pc.createOffer();
@@ -192,7 +167,6 @@ export const Room = () => {
             //   pc.addTrack(track, stream);
             // });
 
-            console.log('setLocalDescription Fire at', new Date().toISOString());
             signalingChannel.send({
               type: 'SEND_OFFER',
               payload: {
@@ -211,16 +185,6 @@ export const Room = () => {
       <Button
         color="green"
         onClick={() => {
-          console.log('pc', pc);
-          console.log('sendChannel', sendChannel?.readyState);
-        }}
-      >
-        pc Logging
-      </Button>
-
-      <Button
-        color="green"
-        onClick={() => {
           sendChannel?.send(
             JSON.stringify({
               userData,
@@ -229,7 +193,7 @@ export const Room = () => {
           );
         }}
       >
-        Test Send
+        Send Message
       </Button>
 
       <div>

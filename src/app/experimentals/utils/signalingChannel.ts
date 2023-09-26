@@ -7,8 +7,12 @@ type SignalingChannelParams = {
   onClosed?: (data: CloseEvent) => void;
   onOpen?: (data: Event) => void;
 };
+
 export class SignalingChannel {
   signalingUrl?: URL;
+  /**
+   * @param readyState 0: CONNECTING, 1: OPEN, 2: CLOSING, 3: CLOSED
+   */
   webSocket?: WebSocket;
   constructor({ signalingUrl, pathname = '/', onMessage, onClosed, onOpen }: SignalingChannelParams) {
     this.signalingUrl = new URL(signalingUrl);
@@ -16,8 +20,8 @@ export class SignalingChannel {
     this.signalingUrl.pathname = pathname;
     this.webSocket = new WebSocket(this.signalingUrl);
     this.webSocket.addEventListener('message', onMessage || this.onMessage);
-    this.webSocket.addEventListener('open', onOpen || this.onOpen);
-    this.webSocket.addEventListener('close', onClosed || this.onClosed);
+    onOpen && this.webSocket.addEventListener('open', onOpen);
+    onClosed && this.webSocket.addEventListener('close', onClosed);
   }
 
   private checkHTTPS = (url: string) => {
@@ -42,14 +46,6 @@ export class SignalingChannel {
 
   private onMessage(data: MessageEvent) {
     console.log('received message', data);
-  }
-
-  private onOpen() {
-    console.log('Signal Channel opened');
-  }
-
-  onClosed() {
-    console.log('Signal Channel closed');
   }
 
   setOnMessage(onMessage: (data: MessageEvent) => void) {
