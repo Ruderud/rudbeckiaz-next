@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as RAPIER from '@dimforge/rapier3d-compat';
 import { useRef } from 'react';
-import { ThreeElements, useFrame } from '@react-three/fiber';
+import { ThreeElements, useFrame, useThree } from '@react-three/fiber';
 import { useKeyboardControls } from '@react-three/drei';
 import { CapsuleCollider, RigidBody, RigidBodyProps, useRapier } from '@react-three/rapier';
 import Axe from './Axe';
@@ -24,8 +24,13 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
   const axeRef = useRef<any>(null);
   const rapier = useRapier();
   const [_, get] = useKeyboardControls();
+  const bodyEle = document.querySelector('body');
+  const { camera } = useThree();
 
   useFrame((state) => {
+    // console.log('camera', camera);
+
+    if (bodyEle?.getAttribute('playerActive')) return;
     if (!bodyRef.current) return;
     const { jump, shift } = get();
     const { forward, backward, left, right } = joyStickActive ? joyStickValue : get();

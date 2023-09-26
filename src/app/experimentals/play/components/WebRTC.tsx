@@ -1,23 +1,30 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { MinecraftContext } from '../providers';
-import { useContext, useEffect, useState } from 'react';
-import { reportError } from '@/utils';
+import { Dispatch, useContext, useEffect, useState } from 'react';
+import { MinecraftContext } from '../../providers';
+import { Message } from '../../utils/types';
 import { Button } from '@/components/Ui/Button';
-import { Message, UserData } from '../utils/types';
+import { useSearchParams } from 'next/navigation';
+import { set } from 'react-hook-form';
 
-export const Room = () => {
-  const { signalingChannel, userData } = useContext(MinecraftContext);
-  const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
+type WebRTCProps = {
+  setSendChannel: Dispatch<React.SetStateAction<RTCDataChannel | null>>;
+  setMessages: Dispatch<React.SetStateAction<Message[]>>;
+};
 
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [message, setMessage] = useState<string>('');
+export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
+  const { setIsInputActive, signalingChannel, userData } = useContext(MinecraftContext);
 
   const searchParams = useSearchParams();
-  const search = searchParams.get('room');
-
+  const roomId = searchParams.get('room');
+  //   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
+  //   const [messages, setMessages] = useState<Message[]>([]);
+  const [message, setMessage] = useState<string>('');
   const [pc, setPc] = useState<RTCPeerConnection | null>(null);
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
 
   useEffect(() => {
     if (!signalingChannel) return;
@@ -67,13 +74,6 @@ export const Room = () => {
       }
     };
 
-    // pc.ontrack = (event) => {
-    //   const remoteVideo = document.querySelector<HTMLVideoElement>('#remoteVideo');
-    //   if (remoteVideo) {
-    //     remoteVideo.srcObject = event.streams[0];
-    //   }
-    // };
-
     setPc(pc);
   }, [signalingChannel, userData]);
 
@@ -92,14 +92,6 @@ export const Room = () => {
         case 'SEND_OFFER':
           console.log(`### SEND_OFFER ###`, new Date().toISOString());
           await pc.setRemoteDescription(data.payload.offer);
-          // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-          // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
-          // if (localVideo) {
-          //   localVideo.srcObject = stream;
-          // }
-          // stream.getTracks().forEach((track) => {
-          //   pc.addTrack(track, stream);
-          // });
 
           const offerAnswer = await pc.createAnswer();
           await pc.setLocalDescription(offerAnswer);
@@ -134,34 +126,13 @@ export const Room = () => {
 
   return (
     <div>
-      <div>{`Room Id is: ${search}`}</div>
-
-      <input
-        className="text-black"
-        type="text"
-        value={message}
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-      />
-
+      WebRTC
       <Button
         color="blue"
         disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
         onClick={async () => {
           if (signalingChannel && pc) {
-            const roomId = search;
             const offer = await pc.createOffer();
-
-            // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
-            // if (localVideo) {
-            //   localVideo.srcObject = stream;
-            // }
-            // stream.getTracks().forEach((track) => {
-            //   pc.addTrack(track, stream);
-            // });
-
             signalingChannel.send({
               type: 'SEND_OFFER',
               payload: {
@@ -176,31 +147,6 @@ export const Room = () => {
       >
         Connect
       </Button>
-
-      <Button
-        color="green"
-        onClick={() => {
-          sendChannel?.send(
-            JSON.stringify({
-              userData,
-              message,
-            })
-          );
-        }}
-      >
-        Send Message
-      </Button>
-
-      <div>
-        {messages.map((message, index) => {
-          return (
-            <div key={index}>{`${message.userData.userName}${message.userData.nameCode}: ${message.message}`}</div>
-          );
-        })}
-      </div>
-
-      {/* <video id="localVideo" playsInline autoPlay muted></video>
-      <video id="remoteVideo" playsInline autoPlay></video> */}
     </div>
   );
 };

@@ -1,26 +1,14 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
 import Minecraft from '../components/Mincraft';
-import { Button } from '@/components/Ui/Button';
+import { ScreenUi } from './components/ScreenUi';
 
+// Do not change state in this component. it will cause Minecraft component to re-render.
 export default function PlayPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const roomId = searchParams.get('room');
   return (
     <main className="absolute top-0 w-screen h-screen">
-      <div className="absolute z-10 top-20 left-5">
-        <p>{`RoomId: ${roomId && 'soloPlay'}`}</p>
-        <Button
-          color="blue"
-          onClick={() => {
-            router.push('/experimentals');
-          }}
-        >
-          Exit
-        </Button>
-      </div>
+      <div className="absolute z-30 top-[50%] left-[50%] w-[10px] h-[10px] rounded translate-x-[-50%] translate-y-[50%] translate-z-0 border-white border-2" />
+      <ScreenUi />
       <Minecraft />
     </main>
   );

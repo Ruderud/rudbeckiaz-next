@@ -29,6 +29,8 @@ type MinecraftContext = {
   setStoredId: Dispatch<SetStateAction<string | null>>;
   userData?: UserData;
   setUserData: Dispatch<SetStateAction<UserData | undefined>>;
+  isInputActive: boolean;
+  setIsInputActive: Dispatch<SetStateAction<boolean>>;
   signalingChannel: SignalingChannel | null;
 };
 
@@ -37,6 +39,8 @@ export const MinecraftContext = createContext<MinecraftContext>({
   setStoredId: () => {},
   userData: undefined,
   setUserData: () => {},
+  isInputActive: false,
+  setIsInputActive: () => {},
   signalingChannel: null,
 });
 
@@ -45,6 +49,7 @@ export default function Providers({ children }: ProvidersProps) {
 
   const [storedId, setStoredId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
+  const [isInputActive, setIsInputActive] = useState<boolean>(false);
 
   useEffect(() => {
     setStoredId(window.localStorage.getItem('userId'));
@@ -59,6 +64,8 @@ export default function Providers({ children }: ProvidersProps) {
         setStoredId,
         userData,
         setUserData,
+        isInputActive,
+        setIsInputActive,
         signalingChannel,
       }}
     >

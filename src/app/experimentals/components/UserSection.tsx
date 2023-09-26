@@ -5,14 +5,19 @@ import { useCreateUserIdMutation } from '../hooks/useCreateUserIdMutation';
 import { Button } from '@/components/Ui/Button';
 import { useGetUserInfoQuery } from '../hooks/useGetUserInfoQuery';
 import { enqueueSnackbar } from 'notistack';
-import { use, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, use, useContext, useEffect, useState } from 'react';
 import { MinecraftContext } from '../providers';
+import { UserData } from '../utils/types';
 
 type UserInput = {
   userName: string;
 };
 
-export const UserSection = () => {
+type UserSectionProps = {
+  dispatchUserData?: Dispatch<SetStateAction<UserData | undefined>>;
+};
+
+export const UserSection = ({ dispatchUserData }: UserSectionProps) => {
   const { storedId, setUserData } = useContext(MinecraftContext);
   const { data } = useGetUserInfoQuery({ id: storedId });
   const { mutateAsync } = useCreateUserIdMutation();
@@ -33,7 +38,8 @@ export const UserSection = () => {
 
   useEffect(() => {
     setUserData(data?.userData);
-  }, [setUserData, data]);
+    dispatchUserData && dispatchUserData(data?.userData);
+  }, [setUserData, dispatchUserData, data]);
 
   return (
     <div>

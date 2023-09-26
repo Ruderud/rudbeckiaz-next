@@ -10,3 +10,8 @@ export type UserData = {
   nameCode: string;
   createdAt: string;
 };
+
+export type Message = {
+  userData: UserData;
+  message: string;
+};

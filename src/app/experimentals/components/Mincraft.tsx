@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import { Sky, PointerLockControls, KeyboardControls, Bounds, CameraControls } from '@react-three/drei';
+import { Sky, PointerLockControls, KeyboardControls, CameraControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ground } from './Ground';
 import { Player } from './Player';
@@ -58,7 +58,6 @@ export default function Minecraft() {
         { name: 'right', keys: ['ArrowRight', 'd', 'D', 'ㅇ'] },
         { name: 'jump', keys: ['Space'] },
         { name: 'shift', keys: ['Shift'] },
-        { name: 'enter', keys: ['Enter'] },
       ]}
     >
       <Canvas shadows camera={{ fov: 45, position: [5, 5, 5] }}>

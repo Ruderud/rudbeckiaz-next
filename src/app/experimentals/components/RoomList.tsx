@@ -36,7 +36,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
                 textSize="sm"
                 disabled={signalingChannel === null}
                 onClick={() => {
-                  router.push(`/experimentals?room=${room.id}`);
+                  router.push(`/experimentals/play?room=${room.id}`);
                 }}
               >
                 JOIN
