@@ -23,25 +23,25 @@ export const Room = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get('room');
 
-  const [localConnection, setLocalConnection] = useState<RTCPeerConnection | null>(null);
+  const [pc, setPc] = useState<RTCPeerConnection | null>(null);
 
   const [offer, setOffer] = useState<RTCSessionDescriptionInit | null>(null);
 
   useEffect(() => {
     if (!signalingChannel) return;
-    const localConnection = new RTCPeerConnection({
-      //   iceServers: [
-      //     { urls: 'stun:stun.l.google.com:19302' },
-      //     { urls: 'stun:stun1.l.google.com:19302' },
-      //     { urls: 'stun:stun2.l.google.com:19302' },
-      //     { urls: 'stun:stun3.l.google.com:19302' },
-      //     { urls: 'stun:stun4.l.google.com:19302' },
-      //   ],
+    const pc = new RTCPeerConnection({
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' },
+        { urls: 'stun:stun3.l.google.com:19302' },
+        { urls: 'stun:stun4.l.google.com:19302' },
+      ],
     });
 
-    const sendChannel = localConnection.createDataChannel('sendDataChannel');
-    // const receiveChannel = localConnection.createDataChannel('receiveDataChannel');
-    localConnection.ondatachannel = (e) => {
+    const sendChannel = pc.createDataChannel('sendDataChannel');
+    // const receiveChannel = pc.createDataChannel('receiveDataChannel');
+    pc.ondatachannel = (e) => {
       const receiveChannel = e.channel;
       receiveChannel.onmessage = (e) => {
         const messageData = JSON.parse(e.data) as Message;
@@ -56,7 +56,7 @@ export const Room = () => {
 
     setSendChannel(sendChannel);
 
-    localConnection.onicecandidate = async (event) => {
+    pc.onicecandidate = async (event) => {
       console.log('candidate Fire at', new Date().toISOString());
       try {
         signalingChannel.send({
@@ -72,12 +72,12 @@ export const Room = () => {
         //   console.log('candidate is null');
         //   return;
         // }
-        // if (!localConnection.remoteDescription) {
+        // if (!pc.remoteDescription) {
         //   console.log('remoteDescription is null');
         //   return;
         // }
-        // console.log('remoteDescription', localConnection.remoteDescription);
-        // await localConnection.addIceCandidate(candidate);
+        // console.log('remoteDescription', pc.remoteDescription);
+        // await pc.addIceCandidate(candidate);
       } catch (error) {
         reportError({
           error,
@@ -86,19 +86,19 @@ export const Room = () => {
       }
     };
 
-    // localConnection.ontrack = (event) => {
+    // pc.ontrack = (event) => {
     //   const remoteVideo = document.querySelector<HTMLVideoElement>('#remoteVideo');
     //   if (remoteVideo) {
     //     remoteVideo.srcObject = event.streams[0];
     //   }
     // };
 
-    setLocalConnection(localConnection);
+    setPc(pc);
   }, [signalingChannel, userData]);
 
   useEffect(() => {
     if (!signalingChannel) return;
-    if (!localConnection) return;
+    if (!pc) return;
     if (!userData) return;
 
     signalingChannel.setOnMessage(async (message) => {
@@ -112,18 +112,18 @@ export const Room = () => {
           console.log(`### SEND_OFFER ###`, new Date().toISOString());
           console.log('offer from', data.payload.userData.userName);
           //   console.log('offer', data.payload.offer);
-          await localConnection.setRemoteDescription(data.payload.offer);
+          await pc.setRemoteDescription(data.payload.offer);
           // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
           // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
           // if (localVideo) {
           //   localVideo.srcObject = stream;
           // }
           // stream.getTracks().forEach((track) => {
-          //   localConnection.addTrack(track, stream);
+          //   pc.addTrack(track, stream);
           // });
 
-          const offerAnswer = await localConnection.createAnswer();
-          await localConnection.setLocalDescription(offerAnswer);
+          const offerAnswer = await pc.createAnswer();
+          await pc.setLocalDescription(offerAnswer);
 
           signalingChannel.send({
             type: 'SEND_ANSWER',
@@ -137,30 +137,30 @@ export const Room = () => {
         case 'SEND_CANDIDATE':
           console.log(`### SEND_CANDIDATE ###`);
           if (!data.payload.candidate) return;
-          if (!localConnection.remoteDescription) {
+          if (!pc.remoteDescription) {
             console.log('remoteDescription is null');
             return;
           }
-          await localConnection.addIceCandidate(data.payload.candidate);
+          await pc.addIceCandidate(data.payload.candidate);
           break;
 
         case 'SEND_ANSWER':
           console.log(`### SEND_ANSWER ###`);
           console.log('Answer from', data.payload.userData.userName);
           console.log('answer', data.payload.answer);
-          if (localConnection.signalingState === 'stable') {
+          if (pc.signalingState === 'stable') {
             console.log('now stable');
             return;
           }
 
-          await localConnection.setRemoteDescription(data.payload.answer);
+          await pc.setRemoteDescription(data.payload.answer);
           break;
 
         default:
           break;
       }
     });
-  }, [signalingChannel, localConnection, userData, offer]);
+  }, [signalingChannel, pc, userData, offer]);
 
   return (
     <div>
@@ -178,10 +178,10 @@ export const Room = () => {
       <Button
         color="blue"
         onClick={async () => {
-          console.log('localConnection', localConnection?.remoteDescription);
-          if (signalingChannel && localConnection) {
+          console.log('pc', pc?.remoteDescription);
+          if (signalingChannel && pc) {
             const roomId = search;
-            const offer = await localConnection.createOffer();
+            const offer = await pc.createOffer();
 
             // const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             // const localVideo = document.querySelector<HTMLVideoElement>('#localVideo');
@@ -189,7 +189,7 @@ export const Room = () => {
             //   localVideo.srcObject = stream;
             // }
             // stream.getTracks().forEach((track) => {
-            //   localConnection.addTrack(track, stream);
+            //   pc.addTrack(track, stream);
             // });
 
             console.log('setLocalDescription Fire at', new Date().toISOString());
@@ -201,7 +201,7 @@ export const Room = () => {
                 userData,
               },
             });
-            await localConnection.setLocalDescription(offer);
+            await pc.setLocalDescription(offer);
           }
         }}
       >
@@ -211,11 +211,11 @@ export const Room = () => {
       <Button
         color="green"
         onClick={() => {
-          console.log('localConnection', localConnection);
+          console.log('pc', pc);
           console.log('sendChannel', sendChannel?.readyState);
         }}
       >
-        localConnection Logging
+        pc Logging
       </Button>
 
       <Button
