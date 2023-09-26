@@ -10,17 +10,15 @@ export const useSignalingChannel = () => {
     const baseUrl = String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL);
     const channel = new SignalingChannel({
       signalingUrl: baseUrl,
-      pathname: '/dev',
-      onMessage: (MessageEvent: MessageEvent) => {
-        console.log('MessageEvent', MessageEvent);
-      },
+      pathname: String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_PATH),
+      onMessage: (MessageEvent: MessageEvent) => {},
       onOpen: (Event: Event) => {
         setSignalingChannel(channel);
-        console.log('Signal Channel opened');
+        console.log('Signaling Channel opened');
       },
       onClosed: (CloseEvent: CloseEvent) => {
         setSignalingChannel(null);
-        console.log('Signal Channel closed');
+        console.log('Signaling Channel closed');
       },
     });
   }, []);

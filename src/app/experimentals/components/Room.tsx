@@ -2,22 +2,14 @@
 
 import { useSearchParams } from 'next/navigation';
 import { MinecraftContext } from '../providers';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { reportError } from '@/utils';
 import { Button } from '@/components/Ui/Button';
-import { type } from 'os';
-import { send } from 'process';
 import { UserData } from '../utils/types';
 
 type Message = {
   userData: UserData;
   message: string;
-};
-
-const wait = (ms: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 };
 
 export const Room = () => {

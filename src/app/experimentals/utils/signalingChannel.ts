@@ -57,25 +57,11 @@ export class SignalingChannel {
   }
 
   send(data: unknown) {
-    if (!this.webSocket) {
-      console.log("ws doesn't exist");
-      return;
-    }
-    if (this.webSocket instanceof WebSocket) {
+    try {
+      if (!this.webSocket) throw new Error('WebSocket is not initialized');
       this.webSocket.send(JSON.stringify(data));
-    }
-    // console.log('send: ', JSON.stringify(data));
-  }
-
-  async asyncSend(data: unknown) {
-    if (!this.webSocket) {
-      console.log("ws doesn't exist");
-      return;
-    }
-    if (this.webSocket instanceof WebSocket) {
-      await new Promise(() => {
-        this.webSocket?.send(JSON.stringify(data));
-      });
+    } catch (error) {
+      reportError({ error });
     }
   }
 
