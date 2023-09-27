@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as RAPIER from '@dimforge/rapier3d-compat';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { ThreeElements, useFrame, useThree } from '@react-three/fiber';
 import { useKeyboardControls } from '@react-three/drei';
 import { CapsuleCollider, RigidBody, RigidBodyProps, useRapier } from '@react-three/rapier';
@@ -25,24 +25,27 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
   const rapier = useRapier();
   const [_, get] = useKeyboardControls();
   const bodyEle = document.querySelector('body');
-
   const controls = useThree((state) => state.controls) as any;
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      if (controls) {
+  useEffect(() => {
+    if (!controls) return;
+    const handleControlLockByEnter = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
         if (controls.isLocked) {
           controls.unlock();
         } else if (!controls.isLocked) {
           controls.lock();
         }
       }
-    }
-  });
+    };
+
+    document.addEventListener('keydown', handleControlLockByEnter);
+    return () => {
+      document.removeEventListener('keydown', handleControlLockByEnter);
+    };
+  }, [controls]);
 
   useFrame((state) => {
-    // console.log('camera', camera);
-
     if (bodyEle?.getAttribute('playerActive')) return;
     if (!bodyRef.current) return;
     const { jump, shift } = get();
