@@ -25,7 +25,20 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
   const rapier = useRapier();
   const [_, get] = useKeyboardControls();
   const bodyEle = document.querySelector('body');
-  const { camera } = useThree();
+
+  const controls = useThree((state) => state.controls) as any;
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      if (controls) {
+        if (controls.isLocked) {
+          controls.unlock();
+        } else if (!controls.isLocked) {
+          controls.lock();
+        }
+      }
+    }
+  });
 
   useFrame((state) => {
     // console.log('camera', camera);

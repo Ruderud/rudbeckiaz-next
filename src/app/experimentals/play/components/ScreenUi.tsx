@@ -8,6 +8,7 @@ import { Button } from '@/components/Ui/Button';
 import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
 import { UserSection } from '../../components/UserSection';
 import { WebRTC } from './WebRTC';
+import { is } from '@react-three/fiber/dist/declarations/src/core/utils';
 
 export const ScreenUi = () => {
   //   const { setIsInputActive, signalingChannel } = useContext(MinecraftContext);
@@ -68,7 +69,7 @@ export const ScreenUi = () => {
       <div
         className={`absolute flex flex-col z-20 bottom-0 left-0 bg-[rgba(0,0,0,${
           inputActive ? '0.5' : '0'
-        })] w-[500px] h-[300px]`}
+        })] w-[500px] w-max-[500px] h-[300px] h-max-[300px] overflow-auto`}
       >
         <ul className="flex flex-col grow">
           {messages.map((message, index) => {
@@ -77,13 +78,18 @@ export const ScreenUi = () => {
             );
           })}
         </ul>
-        {inputActive && (
-          <>
+        {
+          <form
+            className={inputActive ? '' : 'hidden'}
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log('submit!');
+            }}
+          >
             <input
               ref={inputRef}
               type="text"
               className="bottom-0 w-full text-black"
-              autoFocus
               onKeyDown={(e) => {
                 e.stopPropagation();
                 if (e.code === 'Enter') {
@@ -102,18 +108,26 @@ export const ScreenUi = () => {
             />
             <button
               onClick={() => {
+                if (!userData) return;
                 sendChannel?.send(
                   JSON.stringify({
                     userData,
                     message: inputRef.current?.value,
                   })
                 );
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    userData: userData,
+                    message: inputRef.current!.value,
+                  },
+                ]);
               }}
             >
               send
             </button>
-          </>
-        )}
+          </form>
+        }
       </div>
     </Providers>
   );

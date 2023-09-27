@@ -75,7 +75,7 @@ export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
     };
 
     setPc(pc);
-  }, [signalingChannel, userData]);
+  }, [signalingChannel, userData, setMessages, setSendChannel]);
 
   useEffect(() => {
     if (!signalingChannel) return;
