@@ -8,6 +8,7 @@ import { enqueueSnackbar } from 'notistack';
 import { Dispatch, SetStateAction, use, useContext, useEffect, useState } from 'react';
 import { MinecraftContext } from '../providers';
 import { UserData } from '../utils/types';
+import { TestButton } from '@/components/Ui/TestButton';
 
 type UserInput = {
   userName: string;
@@ -74,6 +75,10 @@ export const UserSection = ({ dispatchUserData }: UserSectionProps) => {
           <Button color="orange">Delete UserData</Button>
         </div>
       )}
+
+      <TestButton $variant="primary" $isSmall>
+        이것은 테스트버튼
+      </TestButton>
     </div>
   );
 };

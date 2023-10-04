@@ -4,6 +4,8 @@ import { TopBar } from '@/components';
 import Head from 'next/head';
 import { GlobalContextProvider } from 'context/GlobalContext';
 import { Background } from '@/components/Background';
+import GlobalStyles from '@/styles/GlobalStyles';
+import StyledComponentsRegistry from '@/lib/StyledComponentsRegistry';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,10 +23,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </Head>
       <GlobalContextProvider>
         <body className={`${inter.className} relative bg-white dark:bg-black text-black dark:text-white`}>
-          <Background>
-            <TopBar />
-            {children}
-          </Background>
+          <StyledComponentsRegistry>
+            <GlobalStyles />
+            <Background>
+              <TopBar />
+              {children}
+            </Background>
+          </StyledComponentsRegistry>
         </body>
       </GlobalContextProvider>
     </html>

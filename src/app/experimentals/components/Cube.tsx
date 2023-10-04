@@ -23,7 +23,9 @@ export const Cubes = () => {
   return cubes.map((coords, index) => <Cube key={index} position={[coords[0], coords[1], coords[2]]} />);
 };
 
-type CubeProps = RigidBodyProps;
+type CubeProps = RigidBodyProps & {
+  key?: number | string | null | undefined;
+};
 
 export function Cube(props: CubeProps) {
   const ref = useRef<any>();
