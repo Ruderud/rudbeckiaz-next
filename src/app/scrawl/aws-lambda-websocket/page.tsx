@@ -1,6 +1,8 @@
+import { Main } from '@/components/Ui/Main';
+
 export default function ScrawlPage() {
   return (
-    <main className="min-w-screen min-h-screen px-4 sm:px-8 md:px-20 lg:px-32 xl:px-40 py-10">
+    <Main>
       <h1 className="text-xl font-bold">aws lambda에서의 websocket컨셉</h1>
       <br />
 
@@ -12,6 +14,6 @@ export default function ScrawlPage() {
         - 특정 소캣체널로 들어오는 이벤트는 request.body.action이나 payload등을 통해 따로 핸들러를 만들어서 보내주는
         형식으로 로직을 구성한다
       </p>
-    </main>
+    </Main>
   );
 }

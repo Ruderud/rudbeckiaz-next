@@ -7,7 +7,6 @@ import { Hydrate, dehydrate } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Suspense } from 'react';
 import { UserSection } from './components/UserSection';
-import { Room } from './components/Room';
 
 export default async function ExperimentalsPage() {
   const queryClient = getQueryClient();
@@ -15,11 +14,11 @@ export default async function ExperimentalsPage() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <main className="p-5">
+    <main className="p-4">
       <ErrorBoundary fallback={<div>Something wrong...</div>}>
         <Providers>
           <Hydrate state={dehydratedState}>
-            <div className="flex flex-row gap-10 pb-10">
+            <div className="flex flex-col gap-10 pb-10">
               <Suspense fallback={<div>Loading...</div>}>
                 <UserSection />
               </Suspense>

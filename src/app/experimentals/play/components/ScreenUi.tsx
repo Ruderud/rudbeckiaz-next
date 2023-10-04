@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { KeyboardEventHandler, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Providers from '../../providers';
 import { Message, UserData } from '../../utils/types';
 import { UserSection } from '../../components/UserSection';
@@ -92,7 +92,7 @@ export const ScreenUi = () => {
       <div className="absolute z-20 top-20 left-5">
         <p>{`RoomId: ${roomId === null ? 'soloPlay' : roomId}`}</p>
         <Suspense fallback={<div>Loading...</div>}>
-          <UserSection dispatchUserData={setUserData} />
+          <UserSection />
         </Suspense>
         <WebRTC setSendChannel={setSendChannel} setMessages={setMessages} />
         <button
