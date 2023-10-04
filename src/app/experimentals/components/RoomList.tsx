@@ -32,7 +32,6 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
               <div className="font-bold">{room.roomName}</div>
 
               <Button
-                color="blue"
                 textSize="sm"
                 disabled={signalingChannel === null}
                 onClick={() => {
@@ -47,7 +46,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
       </ol>
 
       <div>
-        <Button color="green" disabled={signalingChannel === null} onClick={handleDialogOpen}>
+        <Button disabled={signalingChannel === null} onClick={handleDialogOpen}>
           Create Room
         </Button>
       </div>

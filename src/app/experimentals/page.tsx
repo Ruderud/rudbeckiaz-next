@@ -28,13 +28,6 @@ export default async function ExperimentalsPage() {
                 <RoomList />
               </Suspense>
             </div>
-
-            <div className="w-[500px] h-[500px]">
-              {/* <Suspense fallback={<div>Loading...</div>}>
-                <Minecraft />
-              </Suspense> */}
-              <Room />
-            </div>
           </Hydrate>
         </Providers>
       </ErrorBoundary>

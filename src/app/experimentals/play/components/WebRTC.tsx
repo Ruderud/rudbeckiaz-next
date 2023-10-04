@@ -5,7 +5,6 @@ import { MinecraftContext } from '../../providers';
 import { Message } from '../../utils/types';
 import { Button } from '@/components/Ui/Button';
 import { useSearchParams } from 'next/navigation';
-import { set } from 'react-hook-form';
 
 type WebRTCProps = {
   setSendChannel: Dispatch<React.SetStateAction<RTCDataChannel | null>>;
@@ -13,7 +12,7 @@ type WebRTCProps = {
 };
 
 export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
-  const { setIsInputActive, signalingChannel, userData } = useContext(MinecraftContext);
+  const { signalingChannel, userData } = useContext(MinecraftContext);
 
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room');
@@ -128,7 +127,6 @@ export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
     <div>
       WebRTC
       <Button
-        color="blue"
         disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
         onClick={async () => {
           if (signalingChannel && pc) {

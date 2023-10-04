@@ -146,7 +146,6 @@ export const Room = () => {
       />
 
       <Button
-        color="blue"
         disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
         onClick={async () => {
           if (signalingChannel && pc) {
@@ -178,7 +177,6 @@ export const Room = () => {
       </Button>
 
       <Button
-        color="green"
         onClick={() => {
           sendChannel?.send(
             JSON.stringify({

@@ -8,7 +8,6 @@ import { enqueueSnackbar } from 'notistack';
 import { Dispatch, SetStateAction, use, useContext, useEffect, useState } from 'react';
 import { MinecraftContext } from '../providers';
 import { UserData } from '../utils/types';
-import { TestButton } from '@/components/Ui/TestButton';
 
 type UserInput = {
   userName: string;
@@ -61,9 +60,7 @@ export const UserSection = ({ dispatchUserData }: UserSectionProps) => {
               />
               {errors.userName && <p className="font-bold text-red-500">User Name is required</p>}
             </div>
-            <Button type="submit" color="green">
-              Sign Up
-            </Button>
+            <Button type="submit">Sign Up</Button>
           </form>
         </>
       )}
@@ -72,13 +69,11 @@ export const UserSection = ({ dispatchUserData }: UserSectionProps) => {
         <div>
           <h3 className="text-2xl">USER SETTINGS</h3>
           <div>{`UserName: ${data.userData.userName}${data.userData.nameCode}`}</div>
-          <Button color="orange">Delete UserData</Button>
+          <Button variant="secondary" className="text-md font-bold">
+            Delete UserData
+          </Button>
         </div>
       )}
-
-      <TestButton $variant="primary" $isSmall>
-        이것은 테스트버튼
-      </TestButton>
     </div>
   );
 };
