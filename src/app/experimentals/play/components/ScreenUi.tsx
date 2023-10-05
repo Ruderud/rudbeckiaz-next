@@ -6,6 +6,8 @@ import Providers from '../../providers';
 import { Message, UserData } from '../../utils/types';
 import { UserSection } from '../../components/UserSection';
 import { WebRTC } from './WebRTC';
+import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
+import { UserInfo } from './UserInfo';
 
 // TODO: 현재 input내용작성후 엔터로 보내는것까지는 잘됨. 근데 보내고 바로 input창이 사라지는게 아니라 한번더 엔터를 눌러야 사라짐. 가끔은 그냥 엔터 눌러서 보내면 바로 사라질때도 있음...
 export const ScreenUi = () => {
@@ -91,8 +93,9 @@ export const ScreenUi = () => {
       <div className="absolute z-20 top-20 left-5">
         <p>{`RoomId: ${roomId === null ? 'soloPlay' : roomId}`}</p>
         <Suspense fallback={<div>Loading...</div>}>
-          <UserSection />
+          <UserInfo />
         </Suspense>
+
         <WebRTC setSendChannel={setSendChannel} setMessages={setMessages} />
         <button
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
@@ -107,8 +110,9 @@ export const ScreenUi = () => {
       <div className={inputActive ? enableChatBox : disableChatBox}>
         <ul className="flex flex-col grow">
           {messages.map((message, index) => {
+            console.log('message', message);
             return (
-              <li key={index}>{`${message.userData.userName}${message.userData.nameCode}: ${message.message}`}</li>
+              <li key={index}>{`${message?.userData?.userName}${message?.userData?.nameCode}: ${message.message}`}</li>
             );
           })}
         </ul>

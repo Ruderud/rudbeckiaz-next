@@ -75,7 +75,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
                     variant="primary"
                     className="font-bold text-sm"
                     onClick={() => {
-                      router.replace(`/experimentals/play?room=${room.id}`);
+                      router.push(`/experimentals/play?room=${room.id}`);
                     }}
                   >
                     JOIN

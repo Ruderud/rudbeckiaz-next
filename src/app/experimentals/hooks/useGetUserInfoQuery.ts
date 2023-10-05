@@ -16,4 +16,6 @@ const getUserInfo = async (params: ApiParams) => {
 };
 
 export const useGetUserInfoQuery = (params: ApiParams) =>
-  useSuspendedQuery(['user', params.id], () => getUserInfo(params));
+  useSuspendedQuery(['user', params.id], () => getUserInfo(params), {
+    enabled: !!params.id,
+  });

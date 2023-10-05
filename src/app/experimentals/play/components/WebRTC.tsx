@@ -22,10 +22,6 @@ export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
   const [pc, setPc] = useState<RTCPeerConnection | null>(null);
 
   useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
-  useEffect(() => {
     if (!signalingChannel) return;
     const pc = new RTCPeerConnection({
       iceServers: [
@@ -130,6 +126,7 @@ export const WebRTC = ({ setSendChannel, setMessages }: WebRTCProps) => {
         disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
         onClick={async () => {
           if (signalingChannel && pc) {
+            console.log('connection start');
             const offer = await pc.createOffer();
             signalingChannel.send({
               type: 'SEND_OFFER',
