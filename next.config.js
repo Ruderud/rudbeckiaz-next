@@ -6,7 +6,16 @@ const nextConfig = withTwin({
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
-  output: 'export',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 });
 
 module.exports = nextConfig;

@@ -21,7 +21,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
   const handleDialogOpen = () => dialogRef.current?.showModal();
   const handleDialogClose = () => dialogRef.current?.close();
   const handleRoomElementClickById = (roomId: string) => () => {
-    window.location.hash = `room=${roomId}`;
+    window.location.hash = roomId;
   };
 
   return (
@@ -71,15 +71,6 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
 
                 <td align="center">
                   <span className="text-xs">{room.createdAt}</span>
-                  <Button
-                    variant="primary"
-                    className="font-bold text-sm"
-                    onClick={() => {
-                      router.push(`/experimentals/play?room=${room.id}`);
-                    }}
-                  >
-                    JOIN
-                  </Button>
                 </td>
               </tr>
             );

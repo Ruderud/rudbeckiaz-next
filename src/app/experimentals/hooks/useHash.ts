@@ -11,7 +11,6 @@ const useHash = () => {
   useEffect(() => {
     setIsClient(true);
     const handleHashChange = () => {
-      console.log('hash changed');
       setHash(getHash());
     };
     window.addEventListener('hashchange', handleHashChange, false);
