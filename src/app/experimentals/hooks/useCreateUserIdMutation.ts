@@ -14,14 +14,9 @@ type ApiResponse = {
   };
 };
 
-const createUserId = async (params: ApiParams) => {
+export const createUserId = async (params: ApiParams) => {
   const { data } = await axiosInstance().post<ApiResponse>('/user', params);
   return data;
 };
 
-export const useCreateUserIdMutation = () =>
-  useMutation(createUserId, {
-    onSuccess: (data) => {
-      // minecraftQueryClient.invalidateQueries(['user']);
-    },
-  });
+export const useCreateUserIdMutation = () => useMutation(createUserId);

@@ -1,73 +1,55 @@
 'use client';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateUserIdMutation } from '../hooks/useCreateUserIdMutation';
 import { Button } from '@/components/Ui/Button';
 import { useGetUserInfoQuery } from '../hooks/useGetUserInfoQuery';
-import { enqueueSnackbar } from 'notistack';
-import { useContext, useEffect } from 'react';
-import { MinecraftContext } from '../providers';
 
-type UserInput = {
-  userName: string;
-};
+import { useCallback, useContext, useEffect, useRef } from 'react';
+import { MinecraftContext } from '../providers';
+import ChangeUserNameDialog from './ChangeUserNameDialog';
 
 export const UserSection = () => {
-  const { storedId, setUserData } = useContext(MinecraftContext);
+  const { storedId, setUserData, setStoredId } = useContext(MinecraftContext);
   const { data } = useGetUserInfoQuery({ id: storedId });
   const { mutateAsync } = useCreateUserIdMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserInput>();
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const onSubmit: SubmitHandler<UserInput> = async (data) => {
-    const { message, userData } = await mutateAsync({
-      ...data,
+  const handleDialogOpen = () => dialogRef.current?.showModal();
+  const handleDialogClose = () => dialogRef.current?.close();
+
+  const createGuestUser = useCallback(async () => {
+    const res = await mutateAsync({
+      userName: 'Guest',
     });
-    window.localStorage.setItem('userId', userData.id);
-    enqueueSnackbar(message, { variant: 'success' });
-  };
+    window.localStorage.setItem('userId', res.userData.id);
+    setStoredId(res.userData.id);
+    return res;
+  }, [mutateAsync, setStoredId]);
 
   useEffect(() => {
-    setUserData(data?.userData);
+    setUserData(data.userData);
   }, [setUserData, data]);
 
-  return (
-    <div className="bg-slate-700">
-      {!data && (
-        <>
-          <h3 className="text-2xl">Create User Name</h3>
-          <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col">
-              <label htmlFor="roomName">User Name</label>
-              <input
-                type="text"
-                className={
-                  errors.userName
-                    ? 'border-2 border-rose-500 rounded p-1 text-black'
-                    : 'border-2 rounded p-1 text-black'
-                }
-                {...register('userName', { required: true })}
-              />
-              {errors.userName && <p className="font-bold text-red-500">User Name is required</p>}
-            </div>
-            <Button type="submit">Sign Up</Button>
-          </form>
-        </>
-      )}
+  useEffect(() => {
+    const storedId = window.localStorage.getItem('userId');
+    if (!storedId) {
+      createGuestUser();
+    }
+  }, [createGuestUser]);
 
-      {data && (
-        <div>
-          <h3 className="text-2xl">USER SETTINGS</h3>
-          <div>{`UserName: ${data.userData.userName}${data.userData.nameCode}`}</div>
-          <Button variant="secondary" className="text-md font-bold">
-            Delete UserData
-          </Button>
-        </div>
-      )}
+  return (
+    <div className="flex justify-between bg-slate-700 bg-opacity-50 p-4">
+      <header className="flex gap-4 items-baseline">
+        <span className="text-2xl font-bold">USER SETTINGS</span>
+        <span className="text-md">{`UserName: ${data?.userData.userName}${data?.userData.nameCode}`}</span>
+      </header>
+
+      <Button variant="secondary" className="text-md font-bold" onClick={handleDialogOpen}>
+        Change UserName
+      </Button>
+
+      <ChangeUserNameDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
     </div>
   );
 };

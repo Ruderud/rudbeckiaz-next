@@ -2,6 +2,7 @@ export type Room = {
   id: string;
   roomName: string;
   host: UserData;
+  createdAt: string;
 };
 
 export type UserData = {
@@ -9,6 +10,7 @@ export type UserData = {
   userName: string;
   nameCode: string;
   createdAt: string;
+  updatedAt: string;
 };
 
 export type Message = {

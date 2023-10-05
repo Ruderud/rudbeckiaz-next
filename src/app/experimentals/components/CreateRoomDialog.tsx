@@ -72,10 +72,12 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
         </fieldset>
 
         <div className="flex justify-end">
-          <Button type="button" onClick={handleDialogClose}>
+          <Button variant="secondary" type="button" onClick={handleDialogClose}>
             Cancel
           </Button>
-          <Button type="submit">Create Room</Button>
+          <Button variant="primary" type="submit">
+            Create Room
+          </Button>
         </div>
       </form>
     </dialog>

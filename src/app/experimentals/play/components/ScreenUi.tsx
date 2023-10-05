@@ -21,7 +21,6 @@ export const ScreenUi = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
   const [message, setMessage] = useState<string>('');
-  const body = document.querySelector('body');
 
   const addMessage = useCallback(
     (message?: string) => {
