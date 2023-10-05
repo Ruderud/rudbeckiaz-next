@@ -28,6 +28,7 @@ export const UserSection = () => {
   }, [mutateAsync, setStoredId]);
 
   useEffect(() => {
+    if (!data) return;
     setUserData(data.userData);
   }, [setUserData, data]);
 
@@ -40,7 +41,7 @@ export const UserSection = () => {
 
   return (
     <div className="flex justify-between bg-slate-700 bg-opacity-50 p-4">
-      <header className="flex gap-4 items-baseline">
+      <header className="flex p-2 gap-4 items-baseline">
         <span className="text-2xl font-bold">USER SETTINGS</span>
         <span className="text-md">{`UserName: ${data?.userData.userName}${data?.userData.nameCode}`}</span>
       </header>

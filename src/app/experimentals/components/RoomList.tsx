@@ -7,7 +7,6 @@ import { CreateRoomDialog } from './CreateRoomDialog';
 import { useRouter } from 'next/navigation';
 import { css } from 'twin.macro';
 import { ReFresh } from '@/components/Icon/Refresh';
-import { TestComp } from './TestComp';
 
 type RoolListProps = {
   initialRoomsData?: InitialRoomsData;
@@ -21,6 +20,9 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
 
   const handleDialogOpen = () => dialogRef.current?.showModal();
   const handleDialogClose = () => dialogRef.current?.close();
+  const handleRoomElementClickById = (roomId: string) => () => {
+    window.location.hash = `room=${roomId}`;
+  };
 
   return (
     <div className="flex flex-col grow p-4 gap-4 bg-slate-700 bg-opacity-50">
@@ -58,8 +60,9 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
           {data.Items.map((room) => {
             return (
               <tr
-                className="[&>td]:p-2 odd:bg-slate-600 even:bg-slate-700 hover:outline hover:outline-2 hover:outline-green-300 hover:cursor-pointer"
+                className="h-12 [&>td]:p-2 odd:bg-slate-600 even:bg-slate-700 hover:outline hover:outline-2 hover:outline-green-300 hover:cursor-pointer"
                 key={room.id}
+                onClick={handleRoomElementClickById(room.id)}
               >
                 <td className="font-bold" align="center">
                   2/4
@@ -72,7 +75,7 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
                     variant="primary"
                     className="font-bold text-sm"
                     onClick={() => {
-                      router.push(`/experimentals/play?room=${room.id}`);
+                      router.replace(`/experimentals/play?room=${room.id}`);
                     }}
                   >
                     JOIN
@@ -81,8 +84,21 @@ export const RoomList = ({ initialRoomsData }: RoolListProps) => {
               </tr>
             );
           })}
+          {data.Items.length < 10 &&
+            Array.from({ length: 10 - data.Items.length }).map((_, idx) => (
+              <tr
+                className="h-12 [&>td]:p-2 odd:bg-slate-600 even:bg-slate-700 hover:outline hover:outline-2 hover:outline-green-300 hover:cursor-pointer"
+                key={idx}
+              >
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            ))}
         </tbody>
       </table>
+
+      <div>page</div>
 
       <CreateRoomDialog ref={dialogRef} handleDialogClose={handleDialogClose} />
     </div>

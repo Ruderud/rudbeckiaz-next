@@ -1,11 +1,14 @@
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { Hydrate, dehydrate } from '@tanstack/react-query';
+
 import { RoomList } from './components/RoomList';
 import Providers from './providers';
 import { getRooms } from './hooks/useGetRoomsQuery';
 import getQueryClient from '../getQueryClient';
-import { Hydrate, dehydrate } from '@tanstack/react-query';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Suspense } from 'react';
 import { UserSection } from './components/UserSection';
+import { UserSectionSkeleton } from './components/UserSectionSkeleton';
+import { RoomInfo } from './components/RoomInfo';
 
 // Todo: 현재 prefetch시 inital userId가 없기에 400 error발생중. prefetch에서는 UserData를 가져오지 않도록 수정해야함.
 export default async function ExperimentalsPage() {
@@ -18,14 +21,24 @@ export default async function ExperimentalsPage() {
       <ErrorBoundary fallback={<div>Something wrong...</div>}>
         <Providers>
           <Hydrate state={dehydratedState}>
-            <div className="flex flex-col gap-4">
-              <Suspense fallback={<div>User Data Loading...</div>}>
-                <UserSection />
-              </Suspense>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <Suspense fallback={<UserSectionSkeleton />}>
+                  <UserSection />
+                </Suspense>
+              </div>
 
-              <Suspense fallback={<div>Room List Loading...</div>}>
-                <RoomList />
-              </Suspense>
+              <div className="col-span-1">
+                <Suspense fallback={<div>Room List Loading...</div>}>
+                  <RoomList />
+                </Suspense>
+              </div>
+
+              <div className="col-span-1">
+                <Suspense fallback={<div>Room info Loading...</div>}>
+                  <RoomInfo />
+                </Suspense>
+              </div>
             </div>
           </Hydrate>
         </Providers>
