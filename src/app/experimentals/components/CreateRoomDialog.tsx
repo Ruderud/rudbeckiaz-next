@@ -39,7 +39,7 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
         ...data,
       });
       handleDialogClose();
-      router.push(`/experimentals?room=${res.roomData.id}`);
+      router.push(`/experimentals/play?room=${res.roomData.id}`);
     } catch (error) {
       reportError({
         error,

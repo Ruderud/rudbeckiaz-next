@@ -9,6 +9,8 @@ import getQueryClient from '../getQueryClient';
 import { UserSection, UserSectionSkeleton } from './components/UserSection';
 import { RoomInfo, RoomInfoSkeleton } from './components/RoomInfo';
 import { getRoomInfo } from './hooks/useGetRoomInfoQuery';
+import { useRouter } from 'next/navigation';
+import { ErrorView } from './components/ErrorView';
 
 // Todo: 현재 prefetch시 inital userId가 없기에 400 error발생중. prefetch에서는 UserData를 가져오지 않도록 수정해야함.
 // export default async function ExperimentalsPage() {
@@ -51,7 +53,7 @@ import { getRoomInfo } from './hooks/useGetRoomInfoQuery';
 export default function ExperimentalsPage() {
   return (
     <main className="p-4">
-      <ErrorBoundary fallback={<div>Something wrong...</div>}>
+      <ErrorBoundary fallback={<ErrorView />}>
         <Providers>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">

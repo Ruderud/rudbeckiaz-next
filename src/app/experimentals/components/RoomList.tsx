@@ -13,7 +13,7 @@ type RoolListProps = {
 };
 
 const RoomList = ({ initialRoomsData }: RoolListProps) => {
-  const { data } = useGetRoomsQuery(initialRoomsData);
+  const { data, refetch } = useGetRoomsQuery(initialRoomsData);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -35,7 +35,12 @@ const RoomList = ({ initialRoomsData }: RoolListProps) => {
         <Button className="bg-green-500 font-bold" onClick={handleDialogOpen}>
           Create Room
         </Button>
-        <Button className="bg-green-500 font-bold">
+        <Button
+          className="bg-green-500 font-bold"
+          onClick={() => {
+            refetch();
+          }}
+        >
           <ReFresh />
         </Button>
       </div>
