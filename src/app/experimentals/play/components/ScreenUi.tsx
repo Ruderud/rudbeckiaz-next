@@ -4,9 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Providers from '../../providers';
 import { Message, UserData } from '../../utils/types';
-import { UserSection } from '../../components/UserSection';
 import { WebRTC } from './WebRTC';
-import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
 import { UserInfo } from './UserInfo';
 
 // TODO: 현재 input내용작성후 엔터로 보내는것까지는 잘됨. 근데 보내고 바로 input창이 사라지는게 아니라 한번더 엔터를 눌러야 사라짐. 가끔은 그냥 엔터 눌러서 보내면 바로 사라질때도 있음...
@@ -16,7 +14,6 @@ export const ScreenUi = () => {
   const router = useRouter();
   const roomId = searchParams.get('room');
   const inputRef = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const [inputActive, setInputActive] = useState<boolean>(false);
   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);

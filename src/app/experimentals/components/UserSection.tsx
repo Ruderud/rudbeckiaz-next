@@ -8,7 +8,7 @@ import { useCallback, useContext, useEffect, useRef } from 'react';
 import { MinecraftContext } from '../providers';
 import ChangeUserNameDialog from './ChangeUserNameDialog';
 
-export const UserSection = () => {
+const UserSection = () => {
   const { storedId, setUserData, setStoredId } = useContext(MinecraftContext);
   const { data } = useGetUserInfoQuery({ id: storedId });
   const { mutateAsync } = useCreateUserIdMutation();
@@ -22,6 +22,7 @@ export const UserSection = () => {
     const res = await mutateAsync({
       userName: 'Guest',
     });
+    console.log('res', res);
     window.localStorage.setItem('userId', res.userData.id);
     setStoredId(res.userData.id);
     return res;
@@ -39,6 +40,8 @@ export const UserSection = () => {
     }
   }, [createGuestUser]);
 
+  if (!data) return UserSectionSkeleton();
+
   return (
     <div className="flex justify-between bg-slate-700 bg-opacity-50 p-4">
       <header className="flex p-2 gap-4 items-baseline">
@@ -54,3 +57,20 @@ export const UserSection = () => {
     </div>
   );
 };
+
+const UserSectionSkeleton = () => {
+  return (
+    <div className="flex justify-between bg-slate-700 bg-opacity-50 p-4">
+      <header className="flex p-2 gap-4 items-baseline">
+        <span className="text-2xl font-bold">USER SETTINGS</span>
+        <span role="status" className="animate-pulse bg-gray-200 rounded dark:bg-gray-700 w-48 h-4"></span>
+      </header>
+
+      <Button variant="secondary" className="text-md font-bold" disabled>
+        Change UserName
+      </Button>
+    </div>
+  );
+};
+
+export { UserSection, UserSectionSkeleton };

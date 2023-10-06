@@ -11,7 +11,7 @@ type ApiResponse = {
   Item: Room;
 };
 
-const getRoomInfo = async (params: ApiParams) => {
+export const getRoomInfo = async (params: ApiParams) => {
   const { data } = await axiosInstance().get<ApiResponse>(`/room?id=${params.id}`);
   return data;
 };
