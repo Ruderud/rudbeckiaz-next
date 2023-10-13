@@ -7,8 +7,23 @@ import { MinecraftContext } from '../providers';
 import { Cube as CubeType, DataChannelMessage } from '../../utils/types';
 
 export const Cubes = () => {
-  const { cubes } = useContext(MinecraftContext);
-  // const cubes = useCubeStore((state) => state.cubes);
+  const { cubes, setCubes, receiveChannel } = useContext(MinecraftContext);
+
+  const syncCubes = useCallback(
+    (event: MessageEvent) => {
+      const dataChannelMessage = JSON.parse(event.data) as DataChannelMessage<CubeType>;
+      if (dataChannelMessage.type !== 'CUBE') return;
+      setCubes((prev) => [...prev, { ...dataChannelMessage.payload, userData: dataChannelMessage.userData }]);
+    },
+    [setCubes]
+  );
+
+  useEffect(() => {
+    if (receiveChannel) {
+      receiveChannel.addEventListener('message', syncCubes);
+    }
+  }, [receiveChannel, syncCubes]);
+
   return cubes.map((coords, index) => <Cube key={index} position={[coords[0], coords[1], coords[2]]} />);
 };
 
@@ -17,10 +32,11 @@ type CubeProps = RigidBodyProps & {
 };
 
 export function Cube(props: CubeProps) {
+  console.log('Cube comp render');
   const ref = useRef<any>();
   const [hover, set] = useState<number | null>(null);
   // const addCube = useCubeStore((state) => state.addCube);
-  const { setCubes, sendChannel, receiveChannel, userData } = useContext(MinecraftContext);
+  const { setCubes, sendChannel, userData } = useContext(MinecraftContext);
   const texture = useTexture('/assets/dirt.jpg');
   const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
@@ -53,16 +69,6 @@ export function Cube(props: CubeProps) {
     },
     [setCubes, sendChannel, userData]
   );
-
-  useEffect(() => {
-    if (receiveChannel) {
-      receiveChannel.addEventListener('message', (event) => {
-        const dataChannelMessage = JSON.parse(event.data) as DataChannelMessage<CubeType>;
-        if (dataChannelMessage.type !== 'CUBE') return;
-        setCubes((prev) => [...prev, { ...dataChannelMessage.payload, userData: dataChannelMessage.userData }]);
-      });
-    }
-  }, [receiveChannel, setCubes]);
 
   return (
     <RigidBody {...props} type="fixed" colliders="cuboid" ref={ref}>
