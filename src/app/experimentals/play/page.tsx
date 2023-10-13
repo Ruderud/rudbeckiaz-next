@@ -1,3 +1,5 @@
+'use client';
+
 import { TopBar } from '@/components';
 import { Dot } from './components/Dot';
 import Minecraft from './components/Mincraft';
