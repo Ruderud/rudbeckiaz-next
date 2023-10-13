@@ -1,162 +1,14 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
-import { Suspense, createElement, use, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Message, UserData } from '../../utils/types';
-import { WebRTC } from './WebRTC';
-import { UserInfo } from './UserInfo';
-import { MinecraftContext } from '../providers';
-import { Button } from '@/components/Ui/Button';
 
 import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
-import { SubmitHandler, set, useController, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { SignalingChannel } from '../../utils';
 import { useSignalingChannel } from '../../hooks/useSignalingChannel';
 import { useGetRoomInfoQuery } from '../../hooks/useGetRoomInfoQuery';
-
-const ScreenUi_old = () => {
-  // const { signalingChannel } = useContext(MinecraftContext);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const roomId = searchParams.get('room');
-  const inputRef = useRef<HTMLInputElement>(null);
-  const signalingChannel = useSignalingChannel();
-
-  const [inputActive, setInputActive] = useState<boolean>(false);
-  const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  // const [userData, setUserData] = useState<UserData | null>(null);
-  const [message, setMessage] = useState<string>('');
-  const [userId, setUserId] = useState<string | null>(null);
-  const { data } = useGetUserInfoQuery({ id: userId });
-  const userData = data?.userData || null;
-
-  const addMessage = useCallback(
-    (message?: string) => {
-      if (!userData) return;
-      if (!inputRef.current) return;
-      if (!message) return;
-      setMessages((prev) => [
-        ...prev,
-        {
-          userData: userData,
-          message: message,
-        },
-      ]);
-      setMessage('');
-      inputRef.current.blur();
-    },
-    [userData]
-  );
-  useEffect(() => {
-    const body = document.querySelector('body');
-
-    function toggleChatBoxOpen(this: HTMLBodyElement, event: KeyboardEvent) {
-      if (event.code === 'Enter') {
-        setInputActive((cur) => {
-          if (cur) {
-            if (sendChannel?.readyState === 'open') {
-              sendChannel?.send(
-                JSON.stringify({
-                  userData,
-                  message: inputRef.current?.value,
-                })
-              );
-            }
-            addMessage(inputRef.current?.value);
-            body?.removeAttribute('playerActive');
-            return false;
-          } else {
-            body?.setAttribute('playerActive', 'true');
-            setTimeout(() => {
-              inputRef.current?.focus();
-            });
-            return true;
-          }
-        });
-      }
-    }
-    body?.addEventListener('keydown', toggleChatBoxOpen);
-
-    return () => {
-      body?.removeEventListener('keydown', toggleChatBoxOpen);
-    };
-  }, [sendChannel, userData]);
-
-  const enableInput = 'bottom-0 w-full text-black';
-  const disableInput = 'hidden';
-
-  return (
-    <>
-      <div className="absolute z-30 top-20 left-5">
-        <p>{`RoomId: ${roomId === null ? 'soloPlay' : roomId}`}</p>
-        {/* <Suspense fallback={<div>Loading...</div>}>
-          <UserInfo />
-        </Suspense> */}
-
-        <WebRTC />
-
-        {/* <div>
-          WebRTC
-          <Button
-            disabled={!signalingChannel || signalingChannel.webSocket?.readyState !== 1}
-            onClick={async () => {
-              if (signalingChannel && peerConnection) {
-                console.log('connection start');
-                const offer = await peerConnection.createOffer();
-                // signalingChannel.send({
-                //   type: 'SEND_OFFER',
-                //   payload: {
-                //     roomId,
-                //     offer,
-                //     userData,
-                //   },
-                // });
-                await peerConnection.setLocalDescription(offer);
-              }
-            }}
-          >
-            Connect
-          </Button>
-        </div> */}
-
-        <button
-          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            router.push('/experimentals');
-          }}
-        >
-          Exit
-        </button>
-      </div>
-
-      <div className="absolute flex flex-col z-20 bottom-0 left-0 bg-[rgba(0,0,0,0.5)] w-[500px] w-max-[500px] h-[300px] h-max-[300px] overflow-auto">
-        <ul className="flex flex-col grow">
-          {messages.map((message, index) => {
-            return (
-              <li key={index}>{`${message?.userData?.userName}${message?.userData?.nameCode}: ${message.message}`}</li>
-            );
-          })}
-        </ul>
-        <input
-          ref={inputRef}
-          className={inputActive ? enableInput : disableInput}
-          type="text"
-          value={message}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              setMessage('');
-            }
-          }}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
-      </div>
-    </>
-  );
-};
 
 type SendMessage = {
   message: string;
@@ -388,4 +240,3 @@ const ScreenUi = () => {
 };
 
 export { ScreenUi };
-// export { ScreenUi_old as ScreenUi };
