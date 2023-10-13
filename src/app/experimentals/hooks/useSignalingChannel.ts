@@ -7,9 +7,8 @@ export const useSignalingChannel = () => {
   const [signalingChannel, setSignalingChannel] = useState<SignalingChannel | null>(null);
 
   useEffect(() => {
-    const baseUrl = String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL);
     const channel = new SignalingChannel({
-      signalingUrl: baseUrl,
+      signalingUrl: String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_URL),
       pathname: String(process.env.NEXT_PUBLIC_WS_SERVER_BASE_PATH),
       onMessage: (MessageEvent: MessageEvent) => {},
       onOpen: (Event: Event) => {

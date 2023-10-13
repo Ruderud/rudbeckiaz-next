@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
-import { MinecraftContext } from '../../providers';
+import { MinecraftContext } from '../providers';
 
 export const UserInfo = () => {
   const { setUserData } = useContext(MinecraftContext);
@@ -10,7 +10,7 @@ export const UserInfo = () => {
   const { data } = useGetUserInfoQuery({ id: userId });
 
   useEffect(() => {
-    setUserData(data?.userData);
+    setUserData(data?.userData || null);
   }, [data, setUserData]);
 
   useEffect(() => {

@@ -2,13 +2,14 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
-import { UserData } from './utils/types';
+import { SignalingChannel } from '../utils';
+import { useSignalingChannel } from '../hooks/useSignalingChannel';
 
 type ProvidersProps = {
   children: ReactNode;
 };
 
-const roomQueryClient = new QueryClient({
+export const minecraftQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: true,
@@ -25,8 +26,6 @@ const roomQueryClient = new QueryClient({
 type MinecraftContext = {
   storedId: string | null;
   setStoredId: Dispatch<SetStateAction<string | null>>;
-  userData?: UserData;
-  setUserData: Dispatch<SetStateAction<UserData | undefined>>;
   isInputActive: boolean;
   setIsInputActive: Dispatch<SetStateAction<boolean>>;
 };
@@ -34,15 +33,12 @@ type MinecraftContext = {
 export const MinecraftContext = createContext<MinecraftContext>({
   storedId: null,
   setStoredId: () => {},
-  userData: undefined,
-  setUserData: () => {},
   isInputActive: false,
   setIsInputActive: () => {},
 });
 
 export default function Providers({ children }: ProvidersProps) {
   const [storedId, setStoredId] = useState<string | null>(null);
-  const [userData, setUserData] = useState<UserData | undefined>(undefined);
   const [isInputActive, setIsInputActive] = useState<boolean>(false);
 
   useEffect(() => {
@@ -54,13 +50,11 @@ export default function Providers({ children }: ProvidersProps) {
       value={{
         storedId,
         setStoredId,
-        userData,
-        setUserData,
         isInputActive,
         setIsInputActive,
       }}
     >
-      <QueryClientProvider client={roomQueryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={minecraftQueryClient}>{children}</QueryClientProvider>
     </MinecraftContext.Provider>
   );
 }

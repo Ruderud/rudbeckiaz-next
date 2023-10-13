@@ -25,17 +25,21 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
   const rapier = useRapier();
   const [_, get] = useKeyboardControls();
   const bodyEle = document.querySelector('body');
-  const controls = useThree((state) => state.controls) as any;
+  const root = useThree();
 
   useEffect(() => {
-    if (!controls) return;
+    if (!root) return;
     const handleControlLockByEnter = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        if (controls.isLocked) {
-          controls.unlock();
-        } else if (!controls.isLocked) {
-          controls.lock();
-        }
+        console.log('root', root);
+        const { controls } = root as any;
+        controls.disconnect();
+        // if (controls.isLocked) {
+        //   // controls.unlock();
+        //   console.log('controls', controls);
+        // } else if (!controls.isLocked) {
+        //   // controls.lock();
+        // }
       }
     };
 
@@ -43,7 +47,7 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
     return () => {
       document.removeEventListener('keydown', handleControlLockByEnter);
     };
-  }, [controls]);
+  }, [root]);
 
   useFrame((state) => {
     if (bodyEle?.getAttribute('playerActive')) return;

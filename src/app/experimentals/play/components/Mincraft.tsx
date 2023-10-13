@@ -13,6 +13,7 @@ import { Cube, Cubes } from './Cube';
 // The original was made by Paul Henschel: https://codesandbox.io/s/vkgi6
 
 export default function Minecraft() {
+  console.log('Minecraft Load');
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [joyStickValue, setJoyStickValue] = useState({
     forward: 0,
