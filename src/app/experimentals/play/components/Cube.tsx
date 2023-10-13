@@ -35,7 +35,6 @@ export function Cube(props: CubeProps) {
   console.log('Cube comp render');
   const ref = useRef<any>();
   const [hover, set] = useState<number | null>(null);
-  // const addCube = useCubeStore((state) => state.addCube);
   const { setCubes, sendChannel, userData } = useContext(MinecraftContext);
   const texture = useTexture('/assets/dirt.jpg');
   const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
