@@ -2,8 +2,6 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
-import { SignalingChannel } from '../utils';
-import { useSignalingChannel } from '../hooks/useSignalingChannel';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -24,34 +22,37 @@ export const minecraftQueryClient = new QueryClient({
 });
 
 type MinecraftContext = {
-  storedId: string | null;
-  setStoredId: Dispatch<SetStateAction<string | null>>;
   isInputActive: boolean;
   setIsInputActive: Dispatch<SetStateAction<boolean>>;
+  sendChannel: RTCDataChannel | null;
+  setSendChannel: Dispatch<SetStateAction<RTCDataChannel | null>>;
+  receiveChannel: RTCDataChannel | null;
+  setReceiveChannel: Dispatch<SetStateAction<RTCDataChannel | null>>;
 };
 
 export const MinecraftContext = createContext<MinecraftContext>({
-  storedId: null,
-  setStoredId: () => {},
   isInputActive: false,
   setIsInputActive: () => {},
+  sendChannel: null,
+  setSendChannel: () => {},
+  receiveChannel: null,
+  setReceiveChannel: () => {},
 });
 
 export default function Providers({ children }: ProvidersProps) {
-  const [storedId, setStoredId] = useState<string | null>(null);
   const [isInputActive, setIsInputActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    setStoredId(window.localStorage.getItem('userId'));
-  }, []);
+  const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
+  const [receiveChannel, setReceiveChannel] = useState<RTCDataChannel | null>(null);
 
   return (
     <MinecraftContext.Provider
       value={{
-        storedId,
-        setStoredId,
         isInputActive,
         setIsInputActive,
+        sendChannel,
+        setSendChannel,
+        receiveChannel,
+        setReceiveChannel,
       }}
     >
       <QueryClientProvider client={minecraftQueryClient}>{children}</QueryClientProvider>

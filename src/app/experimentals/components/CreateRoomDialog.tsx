@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@/components/Ui/Button';
 import { reportError } from '@/utils';
 import { useCreateRoomMutation } from '../hooks/useCreateRoomMutation';
-import { MinecraftContext } from '../providers';
+import { WaitRoomContext } from '../providers';
 import { useRouter } from 'next/navigation';
 
 type CreateRoomDialogProps = {
@@ -20,7 +20,7 @@ export const CreateRoomDialog = forwardRef<HTMLDialogElement, CreateRoomDialogPr
   props: CreateRoomDialogProps,
   ref
 ) {
-  const { userData } = useContext(MinecraftContext);
+  const { userData } = useContext(WaitRoomContext);
   const { handleDialogClose } = props;
   const { mutateAsync } = useCreateRoomMutation();
   const router = useRouter();

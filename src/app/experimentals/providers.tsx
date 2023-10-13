@@ -8,7 +8,7 @@ type ProvidersProps = {
   children: ReactNode;
 };
 
-const roomQueryClient = new QueryClient({
+export const waitRoomQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: true,
@@ -22,7 +22,7 @@ const roomQueryClient = new QueryClient({
   },
 });
 
-type MinecraftContext = {
+type WaitRoomContext = {
   storedId: string | null;
   setStoredId: Dispatch<SetStateAction<string | null>>;
   userData?: UserData;
@@ -31,7 +31,7 @@ type MinecraftContext = {
   setIsInputActive: Dispatch<SetStateAction<boolean>>;
 };
 
-export const MinecraftContext = createContext<MinecraftContext>({
+export const WaitRoomContext = createContext<WaitRoomContext>({
   storedId: null,
   setStoredId: () => {},
   userData: undefined,
@@ -50,7 +50,7 @@ export default function Providers({ children }: ProvidersProps) {
   }, []);
 
   return (
-    <MinecraftContext.Provider
+    <WaitRoomContext.Provider
       value={{
         storedId,
         setStoredId,
@@ -60,7 +60,7 @@ export default function Providers({ children }: ProvidersProps) {
         setIsInputActive,
       }}
     >
-      <QueryClientProvider client={roomQueryClient}>{children}</QueryClientProvider>
-    </MinecraftContext.Provider>
+      <QueryClientProvider client={waitRoomQueryClient}>{children}</QueryClientProvider>
+    </WaitRoomContext.Provider>
   );
 }

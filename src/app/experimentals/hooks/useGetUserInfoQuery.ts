@@ -12,7 +12,7 @@ type ApiResponse = {
 
 const getUserInfo = async (params: ApiParams) => {
   const { data } = await axiosInstance().get<ApiResponse>(`/user?id=${params.id}`);
-  return data;
+  return data.userData;
 };
 
 export const useGetUserInfoQuery = (params: ApiParams) =>

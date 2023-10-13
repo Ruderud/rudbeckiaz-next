@@ -5,12 +5,12 @@ import { Button } from '@/components/Ui/Button';
 import { useGetUserInfoQuery } from '../hooks/useGetUserInfoQuery';
 
 import { useCallback, useContext, useEffect, useRef } from 'react';
-import { MinecraftContext } from '../providers';
+import { WaitRoomContext } from '../providers';
 import ChangeUserNameDialog from './ChangeUserNameDialog';
 
 const UserSection = () => {
-  const { storedId, setUserData, setStoredId } = useContext(MinecraftContext);
-  const { data } = useGetUserInfoQuery({ id: storedId });
+  const { storedId, setUserData, setStoredId } = useContext(WaitRoomContext);
+  const { data: userData } = useGetUserInfoQuery({ id: storedId });
   const { mutateAsync } = useCreateUserIdMutation();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -29,9 +29,9 @@ const UserSection = () => {
   }, [mutateAsync, setStoredId]);
 
   useEffect(() => {
-    if (!data) return;
-    setUserData(data.userData);
-  }, [setUserData, data]);
+    if (!userData) return;
+    setUserData(userData);
+  }, [setUserData, userData]);
 
   useEffect(() => {
     const storedId = window.localStorage.getItem('userId');
@@ -40,13 +40,13 @@ const UserSection = () => {
     }
   }, [createGuestUser]);
 
-  if (!data) return UserSectionSkeleton();
+  if (!userData) return UserSectionSkeleton();
 
   return (
     <div className="flex justify-between bg-slate-700 bg-opacity-50 p-4">
       <header className="flex p-2 gap-4 items-baseline">
         <span className="text-2xl font-bold">USER SETTINGS</span>
-        <span className="text-md">{`UserName: ${data?.userData.userName}${data?.userData.nameCode}`}</span>
+        <span className="text-md">{`UserName: ${userData?.userName}${userData?.nameCode}`}</span>
       </header>
 
       <Button variant="secondary" className="text-md font-bold" onClick={handleDialogOpen}>

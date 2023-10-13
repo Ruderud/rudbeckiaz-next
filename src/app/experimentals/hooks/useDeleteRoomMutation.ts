@@ -1,5 +1,6 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
+import { waitRoomQueryClient } from '../providers';
 
 type ApiResponse = {
   message: string;
@@ -10,4 +11,9 @@ const deleteRoom = async () => {
   return data;
 };
 
-export const useDeleteRoomMutation = () => useMutation(deleteRoom);
+export const useDeleteRoomMutation = () =>
+  useMutation(deleteRoom, {
+    onSuccess: () => {
+      waitRoomQueryClient.invalidateQueries(['rooms']);
+    },
+  });

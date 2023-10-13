@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/api/axiosInstance';
 import { useMutation } from '@tanstack/react-query';
 import { UserData } from '../utils/types';
-import { minecraftQueryClient } from '../providers';
+import { waitRoomQueryClient } from '../providers';
 
 type ApiParams = {
   id: string;
@@ -21,7 +21,7 @@ const putUserInfo = async (params: ApiParams) => {
 const usePutUserInfoMutation = () =>
   useMutation(putUserInfo, {
     onSuccess: (data) => {
-      minecraftQueryClient.invalidateQueries(['user', data.userData.id]);
+      waitRoomQueryClient.invalidateQueries(['user', data.userData.id]);
     },
   });
 
