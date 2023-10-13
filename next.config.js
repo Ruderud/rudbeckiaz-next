@@ -4,7 +4,7 @@ const withTwin = require('./withTwin.js');
 const nextConfig = withTwin({
   reactStrictMode: false,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
+    // removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
   output: 'export',
   images: {
