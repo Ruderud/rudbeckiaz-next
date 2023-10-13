@@ -16,4 +16,5 @@ export type UserData = {
 export type Message = {
   userData: UserData;
   message: string;
+  createdAt: string;
 };

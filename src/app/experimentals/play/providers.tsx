@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
+import { UserData } from '../utils/types';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -28,6 +29,8 @@ type MinecraftContext = {
   setSendChannel: Dispatch<SetStateAction<RTCDataChannel | null>>;
   receiveChannel: RTCDataChannel | null;
   setReceiveChannel: Dispatch<SetStateAction<RTCDataChannel | null>>;
+  userData: UserData | null;
+  setUserData: Dispatch<SetStateAction<UserData | null>>;
 };
 
 export const MinecraftContext = createContext<MinecraftContext>({
@@ -37,12 +40,15 @@ export const MinecraftContext = createContext<MinecraftContext>({
   setSendChannel: () => {},
   receiveChannel: null,
   setReceiveChannel: () => {},
+  userData: null,
+  setUserData: () => {},
 });
 
 export default function Providers({ children }: ProvidersProps) {
   const [isInputActive, setIsInputActive] = useState<boolean>(false);
   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
   const [receiveChannel, setReceiveChannel] = useState<RTCDataChannel | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   return (
     <MinecraftContext.Provider
@@ -53,6 +59,8 @@ export default function Providers({ children }: ProvidersProps) {
         setSendChannel,
         receiveChannel,
         setReceiveChannel,
+        userData,
+        setUserData,
       }}
     >
       <QueryClientProvider client={minecraftQueryClient}>{children}</QueryClientProvider>

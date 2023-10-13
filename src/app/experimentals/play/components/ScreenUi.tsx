@@ -1,60 +1,17 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Message } from '../../utils/types';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSignalingChannel } from '../../hooks/useSignalingChannel';
 import { useWebRTC } from '../../hooks/useWebRTC';
 import { useGetRoomInfoQuery } from '../../hooks/useGetRoomInfoQuery';
-
-type SendMessage = {
-  message: string;
-};
-
-type ChatBoxProps = {
-  onSubmitMessage?: (message: string) => void;
-};
-
-const ChatBox = ({ onSubmitMessage }: ChatBoxProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    control,
-  } = useForm<SendMessage>();
-
-  const onSubmit: SubmitHandler<SendMessage> = (data) => {
-    onSubmitMessage && onSubmitMessage(data.message);
-    reset();
-  };
-
-  return (
-    <div className="absolute bottom-0 left-0 bg-[rgba(255, 0, 0, 0.5)] w-[500px] w-max-[500px] h-[300px] h-max-[300px] overflow-auto">
-      <ul className="flex flex-col grow">
-        {messages.map((message, index) => {
-          return (
-            <li key={index}>{`${message?.userData?.userName}${message?.userData?.nameCode}: ${message.message}`}</li>
-          );
-        })}
-      </ul>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('message', { required: true, minLength: 1, onBlur: () => console.log('onBlur') })}
-          className="absolute bottom-0 left-0 w-full text-black bg-[rgba(0,0,0,1)]]"
-          type="text"
-          autoComplete="off"
-        />
-      </form>
-    </div>
-  );
-};
+import { MinecraftContext } from '../providers';
+import { ChatBox } from './ChatBox';
 
 export const ScreenUi = () => {
+  const { setReceiveChannel, setSendChannel, setUserData } = useContext(MinecraftContext);
   const roomId = useSearchParams().get('room');
 
   const storedUserId = useMemo(() => {
@@ -84,25 +41,14 @@ export const ScreenUi = () => {
     await pc.setLocalDescription(offer);
   }, [signalingChannel, pc, userData, roomId]);
 
-  const onSubmitMessage = useCallback(
-    (message: string) => {
-      sendChannel?.send(
-        JSON.stringify({
-          message,
-          userData,
-        })
-      );
-    },
-    [sendChannel, userData]
-  );
+  useEffect(() => {
+    receiveChannel && setReceiveChannel(receiveChannel);
+    sendChannel && setSendChannel(sendChannel);
+  }, [sendChannel, receiveChannel, setReceiveChannel, setSendChannel]);
 
   useEffect(() => {
-    if (!receiveChannel) return;
-    receiveChannel.addEventListener('message', (event) => {
-      const message = JSON.parse(event.data);
-      console.log('added new event', message);
-    });
-  }, [receiveChannel]);
+    userData && setUserData(userData);
+  }, [userData, setUserData]);
 
   useEffect(() => {
     if (isHost) return;
@@ -110,8 +56,8 @@ export const ScreenUi = () => {
   }, [isHost, sendPcOffer]);
 
   return (
-    <div className={`absolute z-30 w-full h-full bg-white/25`}>
-      <ChatBox onSubmitMessage={onSubmitMessage} />
+    <div>
+      <ChatBox />
     </div>
   );
 };

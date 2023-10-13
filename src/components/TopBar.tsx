@@ -6,7 +6,7 @@ export const TopBar = () => {
   return (
     <nav
       id={elementIds.topBar}
-      className={`sticky z-100 top-0 backdrop-blur-lg p-2 border-b-[1px] border-slate-400 flex justify-between`}
+      className={`sticky z-[100] top-0 backdrop-blur-lg p-2 border-b-[1px] border-slate-400 flex justify-between`}
     >
       <Link href="/" className="text-xl font-bold px-5 flex items-center">
         Rud
