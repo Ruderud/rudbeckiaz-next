@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction, createContext, useEffect, useState } from 'react';
-import { UserData } from '../utils/types';
+import { Cube, UserData } from '../utils/types';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -31,6 +31,8 @@ type MinecraftContext = {
   setReceiveChannel: Dispatch<SetStateAction<RTCDataChannel | null>>;
   userData: UserData | null;
   setUserData: Dispatch<SetStateAction<UserData | null>>;
+  cubes: Cube[];
+  setCubes: Dispatch<SetStateAction<Cube[]>>;
 };
 
 export const MinecraftContext = createContext<MinecraftContext>({
@@ -42,6 +44,8 @@ export const MinecraftContext = createContext<MinecraftContext>({
   setReceiveChannel: () => {},
   userData: null,
   setUserData: () => {},
+  cubes: [],
+  setCubes: () => {},
 });
 
 export default function Providers({ children }: ProvidersProps) {
@@ -49,6 +53,7 @@ export default function Providers({ children }: ProvidersProps) {
   const [sendChannel, setSendChannel] = useState<RTCDataChannel | null>(null);
   const [receiveChannel, setReceiveChannel] = useState<RTCDataChannel | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [cubes, setCubes] = useState<Cube[]>([]);
 
   return (
     <MinecraftContext.Provider
@@ -61,6 +66,8 @@ export default function Providers({ children }: ProvidersProps) {
         setReceiveChannel,
         userData,
         setUserData,
+        cubes,
+        setCubes,
       }}
     >
       <QueryClientProvider client={minecraftQueryClient}>{children}</QueryClientProvider>

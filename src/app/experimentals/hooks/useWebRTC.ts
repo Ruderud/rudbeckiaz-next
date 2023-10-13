@@ -74,7 +74,6 @@ export const useWebRTC = ({ signalingChannel, userData }: useWebRTCParams) => {
 
       // pass receive my offer
       if (data.payload.userData.id === userData.id) return;
-      console.log('data.payload', data);
 
       switch (data.type) {
         case 'SEND_OFFER':

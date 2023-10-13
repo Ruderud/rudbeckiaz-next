@@ -1,3 +1,5 @@
+import { type } from 'os';
+
 export type Room = {
   id: string;
   roomName: string;
@@ -14,7 +16,16 @@ export type UserData = {
 };
 
 export type Message = {
-  userData: UserData;
   message: string;
   createdAt: string;
+};
+
+export type Cube = number[] | [number, number, number];
+
+export type DataChannel = 'MESSAGE' | 'CUBE';
+
+export type DataChannelMessage<T = unknown> = {
+  type: DataChannel;
+  payload: T;
+  userData: UserData;
 };

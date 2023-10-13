@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MinecraftContext } from '../providers';
-import { Message } from '../../utils/types';
+import { DataChannel, DataChannelMessage, Message, UserData } from '../../utils/types';
 
 type inputMessage = {
   message: string;
@@ -11,9 +11,13 @@ type ChatBoxProps = {
   onSubmitMessage?: (message: string) => void;
 };
 
+type ViewMessage = Message & {
+  userData: UserData;
+};
+
 export const ChatBox = ({ onSubmitMessage }: ChatBoxProps) => {
   const { sendChannel, receiveChannel, userData } = useContext(MinecraftContext);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ViewMessage[]>([]);
   const {
     register,
     handleSubmit,
@@ -24,21 +28,25 @@ export const ChatBox = ({ onSubmitMessage }: ChatBoxProps) => {
 
   const onSubmit: SubmitHandler<inputMessage> = (data) => {
     if (!sendChannel || !userData) return;
-    const message: Message = {
-      message: data.message,
+    const message: DataChannelMessage<Message> = {
+      type: 'MESSAGE',
+      payload: {
+        message: data.message,
+        createdAt: new Date().toISOString(),
+      },
       userData: userData,
-      createdAt: new Date().toISOString(),
     };
     sendChannel.send(JSON.stringify(message));
-    setMessages((prev) => [...prev, message]);
+    setMessages((prev) => [...prev, { ...message.payload, userData }]);
     reset();
   };
 
   useEffect(() => {
     if (receiveChannel) {
       receiveChannel.addEventListener('message', (event) => {
-        const receivedMessage = JSON.parse(event.data) as Message;
-        setMessages((prev) => [...prev, receivedMessage]);
+        const dataChannelMessage = JSON.parse(event.data) as DataChannelMessage<Message>;
+        if (dataChannelMessage.type !== 'MESSAGE') return;
+        setMessages((prev) => [...prev, { ...dataChannelMessage.payload, userData: dataChannelMessage.userData }]);
       });
     }
   }, [receiveChannel]);

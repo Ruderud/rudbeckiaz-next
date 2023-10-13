@@ -1,25 +1,14 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTexture } from '@react-three/drei';
 import { RigidBody, RigidBodyProps } from '@react-three/rapier';
-import { create } from 'zustand';
+
 import { ThreeEvent } from '@react-three/fiber';
-
-// This is a naive implementation and wouldn't allow for more than a few thousand boxes.
-// In order to make this scale this has to be one instanced mesh, then it could easily be
-// hundreds of thousands.
-
-type CubeStore = {
-  cubes: number[][];
-  addCube: (x: number, y: number, z: number) => void;
-};
-
-const useCubeStore = create<CubeStore>((set) => ({
-  cubes: [],
-  addCube: (x, y, z) => set((state) => ({ cubes: [...state.cubes, [x, y, z]] })),
-}));
+import { MinecraftContext } from '../providers';
+import { Cube as CubeType, DataChannelMessage } from '../../utils/types';
 
 export const Cubes = () => {
-  const cubes = useCubeStore((state) => state.cubes);
+  const { cubes } = useContext(MinecraftContext);
+  // const cubes = useCubeStore((state) => state.cubes);
   return cubes.map((coords, index) => <Cube key={index} position={[coords[0], coords[1], coords[2]]} />);
 };
 
@@ -30,7 +19,8 @@ type CubeProps = RigidBodyProps & {
 export function Cube(props: CubeProps) {
   const ref = useRef<any>();
   const [hover, set] = useState<number | null>(null);
-  const addCube = useCubeStore((state) => state.addCube);
+  // const addCube = useCubeStore((state) => state.addCube);
+  const { setCubes, sendChannel, receiveChannel, userData } = useContext(MinecraftContext);
   const texture = useTexture('/assets/dirt.jpg');
   const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
@@ -40,6 +30,7 @@ export function Cube(props: CubeProps) {
   const onOut = useCallback(() => set(null), []);
   const onClick = useCallback(
     (e: ThreeEvent<MouseEvent>) => {
+      if (!userData) return;
       e.stopPropagation();
       const { x, y, z } = ref.current.translation();
       const dir: number[][] = [
@@ -52,10 +43,27 @@ export function Cube(props: CubeProps) {
       ];
       if (!e.faceIndex) return;
       const [cx, cy, cz] = dir[Math.floor(e.faceIndex / 2)];
-      addCube(cx, cy, cz);
+      setCubes((cur) => [...cur, [cx, cy, cz]]);
+      const dataChannelMessage: DataChannelMessage<CubeType> = {
+        type: 'CUBE',
+        payload: [cx, cy, cz],
+        userData: userData,
+      };
+      sendChannel?.send(JSON.stringify(dataChannelMessage));
     },
-    [addCube]
+    [setCubes, sendChannel, userData]
   );
+
+  useEffect(() => {
+    if (receiveChannel) {
+      receiveChannel.addEventListener('message', (event) => {
+        const dataChannelMessage = JSON.parse(event.data) as DataChannelMessage<CubeType>;
+        if (dataChannelMessage.type !== 'CUBE') return;
+        setCubes((prev) => [...prev, { ...dataChannelMessage.payload, userData: dataChannelMessage.userData }]);
+      });
+    }
+  }, [receiveChannel, setCubes]);
+
   return (
     <RigidBody {...props} type="fixed" colliders="cuboid" ref={ref}>
       <mesh receiveShadow castShadow onPointerMove={onMove} onPointerOut={onOut} onClick={onClick}>
