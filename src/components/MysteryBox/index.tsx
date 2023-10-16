@@ -1,7 +1,8 @@
 'use client';
 
-import { Edges, Environment, MeshPortalMaterial, useGLTF, useScroll } from '@react-three/drei';
-import { ThreeElements, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { Edges, Environment, MeshPortalMaterial, useGLTF, useScroll, useTexture } from '@react-three/drei';
+import { ThreeElements, useFrame, useLoader } from '@react-three/fiber';
 import { useRef } from 'react';
 import { MyRoom } from './components';
 
@@ -42,6 +43,63 @@ function Side({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, flat = fa
   );
 }
 
+const MineCraftSide = ({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, flat = false }: any) => {
+  const mesh = useRef<any>();
+  const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
+  const [map] = useLoader(THREE.TextureLoader as any, ['/assets/grass.jpg']);
+  map.wrapS = THREE.RepeatWrapping;
+  map.wrapT = THREE.RepeatWrapping;
+  map.anisotropy = 4;
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.repeat.set(4, 4);
+
+  return (
+    <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
+      {/** Everything in here is inside the portal and isolated from the canvas */}
+      <ambientLight intensity={0.5} />
+      <Environment preset="city" />
+      {/** A box with baked AO */}
+      <mesh castShadow receiveShadow rotation={rotation} geometry={nodes.Cube.geometry} scale={[2, 2, 2]}>
+        <meshStandardMaterial aoMapIntensity={1} map={map} color={bg} />
+        <spotLight
+          castShadow
+          color={bg}
+          intensity={2}
+          position={[10, 10, 10]}
+          angle={0.15}
+          penumbra={1}
+          shadow-normalBias={0.05}
+          shadow-bias={0.0001}
+        />
+      </mesh>
+      {/** The shape */}
+      <mesh castShadow receiveShadow ref={mesh}>
+        {children}
+        <meshLambertMaterial color={bg} />
+      </mesh>
+    </MeshPortalMaterial>
+  );
+};
+
+type CubeProps = ThreeElements['mesh'];
+
+const Cube = (props: CubeProps) => {
+  const texture = useTexture('/assets/dirt.jpg');
+  return (
+    <mesh {...props} receiveShadow castShadow>
+      {[...Array(6)].map((_, index) => (
+        <meshStandardMaterial
+          attach={`material-${index}`}
+          key={index}
+          map={texture}
+          // color={hover === index ? 'hotpink' : 'white'}
+        />
+      ))}
+      <boxGeometry />
+    </mesh>
+  );
+};
+
 type MysteryBoxProps = ThreeElements['mesh'] & {};
 
 export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
@@ -63,9 +121,9 @@ export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
         <Side rotation={[0, Math.PI / 2, -Math.PI / 2]} bg="aquamarine" index={3}>
           <octahedronGeometry />
         </Side>
-        <Side rotation={[0, -Math.PI / 2, 0]} bg="rgb(97, 219, 251)" index={4}>
-          <mesh geometry={nodes.React.geometry} rotation={[Math.PI / 2, 0, Math.PI / 2]} />
-        </Side>
+        <MineCraftSide rotation={[0, -Math.PI / 2, 0]} bg="rgb(97, 219, 251)" index={4}>
+          <Cube position={[0, 0, 0]} />
+        </MineCraftSide>
         <Side rotation={[0, Math.PI / 2, 0]} bg="hotpink" index={5}>
           <dodecahedronGeometry />
         </Side>

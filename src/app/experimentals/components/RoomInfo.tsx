@@ -21,7 +21,7 @@ const RoomInfo = () => {
 
   return (
     <div className="flex flex-col gap-4 bg-slate-700 bg-opacity-50 p-4 h-full">
-      <header className="flex gap-4 items-baseline">
+      <header className="flex flex-wrap gap-4 items-baseline">
         <span className="text-2xl font-bold">ROOM INFO</span>
         <span className="text-md">{`${hash}`}</span>
       </header>
