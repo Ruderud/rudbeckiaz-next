@@ -6,7 +6,7 @@ import { ThreeElements, useFrame, useLoader } from '@react-three/fiber';
 import { useRef } from 'react';
 import { MyRoom } from './components';
 
-function Side({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, flat = false }: any) {
+function Side({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, flat = false, bgMap = null }: any) {
   const mesh = useRef<any>();
   // const { worldUnits } = useControls({ worldUnits: false });
   const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
@@ -22,7 +22,7 @@ function Side({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, flat = fa
       <Environment preset="city" />
       {/** A box with baked AO */}
       <mesh castShadow receiveShadow rotation={rotation} geometry={nodes.Cube.geometry} scale={[2, 2, 2]}>
-        <meshStandardMaterial aoMapIntensity={1} aoMap={nodes.Cube.material.aoMap} color={bg} />
+        <meshStandardMaterial aoMapIntensity={1} aoMap={nodes.Cube.material.aoMap} map={bgMap} color={bg} />
         <spotLight
           castShadow
           color={bg}
@@ -63,7 +63,7 @@ const MineCraftSide = ({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, 
         <meshStandardMaterial aoMapIntensity={1} map={map} color={bg} />
         <spotLight
           castShadow
-          color={bg}
+          // color={bg}
           intensity={2}
           position={[10, 10, 10]}
           angle={0.15}
@@ -84,16 +84,11 @@ const MineCraftSide = ({ rotation = [0, 0, 0], bg = '#f0f0f0', children, index, 
 type CubeProps = ThreeElements['mesh'];
 
 const Cube = (props: CubeProps) => {
-  const texture = useTexture('/assets/dirt.jpg');
+  const dirtTexture = useTexture('/assets/dirt.jpg');
   return (
     <mesh {...props} receiveShadow castShadow>
       {[...Array(6)].map((_, index) => (
-        <meshStandardMaterial
-          attach={`material-${index}`}
-          key={index}
-          map={texture}
-          // color={hover === index ? 'hotpink' : 'white'}
-        />
+        <meshStandardMaterial attach={`material-${index}`} key={index} map={dirtTexture} />
       ))}
       <boxGeometry />
     </mesh>
@@ -104,12 +99,14 @@ type MysteryBoxProps = ThreeElements['mesh'] & {};
 
 export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
   const { nodes } = useGLTF('/transforms/level-react-draco.glb') as any;
+  const macBookSide = useTexture('/mac-background.png');
+
   return (
     <>
       <mesh castShadow receiveShadow {...props}>
         <boxGeometry args={[4, 4, 4]} />
         <Edges />
-        <Side bg="purple" index={0}>
+        <Side bgMap={macBookSide} bg="rgb(101, 221, 237)" index={0}>
           <MyRoom />
         </Side>
         <Side rotation={[0, Math.PI, 0]} bg="lightblue" index={1}>

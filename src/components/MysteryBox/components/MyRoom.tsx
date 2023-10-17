@@ -15,6 +15,8 @@ export const MyRoom = (props: ThreeElements['group']) => {
   return (
     <>
       <MacBook
+        receiveShadow
+        castShadow
         position={[0, -0.5, -0.3]}
         rotation={[0, Math.PI / 3, 0]}
         scale={[MACBOOK_SCALE, MACBOOK_SCALE, MACBOOK_SCALE]}

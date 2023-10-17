@@ -10,22 +10,6 @@ import { BackGroundScene } from './components/BackGround';
 import { MacBook } from '../MysteryBox/components/MacBook';
 import { EffectComposer, Outline, Select, Selection } from '@react-three/postprocessing';
 
-// const Draggable = ({ children, camera }: any) => {
-//   const ref = useRef<THREE.Group>(null);
-//   const { gl, scene } = useThree();
-
-//   useEffect(() => {
-//     const controls = new DragControls(ref.current!.children, camera, gl.domElement);
-//     controls.transformGroup = true;
-
-//     controls.addEventListener('drag', () => {
-//       gl.render(scene, camera);
-//     });
-//   }, [camera, gl, scene]);
-
-//   return <group ref={ref}>{children}</group>;
-// };
-
 function Model({ open, hinge, ...props }: any) {
   const group = useRef<any>();
   // Load model
@@ -78,14 +62,9 @@ function Model({ open, hinge, ...props }: any) {
 }
 
 const Scenes = () => {
-  // const model = useGLTF('/transforms/Untitled_Scan_14_05_18.glb') as any;
-  // console.log(model);
-
   return (
     <Suspense fallback={null}>
       <BackGroundScene isStaticPage={false} />
-
-      {/* <mesh material={model.materials['material_0']} geometry={model.nodes['mesh_0'].geometry} /> */}
       <MysteryBox />
     </Suspense>
   );
@@ -97,29 +76,20 @@ export const IntroScroll = () => {
       <Canvas
         shadows
         camera={{
-          position: [6, 3, 3],
+          position: [5, 0, 5],
         }}
       >
-        {/* <Selection enabled>
-          <EffectComposer autoClear={false}>
-            <Outline visibleEdgeColor={0xffffff} hiddenEdgeColor={0xffffff} blur width={1000} edgeStrength={100} />
-          </EffectComposer>
-          <Select enabled>
-            <Scenes />
-          </Select>
-        </Selection> */}
-
         <Scenes />
         <ambientLight intensity={0.4} />
         <CameraControls
           makeDefault
-          // minDistance={3}
-          maxDistance={1500}
+          minDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 4 : undefined}
+          maxDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 50 : undefined}
           // current three side only support polarAngle
-          //   maxPolarAngle={Math.PI / 2}
-          //   minPolarAngle={0}
-          //   maxAzimuthAngle={Math.PI / 2}
-          //   minAzimuthAngle={0}
+          minPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 윗면 제한
+          maxPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 아랫면 제한
+          maxAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 시계반대방향 회전 제한
+          minAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 0 : undefined} // 시계방향 회전 제한
         />
       </Canvas>
       <Loader />
