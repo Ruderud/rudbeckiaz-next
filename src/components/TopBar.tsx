@@ -11,7 +11,7 @@ export const TopBar = () => {
       <Link href="/" className="text-xl font-bold px-5 flex items-center">
         Rud
       </Link>
-      <div className="px-5 flex justify-end items-center gap-5">
+      <div className="px-5 flex justify-end items-center font-bold gap-5">
         <Link href="/experimentals">Experimental</Link>
         <Link href="/scrawl">Scrawl</Link>
         <Link href="/about">About</Link>

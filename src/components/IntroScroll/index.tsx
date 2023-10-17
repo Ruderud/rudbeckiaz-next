@@ -1,14 +1,11 @@
 'use client';
 
 import * as THREE from 'three';
-import { CameraControls, Loader, useGLTF, useProgress } from '@react-three/drei';
+import { CameraControls, Loader, useGLTF } from '@react-three/drei';
 import { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { DragControls } from 'three-stdlib';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { MysteryBox } from '../MysteryBox';
 import { BackGroundScene } from './components/BackGround';
-import { MacBook } from '../MysteryBox/components/MacBook';
-import { EffectComposer, Outline, Select, Selection } from '@react-three/postprocessing';
 
 function Model({ open, hinge, ...props }: any) {
   const group = useRef<any>();
@@ -86,7 +83,7 @@ export const IntroScroll = () => {
           minDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 4 : undefined}
           maxDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 50 : undefined}
           // current three side only support polarAngle
-          minPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 윗면 제한
+          // minPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 윗면 제한
           maxPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 아랫면 제한
           maxAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 시계반대방향 회전 제한
           minAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 0 : undefined} // 시계방향 회전 제한

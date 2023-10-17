@@ -32,7 +32,6 @@ type CubeProps = RigidBodyProps & {
 };
 
 export function Cube(props: CubeProps) {
-  console.log('Cube comp render');
   const ref = useRef<any>();
   const [hover, set] = useState<number | null>(null);
   const { setCubes, sendChannel, userData } = useContext(MinecraftContext);
