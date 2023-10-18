@@ -1,134 +1,21 @@
 'use client';
 
 import * as THREE from 'three';
-import { Edges, Environment, MeshPortalMaterial, useGLTF, useTexture } from '@react-three/drei';
-import { ThreeElements, ThreeEvent, useLoader } from '@react-three/fiber';
-import { useCallback, useRef, useState } from 'react';
-import { MyRoom } from './components';
-import { LightingGrid, MovingLight } from '../ConcertHall/components';
+import { Edges, useTexture } from '@react-three/drei';
+import { ThreeElements } from '@react-three/fiber';
+import { MacBook, Side, DirtCube, LightStage } from './components';
 
-function Side({
-  rotation = [0, 0, 0],
-  bg = '#f0f0f0',
-  children,
-  index,
-  flat = false,
-  bgMap = null,
-  spotLightOff = false,
-}: any) {
-  const mesh = useRef<any>();
-  // const { worldUnits } = useControls({ worldUnits: false });
-  const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
-
-  return (
-    <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
-      {/** Everything in here is inside the portal and isolated from the canvas */}
-      <ambientLight intensity={0.5} />
-      <Environment preset="city" />
-      {/** A box with baked AO */}
-      <mesh castShadow receiveShadow rotation={rotation} geometry={nodes.Cube.geometry} scale={[2, 2, 2]}>
-        <meshStandardMaterial aoMapIntensity={1} aoMap={nodes.Cube.material.aoMap} map={bgMap} color={bg} />
-        {!spotLightOff && (
-          <spotLight
-            castShadow
-            // color={bg}
-            intensity={2}
-            position={[10, 10, 10]}
-            angle={0.15}
-            penumbra={1}
-            shadow-normalBias={0.05}
-            shadow-bias={0.0001}
-          />
-        )}
-      </mesh>
-      {/** The shape */}
-      <mesh castShadow receiveShadow ref={mesh}>
-        {children}
-        <meshLambertMaterial color={bg} />
-      </mesh>
-    </MeshPortalMaterial>
-  );
-}
-
-const MineCraftSide = ({
-  rotation = [0, 0, 0],
-  bg = '#f0f0f0',
-  children,
-  index,
-  flat = false,
-  spotLightOff = false,
-}: any) => {
-  const mesh = useRef<any>();
-  const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
-  const [map] = useLoader(THREE.TextureLoader as any, ['/assets/grass.jpg']);
-  map.wrapS = THREE.RepeatWrapping;
-  map.wrapT = THREE.RepeatWrapping;
-  map.anisotropy = 4;
-  map.colorSpace = THREE.SRGBColorSpace;
-  map.repeat.set(4, 4);
-
-  return (
-    <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
-      {/** Everything in here is inside the portal and isolated from the canvas */}
-      <ambientLight intensity={0.5} />
-      <Environment preset="city" />
-      {/** A box with baked AO */}
-      <mesh castShadow receiveShadow rotation={rotation} geometry={nodes.Cube.geometry} scale={[2, 2, 2]}>
-        <meshStandardMaterial aoMapIntensity={1} map={map} color={bg} />
-
-        <spotLight
-          castShadow
-          // color={bg}
-          intensity={2}
-          position={[10, 10, 10]}
-          angle={0.15}
-          penumbra={1}
-          shadow-normalBias={0.05}
-          shadow-bias={0.0001}
-        />
-      </mesh>
-      {/** The shape */}
-      <mesh castShadow receiveShadow ref={mesh}>
-        {children}
-        <meshLambertMaterial color={bg} />
-      </mesh>
-    </MeshPortalMaterial>
-  );
-};
-
-type CubeProps = ThreeElements['mesh'];
-
-const Cube = (props: CubeProps) => {
-  const dirtTexture = useTexture('/assets/dirt.jpg');
-  const [hover, set] = useState<number | null>(null);
-  const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
-    e.stopPropagation();
-    if (!e.faceIndex) return;
-    set(Math.floor(e.faceIndex / 2));
-  }, []);
-  const onOut = useCallback(() => set(null), []);
-  return (
-    <mesh {...props} receiveShadow castShadow onPointerMove={onMove} onPointerOut={onOut}>
-      {[...Array(6)].map((_, index) => (
-        <meshStandardMaterial
-          attach={`material-${index}`}
-          key={index}
-          map={dirtTexture}
-          color={hover === index ? 'hotpink' : 'white'}
-        />
-      ))}
-      <boxGeometry />
-    </mesh>
-  );
-};
-
-type MysteryBoxProps = ThreeElements['mesh'] & {};
+type MysteryBoxProps = ThreeElements['mesh'];
+const MACBOOK_SCALE = 0.2;
 
 export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
-  const { nodes } = useGLTF('/transforms/level-react-draco.glb') as any;
   const macBookSideBgMap = useTexture('/mac-background.png');
-
-  const keepOutTexture = useTexture('/keep_out.png');
+  const mineCraftSideBgMap = useTexture('/assets/grass.jpg');
+  mineCraftSideBgMap.wrapS = THREE.RepeatWrapping;
+  mineCraftSideBgMap.wrapT = THREE.RepeatWrapping;
+  mineCraftSideBgMap.anisotropy = 4;
+  mineCraftSideBgMap.colorSpace = THREE.SRGBColorSpace;
+  mineCraftSideBgMap.repeat.set(4, 4);
 
   return (
     <>
@@ -136,42 +23,28 @@ export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
         <boxGeometry args={[4, 4, 4]} />
         <Edges />
         <Side bgMap={macBookSideBgMap} bg="rgb(101, 221, 237)" index={0}>
-          <MyRoom />
+          <MacBook
+            receiveShadow
+            castShadow
+            position={[0, -0.5, -0.3]}
+            rotation={[0, Math.PI / 3, 0]}
+            scale={[MACBOOK_SCALE, MACBOOK_SCALE, MACBOOK_SCALE]}
+            isOpen={true}
+            mockDisplay={false}
+          />
         </Side>
         <Side rotation={[0, Math.PI, 0]} bg="lightblue" index={1}>
           <torusKnotGeometry args={[0.55, 0.2, 128, 32]} />
         </Side>
         <Side rotation={[0, Math.PI / 2, Math.PI / 2]} index={2} spotLightOff>
-          <group>
-            <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 2, 0]}>
-              <planeGeometry args={[4, 4]} />
-              <meshStandardMaterial map={keepOutTexture} side={2} transparent />
-            </mesh>
-            <mesh rotation={[Math.PI / 2, 0, Math.PI / 2]} position={[1, 2, 0]}>
-              <planeGeometry args={[4, 4]} />
-              <meshStandardMaterial map={keepOutTexture} side={2} transparent />
-            </mesh>
-            <mesh rotation={[Math.PI / 2, 0, Math.PI / 6]} position={[-1.5, 2, 0]}>
-              <planeGeometry args={[4, 4]} />
-              <meshStandardMaterial map={keepOutTexture} side={2} transparent />
-            </mesh>
-            <mesh rotation={[Math.PI / 2, 0, -Math.PI / 8]} position={[0, 2, 0]}>
-              <planeGeometry args={[4, 4]} />
-              <meshStandardMaterial map={keepOutTexture} side={2} transparent />
-            </mesh>
-          </group>
-          <LightingGrid position={[0, 1.5, -1.5]} length={4} width={0.5} thickness={0.03} />
-          <group scale={0.5}>
-            <MovingLight position={[1, 2, -3]} target={[0, -2, 0]} activted />
-            <MovingLight position={[-1, 2, -3]} target={[0, -2, 0]} activted />
-          </group>
+          <LightStage />
         </Side>
         <Side rotation={[0, Math.PI / 2, -Math.PI / 2]} bg="aquamarine" index={3}>
           <octahedronGeometry />
         </Side>
-        <MineCraftSide rotation={[0, -Math.PI / 2, 0]} index={4}>
-          <Cube position={[0, 0, 0]} />
-        </MineCraftSide>
+        <Side bgMap={mineCraftSideBgMap} rotation={[0, -Math.PI / 2, 0]} index={4}>
+          <DirtCube position={[0, 0, 0]} />
+        </Side>
         <Side rotation={[0, Math.PI / 2, 0]} bg="hotpink" index={5}>
           <dodecahedronGeometry />
         </Side>
