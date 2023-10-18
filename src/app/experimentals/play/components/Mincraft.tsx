@@ -1,6 +1,6 @@
 'use client';
 
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Sky, PointerLockControls, KeyboardControls, CameraControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ground } from './Ground';

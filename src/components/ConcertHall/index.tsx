@@ -1,7 +1,7 @@
 'use client';
 
 import * as THREE from 'three';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Bounds, CameraControls, Effects, KeyboardControls, PointerLockControls } from '@react-three/drei';
 import { Wall, Player, WoodFloor, Stage, JoyStick } from './components';
 import { Physics } from '@react-three/rapier';
@@ -124,7 +124,6 @@ const ConcertHall = () => {
       >
         <Canvas performance={{ min: 0.5 }} shadows dpr={[1, 2]}>
           <ambientLight intensity={0.3} />
-
           <Physics gravity={[0, 0, 0]}>
             <Bounds fit clip margin={1.2} damping={0}>
               <WoodFloor position={WoodFloorPosition} rotation={[-Math.PI / 2, 0, 0]} />

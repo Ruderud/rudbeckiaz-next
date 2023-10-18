@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import { BackGroundScene } from '../IntroScroll/components/BackGround';
+import { BackGroundScene } from '../ThreejsScenes/BackGround';
 import { ReactNode } from 'react';
 import { Loader } from '@react-three/drei';
 import { usePathname } from 'next/navigation';

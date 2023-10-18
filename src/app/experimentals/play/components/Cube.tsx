@@ -63,7 +63,9 @@ export function Cube(props: CubeProps) {
         payload: [cx, cy, cz],
         userData: userData,
       };
-      sendChannel?.send(JSON.stringify(dataChannelMessage));
+      if (sendChannel?.readyState === 'open') {
+        sendChannel?.send(JSON.stringify(dataChannelMessage));
+      }
     },
     [setCubes, sendChannel, userData]
   );
