@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTexture } from '@react-three/drei';
-import { RigidBody, RigidBodyProps } from '@react-three/rapier';
+import { RapierRigidBody, RigidBody, RigidBodyProps } from '@react-three/rapier';
 
 import { ThreeEvent } from '@react-three/fiber';
 import { MinecraftContext } from '../providers';
@@ -32,7 +32,7 @@ type CubeProps = RigidBodyProps & {
 };
 
 export function Cube(props: CubeProps) {
-  const ref = useRef<any>();
+  const rigidBodyRef = useRef<RapierRigidBody>(null);
   const [hover, set] = useState<number | null>(null);
   const { setCubes, sendChannel, userData } = useContext(MinecraftContext);
   const texture = useTexture('/assets/dirt.jpg');
@@ -45,8 +45,10 @@ export function Cube(props: CubeProps) {
   const onClick = useCallback(
     (e: ThreeEvent<MouseEvent>) => {
       if (!userData) return;
+      if (!rigidBodyRef.current) return;
       e.stopPropagation();
-      const { x, y, z } = ref.current.translation();
+      const { x, y, z } = rigidBodyRef.current.translation();
+
       const dir: number[][] = [
         [x + 1, y, z],
         [x - 1, y, z],
@@ -71,7 +73,7 @@ export function Cube(props: CubeProps) {
   );
 
   return (
-    <RigidBody {...props} type="fixed" colliders="cuboid" ref={ref}>
+    <RigidBody {...props} type="fixed" colliders="cuboid" ref={rigidBodyRef}>
       <mesh receiveShadow castShadow onPointerMove={onMove} onPointerOut={onOut} onClick={onClick}>
         {[...Array(6)].map((_, index) => (
           <meshStandardMaterial

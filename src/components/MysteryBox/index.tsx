@@ -2,8 +2,8 @@
 
 import * as THREE from 'three';
 import { Edges, Environment, MeshPortalMaterial, useGLTF, useTexture } from '@react-three/drei';
-import { ThreeElements, useLoader } from '@react-three/fiber';
-import { useRef } from 'react';
+import { ThreeElements, ThreeEvent, useLoader } from '@react-three/fiber';
+import { useCallback, useRef, useState } from 'react';
 import { MyRoom } from './components';
 import { LightingGrid, MovingLight } from '../ConcertHall/components';
 
@@ -100,10 +100,22 @@ type CubeProps = ThreeElements['mesh'];
 
 const Cube = (props: CubeProps) => {
   const dirtTexture = useTexture('/assets/dirt.jpg');
+  const [hover, set] = useState<number | null>(null);
+  const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    if (!e.faceIndex) return;
+    set(Math.floor(e.faceIndex / 2));
+  }, []);
+  const onOut = useCallback(() => set(null), []);
   return (
-    <mesh {...props} receiveShadow castShadow>
+    <mesh {...props} receiveShadow castShadow onPointerMove={onMove} onPointerOut={onOut}>
       {[...Array(6)].map((_, index) => (
-        <meshStandardMaterial attach={`material-${index}`} key={index} map={dirtTexture} />
+        <meshStandardMaterial
+          attach={`material-${index}`}
+          key={index}
+          map={dirtTexture}
+          color={hover === index ? 'hotpink' : 'white'}
+        />
       ))}
       <boxGeometry />
     </mesh>

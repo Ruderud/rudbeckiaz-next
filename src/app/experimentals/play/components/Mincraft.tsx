@@ -61,7 +61,7 @@ export default function Minecraft() {
         { name: 'shift', keys: ['Shift'] },
       ]}
     >
-      <Canvas shadows camera={{ fov: 45, position: [5, 5, 5] }}>
+      <Canvas shadows camera={{ fov: 45, position: [0, 0, 0] }}>
         <Sky sunPosition={[100, 20, 100]} />
         <ambientLight intensity={0.3} />
         <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />

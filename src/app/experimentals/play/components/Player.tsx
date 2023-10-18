@@ -88,7 +88,7 @@ export function Player({ joyStickActive, joyStickValue, ...props }: PlayerProps)
         colliders={false}
         mass={1}
         type="dynamic"
-        position={[0, 10, 0]}
+        position={[0, 1, 0]}
         enabledRotations={[false, false, false]}
       >
         <CapsuleCollider args={[0.75, 0.5]} />
