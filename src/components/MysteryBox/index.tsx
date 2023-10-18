@@ -1,11 +1,11 @@
 'use client';
 
 import * as THREE from 'three';
-import { Edges, Environment, MeshPortalMaterial, useGLTF, useScroll, useTexture } from '@react-three/drei';
-import { ThreeElements, useFrame, useLoader } from '@react-three/fiber';
+import { Edges, Environment, MeshPortalMaterial, useGLTF, useTexture } from '@react-three/drei';
+import { ThreeElements, useLoader } from '@react-three/fiber';
 import { useRef } from 'react';
 import { MyRoom } from './components';
-import { LightingGrid, MovingLight, Stage } from '../ConcertHall/components';
+import { LightingGrid, MovingLight } from '../ConcertHall/components';
 
 function Side({
   rotation = [0, 0, 0],
@@ -19,10 +19,6 @@ function Side({
   const mesh = useRef<any>();
   // const { worldUnits } = useControls({ worldUnits: false });
   const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
-  useFrame((state, delta) => {
-    if (!mesh.current) return;
-    // mesh.current.rotation.x = mesh.current.rotation.y += delta;
-  });
 
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
@@ -118,7 +114,8 @@ type MysteryBoxProps = ThreeElements['mesh'] & {};
 
 export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
   const { nodes } = useGLTF('/transforms/level-react-draco.glb') as any;
-  const macBookSide = useTexture('/mac-background.png');
+  const macBookSideBgMap = useTexture('/mac-background.png');
+
   const keepOutTexture = useTexture('/keep_out.png');
 
   return (
@@ -126,7 +123,7 @@ export const MysteryBox = ({ ...props }: MysteryBoxProps) => {
       <mesh castShadow receiveShadow {...props}>
         <boxGeometry args={[4, 4, 4]} />
         <Edges />
-        <Side bgMap={macBookSide} bg="rgb(101, 221, 237)" index={0}>
+        <Side bgMap={macBookSideBgMap} bg="rgb(101, 221, 237)" index={0}>
           <MyRoom />
         </Side>
         <Side rotation={[0, Math.PI, 0]} bg="lightblue" index={1}>

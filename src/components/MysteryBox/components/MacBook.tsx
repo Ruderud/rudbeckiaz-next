@@ -85,8 +85,6 @@ type MacBookProps = ThreeElements['group'] & {
 export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBookProps) => {
   const { nodes, materials } = useGLTF('/transforms/mac-draco.glb') as any;
 
-  const SCREEN_SCALE = 0.25;
-
   const screenRef = useRef<THREE.Group>(null);
   const vec = new THREE.Vector3();
   useFrame((state) => {
@@ -110,6 +108,15 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
     }
   });
 
+  const group = useRef<any>();
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, Math.cos(t / 10) / 10 + 0.25, 0.1);
+    group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, Math.sin(t / 10) / 10, 0.1);
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-1 + Math.sin(t)) / 3, 0.1);
+  });
+
   const screenPosition = [0, 0, -2.8] as [x: number, y: number, z: number];
 
   const [map] = useLoader(THREE.TextureLoader as any, ['/mac-background.png']);
@@ -118,7 +125,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
 
   return (
     <>
-      <group dispose={null} {...props} castShadow receiveShadow>
+      <group ref={group} dispose={null} {...props} castShadow receiveShadow>
         <group ref={screenRef} rotation={[Math.PI, 0, 0]} position={[0, 0.05, 0.6]} onClick={props.onClick}>
           <mesh material={materials.aluminium} geometry={nodes['Cube008'].geometry} position={screenPosition} />
           <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} position={screenPosition} />
