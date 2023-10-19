@@ -14,7 +14,6 @@ export const BackGroundScene = ({ isStaticPage }: BackGroundSceneProps) => {
   const cloudRef = useRef<THREE.Mesh>(null);
   const skyRef = useRef<any>(null);
   useFrame((state) => {
-    console.log('bg', state.gl.info.render.calls);
     if (!cloudRef.current) return;
 
     if (!isDarkMode) {
