@@ -1,6 +1,7 @@
 import { Environment, MeshPortalMaterial, useGLTF } from '@react-three/drei';
-import { Euler } from '@react-three/fiber';
-import { useRef } from 'react';
+import { Euler, useThree } from '@react-three/fiber';
+import { useRef, useState } from 'react';
+import { set } from 'react-hook-form';
 
 type SideProps = {
   rotation?: Euler;
@@ -10,6 +11,7 @@ type SideProps = {
   flat?: boolean;
   bgMap?: any;
   spotLightOff?: boolean;
+  onClickSide?: () => void;
 };
 
 export const Side = ({
@@ -20,10 +22,17 @@ export const Side = ({
   flat = false,
   bgMap = null,
   spotLightOff = false,
+  onClickSide,
 }: SideProps) => {
   const mesh = useRef<any>();
   // const { worldUnits } = useControls({ worldUnits: false });
   const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
+
+  const { camera } = useThree();
+
+  const [isHover, setIsHover] = useState<boolean>(false);
+  const onPointerEnter = () => setIsHover(true);
+  const onPointerOut = () => setIsHover(false);
 
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
@@ -37,8 +46,9 @@ export const Side = ({
           <spotLight
             castShadow
             // color={bg}
+            color={isHover ? 'red' : bg}
             intensity={2}
-            position={[10, 10, 10]}
+            position={isHover ? [5, 0, 0] : [10, 10, 10]}
             angle={0.15}
             penumbra={1}
             shadow-normalBias={0.05}
@@ -47,7 +57,14 @@ export const Side = ({
         )}
       </mesh>
       {/** The shape */}
-      <mesh castShadow receiveShadow ref={mesh}>
+      <mesh
+        castShadow
+        receiveShadow
+        ref={mesh}
+        onClick={onClickSide}
+        onPointerEnter={onPointerEnter}
+        onPointerOut={onPointerOut}
+      >
         {children}
         <meshLambertMaterial color={bg} />
       </mesh>

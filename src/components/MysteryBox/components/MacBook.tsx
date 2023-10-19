@@ -1,5 +1,6 @@
-import * as THREE from 'three';
-import { Html, useGLTF } from '@react-three/drei';
+// import * as THREE from 'three';
+import { Vector3, MathUtils, MeshStandardMaterial } from 'three';
+import { Html, useGLTF, useTexture } from '@react-three/drei';
 import { ThreeElements, useFrame, useLoader } from '@react-three/fiber';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { HtmlProps } from '@react-three/drei/web/Html';
@@ -86,7 +87,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
   const { nodes, materials } = useGLTF('/transforms/mac-draco.glb') as any;
 
   const screenRef = useRef<THREE.Group>(null);
-  const vec = new THREE.Vector3();
+  const vec = new Vector3();
   useFrame((state) => {
     if (!screenRef.current) return;
 
@@ -112,16 +113,21 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, Math.cos(t / 10) / 10 + 0.25, 0.1);
-    group.current.rotation.z = THREE.MathUtils.lerp(group.current.rotation.z, Math.sin(t / 10) / 10, 0.1);
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-1 + Math.sin(t)) / 3, 0.1);
+    group.current.rotation.x = MathUtils.lerp(group.current.rotation.x, Math.cos(t / 10) / 10 + 0.25, 0.1);
+    group.current.rotation.z = MathUtils.lerp(group.current.rotation.z, Math.sin(t / 10) / 10, 0.1);
+    group.current.position.y = MathUtils.lerp(group.current.position.y, (-1 + Math.sin(t)) / 3, 0.1);
   });
 
   const screenPosition = [0, 0, -2.8] as [x: number, y: number, z: number];
 
-  const [map] = useLoader(THREE.TextureLoader as any, ['/mac-background.png']);
-  map.flipY = false;
-  const screenMaterial = new THREE.MeshStandardMaterial({ map, metalness: 0, roughness: 1, roughnessMap: map });
+  const macBookScreenBgMap = useTexture('/mac-background.png');
+  macBookScreenBgMap.flipY = false;
+  const screenMaterial = new MeshStandardMaterial({
+    map: macBookScreenBgMap,
+    metalness: 0,
+    roughness: 1,
+    roughnessMap: macBookScreenBgMap,
+  });
 
   return (
     <>

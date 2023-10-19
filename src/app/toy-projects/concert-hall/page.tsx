@@ -1,11 +1,9 @@
-import Link from 'next/link';
-import { Suspense, lazy } from 'react';
-const ConcertHall = lazy(() => import('@/components/ConcertHall'));
+import dynamic from 'next/dynamic';
+
+const ConcertHall = dynamic(() => import('@/components/ConcertHall'), {
+  loading: () => <p>ConcertHall Loading...</p>,
+});
 
 export default function AboutPage() {
-  return (
-    <Suspense fallback={<div>ConcertHall Loading...</div>}>
-      <ConcertHall />
-    </Suspense>
-  );
+  return <ConcertHall />;
 }
