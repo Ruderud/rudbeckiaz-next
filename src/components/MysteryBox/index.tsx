@@ -4,7 +4,7 @@ import { RepeatWrapping, SRGBColorSpace } from 'three';
 import { CameraControls, Edges, Loader, useGLTF, useTexture } from '@react-three/drei';
 import { Canvas, ThreeElements, useFrame, useThree } from '@react-three/fiber';
 import { MacBook, Side, DirtCube, LightStage } from './components';
-import { Suspense, useRef } from 'react';
+import { Suspense, use, useRef } from 'react';
 import { BackGroundScene } from '../ThreejsScenes/BackGround';
 
 type MysteryBoxProps = ThreeElements['mesh'];

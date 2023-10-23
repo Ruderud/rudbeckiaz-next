@@ -1,5 +1,10 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'When to use cloudflare-worker',
+  description: 'When to use cloudflare-worker',
+};
+
 export default function ScrawlPage() {
   return (
     <main className="min-w-screen min-h-screen px-4 sm:px-8 md:px-20 lg:px-32 xl:px-40 py-10">
