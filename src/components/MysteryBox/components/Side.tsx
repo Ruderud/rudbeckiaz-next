@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Environment, MeshPortalMaterial, useGLTF } from '@react-three/drei';
 import { Euler, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
@@ -34,6 +35,24 @@ export const Side = ({
   const onPointerEnter = () => setIsHover(true);
   const onPointerOut = () => setIsHover(false);
 
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  const handleDiceClick = (event: any) => {
+    // Calculate normalized mouse coordinates (-1 to 1)
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, mesh.current);
+    const intersects = raycaster.intersectObjects(mesh.current.children);
+    console.log('intersects', index, intersects);
+
+    if (intersects.length > 0) {
+      const intersectedFace = intersects[0].object;
+      console.log('intersectedFace', intersectedFace);
+      // setCurrentFace();
+    }
+  };
+
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
       {/** Everything in here is inside the portal and isolated from the canvas */}
@@ -61,9 +80,9 @@ export const Side = ({
         castShadow
         receiveShadow
         ref={mesh}
-        onClick={onClickSide}
-        onPointerEnter={onPointerEnter}
-        onPointerOut={onPointerOut}
+        // onClick={handleDiceClick}
+        // onPointerEnter={onPointerEnter}
+        // onPointerOut={onPointerOut}
       >
         {children}
         <meshLambertMaterial color={bg} />

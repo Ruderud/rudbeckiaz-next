@@ -130,22 +130,20 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
   });
 
   return (
-    <>
-      <group ref={group} dispose={null} {...props} castShadow receiveShadow>
-        <group ref={screenRef} rotation={[Math.PI, 0, 0]} position={[0, 0.05, 0.6]} onClick={props.onClick}>
-          <mesh material={materials.aluminium} geometry={nodes['Cube008'].geometry} position={screenPosition} />
-          <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} position={screenPosition} />
-          <mesh material={screenMaterial} geometry={nodes['Cube008_2'].geometry} position={screenPosition} />
-        </group>
-
-        <mesh material={materials.keys} geometry={nodes.keyboard.geometry} position={[1.79, 0, 3.45]} />
-
-        <group position={[0, -0.1, 3.39]} onClick={props.onClick}>
-          <mesh material={materials.aluminium} geometry={nodes['Cube002'].geometry} />
-          <mesh material={materials.trackpad} geometry={nodes['Cube002_1'].geometry} />
-        </group>
-        <mesh material={materials.touchbar} geometry={nodes.touchbar.geometry} position={[0, -0.03, 1.2]} />
+    <group ref={group} {...props} castShadow receiveShadow>
+      <group ref={screenRef} rotation={[Math.PI, 0, 0]} position={[0, 0.05, 0.6]} onClick={props.onClick}>
+        <mesh material={materials.aluminium} geometry={nodes['Cube008'].geometry} position={screenPosition} />
+        <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} position={screenPosition} />
+        <mesh material={screenMaterial} geometry={nodes['Cube008_2'].geometry} position={screenPosition} />
       </group>
-    </>
+
+      <mesh material={materials.keys} geometry={nodes.keyboard.geometry} position={[1.79, 0, 3.45]} />
+
+      <group position={[0, -0.1, 3.39]} onClick={props.onClick}>
+        <mesh material={materials.aluminium} geometry={nodes['Cube002'].geometry} />
+        <mesh material={materials.trackpad} geometry={nodes['Cube002_1'].geometry} />
+      </group>
+      <mesh material={materials.touchbar} geometry={nodes.touchbar.geometry} position={[0, -0.03, 1.2]} />
+    </group>
   );
 };
