@@ -5,7 +5,8 @@ export const metadata = {
   title: 'When to use cloudflare-worker',
   description: 'When to use cloudflare-worker',
   openGraph: {
-    images: 'asd',
+    images:
+      'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo.jpg',
   },
 };
 
@@ -14,13 +15,6 @@ export default function ScrawlPage() {
     <main className="min-w-screen min-h-screen px-4 sm:px-8 md:px-20 lg:px-32 xl:px-40 py-10">
       <h1 className="text-xl font-bold">When to use cloudflare-worker?</h1>
       <br />
-
-      <Image
-        src="https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo.jpg"
-        alt="CF_LOGO"
-        width={500}
-        height={300}
-      />
 
       <section>
         <h2 className="text-lg font-bold pb-2">cloudflare-worker는?</h2>
