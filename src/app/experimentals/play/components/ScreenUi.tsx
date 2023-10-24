@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { useGetUserInfoQuery } from '../../hooks/useGetUserInfoQuery';
 import { useSignalingChannel } from '../../hooks/useSignalingChannel';
@@ -13,11 +13,8 @@ import { ChatBox } from './ChatBox';
 export const ScreenUi = () => {
   const { setReceiveChannel, setSendChannel, setUserData } = useContext(MinecraftContext);
   const roomId = useSearchParams().get('room');
-
-  const storedUserId = useMemo(() => {
-    return window.localStorage.getItem('userId');
-  }, []);
-  const { data: userData } = useGetUserInfoQuery({ id: storedUserId });
+  const [userId, setUserId] = useState<string | null>(null);
+  const { data: userData } = useGetUserInfoQuery({ id: userId });
   const { data: roomData } = useGetRoomInfoQuery({ id: roomId });
   const isHost = useMemo(() => {
     if (roomData?.Item.host.id === userData?.id) return true;
@@ -40,6 +37,10 @@ export const ScreenUi = () => {
     });
     await pc.setLocalDescription(offer);
   }, [signalingChannel, pc, userData, roomId]);
+
+  useEffect(() => {
+    setUserId(window.localStorage.getItem('userId'));
+  }, []);
 
   useEffect(() => {
     receiveChannel && setReceiveChannel(receiveChannel);

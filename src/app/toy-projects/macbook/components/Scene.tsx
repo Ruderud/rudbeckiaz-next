@@ -1,6 +1,5 @@
 'use client';
 
-import * as THREE from 'three';
 import { MacBook } from '@/components/MysteryBox/components/MacBook';
 import { CameraControls, Environment } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
@@ -30,16 +29,7 @@ export const Scene = () => {
             setIsMacBookOpen((cur) => !cur);
           }}
         />
-        <CameraControls
-          makeDefault
-          minDistance={3}
-          maxDistance={1500}
-          // current three side only support polarAngle
-          //   maxPolarAngle={Math.PI / 2}
-          //   minPolarAngle={0}
-          //   maxAzimuthAngle={Math.PI / 2}
-          //   minAzimuthAngle={0}
-        />
+        <CameraControls makeDefault minDistance={3} maxDistance={1500} />
       </Canvas>
     </Suspense>
   );

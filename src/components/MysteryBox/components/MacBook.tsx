@@ -22,13 +22,6 @@ const ChromeBrowser = ({ mockDisplay, ...props }: ChromeBrowserProps) => {
     setPath(pathInputRef.current.value);
   };
 
-  const getPathDoc = async (path: string) => {
-    const { data } = await axios.get(
-      `https://arcaea-archieve-proxy-prod.ruderud00552780.workers.dev/proxy/get-client?targetUrl=${path}`
-    );
-    setPathDoc(data);
-  };
-
   useEffect(() => {
     if (!iframeRef.current || !iframeRef.current.contentWindow) return;
     // pathInputRef.current!.value = iframeRef.current?.contentWindow?.location.href || '';
@@ -37,7 +30,6 @@ const ChromeBrowser = ({ mockDisplay, ...props }: ChromeBrowserProps) => {
 
     if (isSafari) {
       console.log('safari');
-      getPathDoc(path);
     }
   }, [path]);
 
@@ -45,7 +37,7 @@ const ChromeBrowser = ({ mockDisplay, ...props }: ChromeBrowserProps) => {
 
   return (
     <Html {...props}>
-      <div className="w-[21rem] h-[13.5rem] bg-[url(/mac-background.png)] bg-cover bg-center bg-no-repeat">
+      <div className="w-[21rem] h-[13.5rem] bg-[url(/mac-background.webp)] bg-cover bg-center bg-no-repeat">
         <div className="absolute maw-w-[inherit] top-2 left-2 bg-white rounded-2xl">
           <div className="rounded-t-2xl bg-[rgb(50,50,50)] w-full h-[2.4rem] flex items-center">
             <div className="flex pl-2 justify-between gap-2">
@@ -120,7 +112,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
 
   const screenPosition = [0, 0, -2.8] as [x: number, y: number, z: number];
 
-  const macBookScreenBgMap = useTexture('/mac-background.png');
+  const macBookScreenBgMap = useTexture('/mac-background.webp');
   macBookScreenBgMap.flipY = false;
   const screenMaterial = new MeshStandardMaterial({
     map: macBookScreenBgMap,
@@ -135,6 +127,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
         <mesh material={materials.aluminium} geometry={nodes['Cube008'].geometry} position={screenPosition} />
         <mesh material={materials['matte.001']} geometry={nodes['Cube008_1'].geometry} position={screenPosition} />
         <mesh material={screenMaterial} geometry={nodes['Cube008_2'].geometry} position={screenPosition} />
+        {/* <ChromeBrowser mockDisplay={false} /> */}
       </group>
 
       <mesh material={materials.keys} geometry={nodes.keyboard.geometry} position={[1.79, 0, 3.45]} />
