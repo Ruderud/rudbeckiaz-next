@@ -1,7 +1,7 @@
 'use client';
 
 import * as THREE from 'three';
-import { CameraControls, Edges, Loader, useGLTF, useTexture } from '@react-three/drei';
+import { CameraControls, Edges, Environment, Loader, useGLTF, useTexture } from '@react-three/drei';
 import { Canvas, ThreeElements, useFrame, useThree } from '@react-three/fiber';
 import { MacBook, Side, DirtCube, LightStage } from './components';
 import { Suspense, use, useEffect, useRef, useState } from 'react';
@@ -20,60 +20,20 @@ const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
   mineCraftSideBgMap.colorSpace = THREE.SRGBColorSpace;
   mineCraftSideBgMap.repeat.set(4, 4);
 
-  // const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-
   const boxRef = useRef<any>();
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  // useEffect(() => {
-  //   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-  //   const object = boxRef.current;
-  //   const onMouseDown = (e: any) => {
-  //     var vectorMouse = new THREE.Vector3( //vector from camera to mouse
-  //       (-(window.innerWidth / 2 - e.clientX) * 2) / window.innerWidth,
-  //       ((window.innerHeight / 2 - e.clientY) * 2) / window.innerHeight,
-  //       -1 / Math.tan((22.5 * Math.PI) / 180)
-  //     ); //22.5 is half of camera frustum angle 45 degree
-  //     vectorMouse.applyQuaternion(camera.quaternion);
-  //     vectorMouse.normalize();
-
-  //     var vectorObject = new THREE.Vector3(); //vector from camera to object
-  //     vectorObject.set(object.x - camera.position.x, object.y - camera.position.y, object.z - camera.position.z);
-  //     vectorObject.normalize();
-  //     console.log('vectorMouse', vectorMouse);
-  //     console.log('vectorObject', vectorObject);
-  //     if ((vectorMouse.angleTo(vectorObject) * 180) / Math.PI < 1) {
-  //       //mouse's position is near object's position
-  //       console.log('vectorMouse', vectorMouse);
-  //       console.log('vectorObject', vectorObject);
-  //     }
-  //   };
-  //   document.addEventListener('mousedown', onMouseDown, false);
-  //   return () => {
-  //     document.removeEventListener('mousedown', onMouseDown, false);
-  //   };
-  // }, []);
-
-  const onClickSide = (element?: string) => () => {
-    // console.log('element ', element);
-  };
-
   const { camera } = useThree();
 
   const handleDiceClick = (event: any) => {
-    // Calculate normalized mouse coordinates (-1 to 1)
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
 
-    // console.log('boxRef.current', boxRef.current);
-
     const intersects = raycaster.intersectObjects(boxRef.current.children);
-
-    console.log('intersects', intersects, boxRef.current.children);
 
     if (intersects.length > 0) {
       const intersectedFace = intersects[0];
@@ -82,31 +42,32 @@ const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
   };
 
   const faces: any[] = [
-    { index: 0, position: [0, 0, 2], color: 'red' },
+    { index: 0, position: [0, 0, 2], rotation: [0, 0, 0], color: 'rgba(0,0,0,0.2)' },
     { index: 1, position: [0, 0, -2], rotation: [Math.PI, 0, 0], color: 'green' },
-    { index: 2, position: [2, 0, 0], rotation: [0, -Math.PI / 2, 0], color: 'yellow' },
-    { index: 3, position: [-2, 0, 0], rotation: [0, Math.PI / 2, 0], color: 'orange' },
+    { index: 2, position: [2, 0, 0], rotation: [0, Math.PI / 2, 0], color: 'yellow' },
+    { index: 3, position: [-2, 0, 0], rotation: [0, -Math.PI / 2, 0], color: 'orange' },
     { index: 4, position: [0, 2, 0], rotation: [-Math.PI / 2, 0, 0], color: 'white' },
     { index: 5, position: [0, -2, 0], rotation: [Math.PI / 2, 0, 0], color: 'blue' },
   ];
 
+  const renderer = new THREE.WebGLRenderer({ alpha: true });
+
   return (
     <>
-      <group ref={boxRef} onClick={handleDiceClick}>
-        {faces.map((face) => (
-          <mesh
-            name={face.color}
-            key={face.index}
-            userData={{ index: face.index }}
-            position={face.position}
-            rotation={face.rotation}
-          >
-            <planeGeometry args={[4, 4]} />
-            <meshBasicMaterial color={face.color} />
-          </mesh>
-        ))}
-      </group>
       <mesh castShadow receiveShadow {...props}>
+        <group ref={boxRef} onClick={handleDiceClick}>
+          {faces.map((face) => (
+            <mesh
+              name={face.color}
+              key={face.index}
+              userData={{ index: face.index }}
+              position={face.position}
+              rotation={face.rotation}
+              geometry={new THREE.PlaneGeometry(4, 4)}
+              material={new THREE.MeshBasicMaterial({ color: face.color, opacity: 0, transparent: true })}
+            />
+          ))}
+        </group>
         <boxGeometry args={[4, 4, 4]} />
         <Edges />
         <Side bgMap={macBookSideBgMap} bg="rgb(101, 221, 237)" index={0}>

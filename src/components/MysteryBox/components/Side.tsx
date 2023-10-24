@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { Environment, MeshPortalMaterial, useGLTF } from '@react-three/drei';
 import { Euler, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
-import { set } from 'react-hook-form';
 
 type SideProps = {
   rotation?: Euler;
@@ -37,21 +36,6 @@ export const Side = ({
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
-  const handleDiceClick = (event: any) => {
-    // Calculate normalized mouse coordinates (-1 to 1)
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, mesh.current);
-    const intersects = raycaster.intersectObjects(mesh.current.children);
-    console.log('intersects', index, intersects);
-
-    if (intersects.length > 0) {
-      const intersectedFace = intersects[0].object;
-      console.log('intersectedFace', intersectedFace);
-      // setCurrentFace();
-    }
-  };
 
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
