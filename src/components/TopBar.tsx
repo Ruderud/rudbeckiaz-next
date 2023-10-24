@@ -12,7 +12,7 @@ export const TopBar = () => {
         Rud
       </Link>
       <div className="px-5 flex justify-end items-center font-bold gap-5">
-        <Link href="/experimentals">Experimental</Link>
+        {/* <Link href="/experimentals">Experimental</Link> */}
         <Link href="/scrawl">Scrawl</Link>
         <Link href="/about">About</Link>
         <DarkModeButton />
