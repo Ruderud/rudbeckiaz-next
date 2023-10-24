@@ -1,10 +1,10 @@
 'use client';
 
 import * as THREE from 'three';
-import { CameraControls, Edges, Environment, Loader, useGLTF, useTexture } from '@react-three/drei';
-import { Canvas, ThreeElements, useFrame, useThree } from '@react-three/fiber';
+import { CameraControls, Edges, Loader, useTexture } from '@react-three/drei';
+import { Canvas, ThreeElements, useThree } from '@react-three/fiber';
 import { MacBook, Side, DirtCube, LightStage } from './components';
-import { Suspense, use, useEffect, useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { BackGroundScene } from '../ThreejsScenes/BackGround';
 
 type MysteryBoxProps = ThreeElements['mesh'];
@@ -27,44 +27,83 @@ const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
 
   const { camera } = useThree();
 
-  const handleDiceClick = (event: any) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(boxRef.current.children);
-
-    if (intersects.length > 0) {
-      const intersectedFace = intersects[0];
-      console.log('intersectedFace', intersectedFace.object.name);
-    }
-  };
-
   const faces: any[] = [
-    { index: 0, position: [0, 0, 2], rotation: [0, 0, 0], color: 'rgba(0,0,0,0.2)' },
-    { index: 1, position: [0, 0, -2], rotation: [Math.PI, 0, 0], color: 'green' },
-    { index: 2, position: [2, 0, 0], rotation: [0, Math.PI / 2, 0], color: 'yellow' },
-    { index: 3, position: [-2, 0, 0], rotation: [0, -Math.PI / 2, 0], color: 'orange' },
-    { index: 4, position: [0, 2, 0], rotation: [-Math.PI / 2, 0, 0], color: 'white' },
-    { index: 5, position: [0, -2, 0], rotation: [Math.PI / 2, 0, 0], color: 'blue' },
+    { index: 0, position: [0, 0, 2], rotation: [0, 0, 0], href: '/experimentals/play' },
+    { index: 1, position: [0, 0, -2], rotation: [Math.PI, 0, 0], href: '' },
+    { index: 2, position: [2, 0, 0], rotation: [0, Math.PI / 2, 0], href: '/toy-projects/macbook' },
+    { index: 3, position: [-2, 0, 0], rotation: [0, -Math.PI / 2, 0], href: '' },
+    { index: 4, position: [0, 2, 0], rotation: [-Math.PI / 2, 0, 0], href: '' },
+    { index: 5, position: [0, -2, 0], rotation: [Math.PI / 2, 0, 0], href: '' },
   ];
+  const [hoveredFaceIdx, setHoveredFaceIdx] = useState<number | null>(null);
 
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  type Corrd = {
+    x: number;
+    y: number;
+    z: number;
+  };
+  const [capturedCameraRotation, setCapturedCameraRotation] = useState<Corrd | null>(null);
 
   return (
     <>
       <mesh castShadow receiveShadow {...props}>
-        <group ref={boxRef} onClick={handleDiceClick}>
+        <group
+          ref={boxRef}
+          onPointerMove={(e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(boxRef.current.children);
+            if (intersects.length > 0) {
+              const intersectedFace = intersects[0];
+              setHoveredFaceIdx(intersectedFace.object.userData.index);
+            }
+          }}
+          onPointerOut={() => {
+            setHoveredFaceIdx(null);
+          }}
+          onPointerDown={() => {
+            setCapturedCameraRotation({
+              x: camera.rotation.x,
+              y: camera.rotation.y,
+              z: camera.rotation.z,
+            });
+          }}
+          onPointerUp={(e) => {
+            if (!capturedCameraRotation) return;
+            const isFixed =
+              Math.abs(camera.rotation.x - capturedCameraRotation.x) < 0.1 &&
+              Math.abs(camera.rotation.y - capturedCameraRotation.y) < 0.1 &&
+              Math.abs(camera.rotation.z - capturedCameraRotation.z) < 0.1;
+
+            if (isFixed) {
+              mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+              mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+              raycaster.setFromCamera(mouse, camera);
+
+              const intersects = raycaster.intersectObjects(boxRef.current.children);
+
+              if (intersects.length > 0) {
+                const intersectedFace = intersects[0];
+                if (faces[Number(intersectedFace.object.name)].href) {
+                  window.location.href = faces[Number(intersectedFace.object.name)].href;
+                }
+              }
+            } else {
+              setCapturedCameraRotation(null);
+            }
+          }}
+        >
           {faces.map((face) => (
             <mesh
-              name={face.color}
+              name={face.index}
               key={face.index}
               userData={{ index: face.index }}
               position={face.position}
               rotation={face.rotation}
               geometry={new THREE.PlaneGeometry(4, 4)}
-              material={new THREE.MeshBasicMaterial({ color: face.color, opacity: 0, transparent: true })}
+              material={new THREE.MeshBasicMaterial({ opacity: 0, transparent: true })}
             />
           ))}
         </group>
@@ -78,7 +117,7 @@ const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
             position={[0, -0.5, -0.3]}
             rotation={[0, Math.PI / 3, 0]}
             scale={[MACBOOK_SCALE, MACBOOK_SCALE, MACBOOK_SCALE]}
-            isOpen={true}
+            isOpen={hoveredFaceIdx === 2}
             mockDisplay={false}
           />
         </Side>
@@ -86,13 +125,13 @@ const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
           <torusKnotGeometry args={[0.55, 0.2, 128, 32]} />
         </Side>
         <Side rotation={[0, Math.PI / 2, Math.PI / 2]} index={2} spotLightOff>
-          <LightStage />
+          <LightStage isHover={hoveredFaceIdx === 4} />
         </Side>
         <Side rotation={[0, Math.PI / 2, -Math.PI / 2]} bg="aquamarine" index={3}>
           <octahedronGeometry />
         </Side>
         <Side bgMap={mineCraftSideBgMap} rotation={[0, -Math.PI / 2, 0]} index={4}>
-          <DirtCube name="dirtCube" position={[0, 0, 0]} />
+          <DirtCube name="dirtCube" position={[0, 0, 0]} isHover={hoveredFaceIdx === 0} />
         </Side>
         <Side rotation={[0, Math.PI / 2, 0]} bg="hotpink" index={5}>
           <dodecahedronGeometry />

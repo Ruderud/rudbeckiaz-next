@@ -1,7 +1,6 @@
-import * as THREE from 'three';
 import { Environment, MeshPortalMaterial, useGLTF } from '@react-three/drei';
-import { Euler, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { Euler } from '@react-three/fiber';
+import { useRef } from 'react';
 
 type SideProps = {
   rotation?: Euler;
@@ -11,7 +10,6 @@ type SideProps = {
   flat?: boolean;
   bgMap?: any;
   spotLightOff?: boolean;
-  onClickSide?: () => void;
 };
 
 export const Side = ({
@@ -22,20 +20,9 @@ export const Side = ({
   flat = false,
   bgMap = null,
   spotLightOff = false,
-  onClickSide,
 }: SideProps) => {
   const mesh = useRef<any>();
-  // const { worldUnits } = useControls({ worldUnits: false });
   const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
-
-  const { camera } = useThree();
-
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const onPointerEnter = () => setIsHover(true);
-  const onPointerOut = () => setIsHover(false);
-
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
 
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>
@@ -49,9 +36,9 @@ export const Side = ({
           <spotLight
             castShadow
             // color={bg}
-            color={isHover ? 'red' : bg}
+            color={bg}
             intensity={2}
-            position={isHover ? [5, 0, 0] : [10, 10, 10]}
+            position={[10, 10, 10]}
             angle={0.15}
             penumbra={1}
             shadow-normalBias={0.05}
@@ -60,14 +47,7 @@ export const Side = ({
         )}
       </mesh>
       {/** The shape */}
-      <mesh
-        castShadow
-        receiveShadow
-        ref={mesh}
-        // onClick={handleDiceClick}
-        // onPointerEnter={onPointerEnter}
-        // onPointerOut={onPointerOut}
-      >
+      <mesh castShadow receiveShadow ref={mesh}>
         {children}
         <meshLambertMaterial color={bg} />
       </mesh>

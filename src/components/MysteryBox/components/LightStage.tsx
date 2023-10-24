@@ -1,7 +1,11 @@
 import { LightingGrid, MovingLight } from '@/components/ConcertHall/components';
 import { useTexture } from '@react-three/drei';
 
-export const LightStage = () => {
+type LightStageProps = {
+  isHover?: boolean;
+};
+
+export const LightStage = ({ isHover = false }: LightStageProps) => {
   const keepOutTexture = useTexture('/keep_out.png');
 
   return (
@@ -26,8 +30,8 @@ export const LightStage = () => {
       </group>
       <LightingGrid position={[0, 1.5, -1.5]} length={4} width={0.5} thickness={0.03} />
       <group scale={0.5}>
-        <MovingLight position={[1, 2, -3]} target={[0, -2, 0]} activted />
-        <MovingLight position={[-1, 2, -3]} target={[0, -2, 0]} activted />
+        <MovingLight position={[1, 2, -3]} target={[0, -2, 0]} activted={isHover} />
+        <MovingLight position={[-1, 2, -3]} target={[0, -2, 0]} activted={isHover} />
       </group>
     </>
   );
