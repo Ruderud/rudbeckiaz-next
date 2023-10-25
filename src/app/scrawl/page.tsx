@@ -16,7 +16,7 @@ type ScrawlCardProps = {
 const ScrawlCard = ({ title, description, href, imgUrl }: ScrawlCardProps) => {
   return (
     <Link
-      className="w-[320px] h-[350px] bg-white hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-600 rounded"
+      className="w-[320px] h-[350px] bg-white hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-600 shadow-2xl rounded"
       href={href}
     >
       {imgUrl && (
@@ -31,7 +31,7 @@ const ScrawlCard = ({ title, description, href, imgUrl }: ScrawlCardProps) => {
           />
         </div>
       )}
-      <section className="p-4  shadow-inner">
+      <section className="p-4 shadow-inner">
         <p className="font-bold truncate pb-2">{title}</p>
         <p>{description}</p>
       </section>
