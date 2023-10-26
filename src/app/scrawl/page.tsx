@@ -54,6 +54,12 @@ export default function ScrawlPage() {
         href="/scrawl/aws-lambda-websocket"
         imgUrl="https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/aws-lambda-websocket/ws-chat-app.png"
       />
+      <ScrawlCard
+        title="yarn v4 사용하기"
+        description="yarn v4를 사용하여 프로젝트 시작하기"
+        href="/scrawl/yarn-v4"
+        imgUrl="https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/yarn-v4/yarn-kitten-full.png"
+      />
     </main>
   );
 }
