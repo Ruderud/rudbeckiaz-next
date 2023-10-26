@@ -9,7 +9,7 @@ export default function ScrawlPage() {
   return (
     <main className="min-w-screen min-h-screen px-4 sm:px-8 md:px-20 lg:px-32 xl:px-40 py-10 flex flex-wrap gap-4">
       <ScrawlCard
-        title="Cloudflare worker를 언제 사용해야할까??????????????"
+        title="Cloudflare worker를 언제 사용해야할까?"
         description="Cloudflare worker를 사용하는 시점에 대해 고민해보고, 정해본 개인적 기준"
         href="/scrawl/when-to-use-cloudflare-worker"
         imgUrl="https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo.jpg"
