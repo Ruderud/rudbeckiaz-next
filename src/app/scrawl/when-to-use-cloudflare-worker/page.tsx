@@ -18,7 +18,7 @@ export default function ScrawlPage() {
 
       <Image
         src={
-          'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo.jpg'
+          'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo'
         }
         alt="cloudflare_workers_logo"
         width={300}

@@ -64,7 +64,7 @@ export default function YarnV4Page() {
           </pre>
         </div>
 
-        <p>이제 자동으로 .yarnrc.yml이 생성된다.</p>
+        <p>이제 자동으로 .yarnrc.yml이 생성.</p>
       </section>
     </main>
   );
