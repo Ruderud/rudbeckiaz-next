@@ -12,7 +12,6 @@ export const TopBar = () => {
         Rud
       </Link>
       <div className="px-5 flex justify-end items-center font-bold gap-5">
-        {/* <Link href="/experimentals">Experimental</Link> */}
         {process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? null : <Link href="/toy-projects">Toy Projects</Link>}
         <Link href="/scrawl">Scrawl</Link>
         <Link href="/about">About</Link>
