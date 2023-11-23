@@ -1,5 +1,7 @@
 import { Scene } from './components/Scene';
 
+export const runtime = 'edge';
+
 export default function AboutPage() {
   return (
     <main>

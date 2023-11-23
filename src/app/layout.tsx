@@ -9,6 +9,8 @@ import StyledComponentsRegistry from '@/lib/StyledComponentsRegistry';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const runtime = 'edge';
+
 export const metadata = {
   title: 'Rud',
   description: 'There must be something',

@@ -7,6 +7,8 @@ import { UserSection, UserSectionSkeleton } from './components/UserSection';
 import { RoomInfo, RoomInfoSkeleton } from './components/RoomInfo';
 import { ErrorView } from './components/ErrorView';
 
+export const runtime = 'edge';
+
 export default function ExperimentalsPage() {
   return (
     <main className="p-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Sky, PointerLockControls, KeyboardControls, CameraControls } from '@react-three/drei';
+import { Sky, PointerLockControls, KeyboardControls, CameraControls, Loader } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ground } from './Ground';
 import { Player } from './Player';
@@ -51,29 +51,32 @@ export default function Minecraft() {
   }, []);
 
   return (
-    <KeyboardControls
-      map={[
-        { name: 'forward', keys: ['ArrowUp', 'w', 'W', 'ㅈ'] },
-        { name: 'backward', keys: ['ArrowDown', 's', 'S', 'ㄴ'] },
-        { name: 'left', keys: ['ArrowLeft', 'a', 'A', 'ㅁ'] },
-        { name: 'right', keys: ['ArrowRight', 'd', 'D', 'ㅇ'] },
-        { name: 'jump', keys: ['Space'] },
-        { name: 'shift', keys: ['Shift'] },
-      ]}
-    >
-      <Canvas shadows camera={{ fov: 45, position: [0, 0, 0] }}>
-        <Sky sunPosition={[100, 20, 100]} />
-        <ambientLight intensity={0.3} />
-        <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />
-        <Physics gravity={[0, -30, 0]}>
-          <Ground />
-          <Player joyStickActive={isMobile} joyStickValue={joyStickValue} />
-          <Cube position={[0, 0.5, -10]} />
-          <Cubes />
-        </Physics>
-        {isMobile ? <CameraControls /> : <PointerLockControls makeDefault />}
-      </Canvas>
-      {isMobile && <JoyStick onMove={handleJoyStick} />}
-    </KeyboardControls>
+    <>
+      <KeyboardControls
+        map={[
+          { name: 'forward', keys: ['ArrowUp', 'w', 'W', 'ㅈ'] },
+          { name: 'backward', keys: ['ArrowDown', 's', 'S', 'ㄴ'] },
+          { name: 'left', keys: ['ArrowLeft', 'a', 'A', 'ㅁ'] },
+          { name: 'right', keys: ['ArrowRight', 'd', 'D', 'ㅇ'] },
+          { name: 'jump', keys: ['Space'] },
+          { name: 'shift', keys: ['Shift'] },
+        ]}
+      >
+        <Canvas shadows camera={{ fov: 45, position: [0, 0, 0] }}>
+          <Sky sunPosition={[100, 20, 100]} />
+          <ambientLight intensity={0.3} />
+          <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />
+          <Physics gravity={[0, -30, 0]}>
+            <Ground />
+            <Player joyStickActive={isMobile} joyStickValue={joyStickValue} />
+            <Cube position={[0, 0.5, -10]} />
+            <Cubes />
+          </Physics>
+          {isMobile ? <CameraControls /> : <PointerLockControls makeDefault />}
+        </Canvas>
+        {isMobile && <JoyStick onMove={handleJoyStick} />}
+      </KeyboardControls>
+      <Loader />
+    </>
   );
 }

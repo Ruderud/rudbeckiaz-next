@@ -1,5 +1,7 @@
 import { Main } from '@/components/Ui/Main';
 
+export const runtime = 'edge';
+
 export const metadata = {
   title: 'aws lambda에서의 websocket컨셉',
   description:

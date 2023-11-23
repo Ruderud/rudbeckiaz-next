@@ -1,25 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export const metadata = {
   title: 'When to use cloudflare-worker',
   description: 'When to use cloudflare-worker???',
   openGraph: {
-    images:
-      'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo.jpg',
+    images: 'https://cdn.rudbeckiaz.com/uploads/scrawl/cloudflare_workers_use/cloudflare_workers_logo_8110721.jpeg',
   },
 };
 
-export default function ScrawlPage() {
+export default async function ScrawlPage() {
   return (
     <main className="min-w-screen min-h-screen px-4 sm:px-8 md:px-20 lg:px-32 xl:px-40 py-10">
       <h1 className="text-xl font-bold">When to use cloudflare-worker?</h1>
       <br />
 
       <Image
-        src={
-          'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/when-to-use-cloudflare-worker/cloudflare_workers_logo'
-        }
+        src={`https://cdn.rudbeckiaz.com/uploads/scrawl/cloudflare_workers_use/cloudflare_workers_logo_8110721.webp`}
         alt="cloudflare_workers_logo"
         width={300}
         height={150}

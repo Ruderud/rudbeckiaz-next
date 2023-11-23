@@ -6,11 +6,16 @@ const nextConfig = withTwin({
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
-  output: 'export',
+  // output: 'export',
   images: {
-    unoptimized: true,
-    domains: ['https://rudbeckiaz-main-asset.s3.amazonaws.com/'],
-    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.rudbeckiaz.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
+    ],
   },
 });
 

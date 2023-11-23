@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export const metadata = {
   title: 'Rud - toy-projects',
   description: 'Exploring the Tangible Manifestation of Inspiration through Toy Projects',

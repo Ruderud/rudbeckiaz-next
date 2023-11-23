@@ -1,5 +1,6 @@
 import { Main } from '@/components/Ui/Main';
 
+export const runtime = 'edge';
 export default function ServerlessPage() {
   return (
     <Main>

@@ -1,6 +1,8 @@
 'use client';
 import dynamic from 'next/dynamic';
 
+export const runtime = 'edge';
+
 const MysteryBox = dynamic(() => import('@/components/MysteryBox/index'), {
   loading: () => <p>SomeThing Loading...</p>,
 });

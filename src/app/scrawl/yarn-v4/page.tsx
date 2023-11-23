@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export const metadata = {
   title: 'yarn v4 사용하기',
   description: 'yarn v4를 사용하여 프로젝트 시작하기',

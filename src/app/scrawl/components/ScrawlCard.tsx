@@ -3,6 +3,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
+export const runtime = 'edge';
+
 export const getMetadata = async (url: string) => {
   const res = await axios(url);
   const $ = cheerio.load(res.data);
