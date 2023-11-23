@@ -11,8 +11,8 @@ type MysteryBoxProps = ThreeElements['mesh'];
 const MACBOOK_SCALE = 0.2;
 
 const MysteryBoxScene = ({ ...props }: MysteryBoxProps) => {
-  const macBookSideBgMap = useTexture('/mac-background.webp');
-  const mineCraftSideBgMap = useTexture('/assets/grass.jpg');
+  const macBookSideBgMap = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/macbook/mac-background.webp');
+  const mineCraftSideBgMap = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/grass.jpg');
 
   mineCraftSideBgMap.wrapS = THREE.RepeatWrapping;
   mineCraftSideBgMap.wrapT = THREE.RepeatWrapping;

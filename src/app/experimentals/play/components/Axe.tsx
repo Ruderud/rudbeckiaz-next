@@ -11,7 +11,7 @@ import { useGLTF } from '@react-three/drei';
 type AxeProps = JSX.IntrinsicElements['group'];
 
 export default function Axe(props: AxeProps) {
-  const model = useGLTF('/assets/axe.glb') as any;
+  const model = useGLTF(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/axe.glb') as any;
   return (
     <group dispose={null} {...props}>
       <group rotation={[0, Math.PI / 1.8, -0.3]} scale={0.5}>
@@ -22,4 +22,4 @@ export default function Axe(props: AxeProps) {
   );
 }
 
-useGLTF.preload('/axe.glb');
+useGLTF.preload(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/axe.glb');

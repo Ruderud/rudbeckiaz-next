@@ -22,7 +22,11 @@ export const Side = ({
   spotLightOff = false,
 }: SideProps) => {
   const mesh = useRef<any>();
-  const { nodes } = useGLTF('/transforms/aobox-transformed.glb', true, true) as any;
+  const { nodes } = useGLTF(
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/mysterybox/aobox-transformed.glb',
+    true,
+    true
+  ) as any;
 
   return (
     <MeshPortalMaterial worldUnits={true} attach={`material-${index}`}>

@@ -9,7 +9,7 @@ type CubeProps = ThreeElements['mesh'] & {
 
 export const DirtCube = ({ isHover = false, ...props }: CubeProps) => {
   const cubeRef = useRef<any>();
-  const dirtTexture = useTexture('/assets/dirt.jpg');
+  const dirtTexture = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/dirt.jpg');
   useFrame((state) => {
     if (isHover) {
       cubeRef.current.rotation.x += 0.02;

@@ -1,10 +1,7 @@
 import { Dot } from './components/Dot';
+import Minecraft from './components/Mincraft';
 import { ScreenUi } from './components/ScreenUi';
 import Providers from './providers';
-import dynamic from 'next/dynamic';
-const Minecraft = dynamic(() => import('./components/Mincraft'));
-
-export const runtime = 'edge';
 
 // Do not change state in this component. it will cause Minecraft component to re-render.
 export default function PlayPage() {

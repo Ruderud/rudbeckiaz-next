@@ -13,9 +13,9 @@ const STAGE = {
 export const Stage = (props: ThreeElements['group']) => {
   const { rotation } = props;
   const [map, normalMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
-    '/textures/ParquetFlooring10_1K_BaseColor.png',
-    '/textures/ParquetFlooring10_1K_Normal.png',
-    '/textures/ParquetFlooring10_1K_Roughness.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/ParquetFlooring10_1K_BaseColor.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/ParquetFlooring10_1K_Normal.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/ParquetFlooring10_1K_Roughness.png',
   ]);
 
   map.wrapS = THREE.RepeatWrapping;

@@ -4,9 +4,9 @@ import { RigidBody } from '@react-three/rapier';
 
 export const WoodFloor = (props: ThreeElements['mesh']) => {
   const [map, bumpMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
-    '/textures/hardwood2_diffuse.jpg',
-    '/textures/hardwood2_bump.jpg',
-    '/textures/hardwood2_roughness.jpg',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/hardwood2_diffuse.jpg',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/hardwood2_bump.jpg',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/hardwood2_roughness.jpg',
   ]);
   map.wrapS = THREE.RepeatWrapping;
   map.wrapT = THREE.RepeatWrapping;

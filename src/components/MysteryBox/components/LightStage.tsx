@@ -6,7 +6,7 @@ type LightStageProps = {
 };
 
 export const LightStage = ({ isHover = false }: LightStageProps) => {
-  const keepOutTexture = useTexture('/keep_out.png');
+  const keepOutTexture = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/mysterybox/keep_out.png');
 
   return (
     <>

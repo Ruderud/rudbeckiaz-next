@@ -35,7 +35,7 @@ export function Cube(props: CubeProps) {
   const rigidBodyRef = useRef<RapierRigidBody>(null);
   const [hover, set] = useState<number | null>(null);
   const { setCubes, sendChannel, userData } = useContext(MinecraftContext);
-  const texture = useTexture('/assets/dirt.jpg');
+  const texture = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/dirt.jpg');
   const onMove = useCallback((e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
     if (!e.faceIndex) return;

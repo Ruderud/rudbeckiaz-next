@@ -37,7 +37,11 @@ const ChromeBrowser = ({ mockDisplay, ...props }: ChromeBrowserProps) => {
 
   return (
     <Html {...props}>
-      <div className="w-[21rem] h-[13.5rem] bg-[url(/mac-background.webp)] bg-cover bg-center bg-no-repeat">
+      <div
+        className={`w-[21rem] h-[13.5rem] bg-[url(${
+          process.env.NEXT_PUBLIC_CDN_BASE_URL + '/macbook/mac-background.webp'
+        })] bg-cover bg-center bg-no-repeat`}
+      >
         <div className="absolute maw-w-[inherit] top-2 left-2 bg-white rounded-2xl">
           <div className="rounded-t-2xl bg-[rgb(50,50,50)] w-full h-[2.4rem] flex items-center">
             <div className="flex pl-2 justify-between gap-2">
@@ -76,7 +80,7 @@ type MacBookProps = ThreeElements['group'] & {
 };
 
 export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBookProps) => {
-  const { nodes, materials } = useGLTF('/transforms/mac-draco.glb') as any;
+  const { nodes, materials } = useGLTF(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/macbook/mac-draco.glb') as any;
 
   const screenRef = useRef<THREE.Group>(null);
   const vec = new Vector3();
@@ -112,7 +116,7 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
 
   const screenPosition = [0, 0, -2.8] as [x: number, y: number, z: number];
 
-  const macBookScreenBgMap = useTexture('/mac-background.webp');
+  const macBookScreenBgMap = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/macbook/mac-background.webp');
   macBookScreenBgMap.flipY = false;
   const screenMaterial = new MeshStandardMaterial({
     map: macBookScreenBgMap,

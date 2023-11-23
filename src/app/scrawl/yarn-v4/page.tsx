@@ -7,7 +7,7 @@ export const metadata = {
   title: 'yarn v4 사용하기',
   description: 'yarn v4를 사용하여 프로젝트 시작하기',
   openGraph: {
-    images: 'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/yarn-v4/yarn-kitten-full.png',
+    images: 'https://cdn.rudbeckiaz.com/uploads/scrawl/yarnv4/yarn-kitten-full_3033349.avif',
   },
 };
 
@@ -19,7 +19,7 @@ export default function YarnV4Page() {
 
       <Image
         className="bg-white p-4 mb-4"
-        src={'https://rudbeckiaz-main-asset.s3.amazonaws.com/scrawl/yarn-v4/yarn-kitten-full.png'}
+        src={'https://cdn.rudbeckiaz.com/uploads/scrawl/yarnv4/yarn-kitten-full_3033349.avif'}
         alt="cloudflare_workers_logo"
         width={300}
         height={150}

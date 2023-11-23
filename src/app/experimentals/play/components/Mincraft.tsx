@@ -1,11 +1,10 @@
 'use client';
 
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { Sky, PointerLockControls, KeyboardControls, CameraControls, Loader } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Ground } from './Ground';
 import { Player } from './Player';
-// import { Cube, Cubes } from './Cube';
 import { useCallback, useEffect, useState } from 'react';
 import { JoyStick } from '@/components/ConcertHall/components';
 import { Cube, Cubes } from './Cube';
@@ -13,7 +12,6 @@ import { Cube, Cubes } from './Cube';
 // The original was made by Paul Henschel: https://codesandbox.io/s/vkgi6
 
 export default function Minecraft() {
-  console.log('Minecraft Load');
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [joyStickValue, setJoyStickValue] = useState({
     forward: 0,

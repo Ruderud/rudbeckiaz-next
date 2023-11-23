@@ -136,10 +136,10 @@ type MovingLightProps = ThreeElements['group'] & {
 
 export const MovingLight = ({ target, color, activted = false, ...props }: MovingLightProps) => {
   const [map, metallicMap, normalMap, roughnessMap] = useLoader(THREE.TextureLoader as any, [
-    '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_BaseColor.png',
-    '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Metallic.png',
-    '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Normal.png',
-    '/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Roughness.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/BrushedIron01_MR_1K/BrushedIron01_1K_BaseColor.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Metallic.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Normal.png',
+    process.env.NEXT_PUBLIC_CDN_BASE_URL + '/concerthall/textures/BrushedIron01_MR_1K/BrushedIron01_1K_Roughness.png',
   ]);
 
   map.wrapS = THREE.RepeatWrapping;
