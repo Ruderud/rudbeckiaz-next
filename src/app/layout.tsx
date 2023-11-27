@@ -8,8 +8,6 @@ import { Background } from '@/components/Background';
 import StyledComponentsRegistry from '@/lib/StyledComponentsRegistry';
 import { Metadata } from 'next';
 
-export const runtime = 'edge';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
