@@ -26,10 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <GlobalContextProvider>
         <body className={`${inter.className} relative bg-white dark:bg-black text-black dark:text-white`}>
           <StyledComponentsRegistry>
-            {/* <Background> */}
-            <TopBar />
-            {children}
-            {/* </Background> */}
+            <Background>
+              <TopBar />
+              {children}
+            </Background>
           </StyledComponentsRegistry>
         </body>
       </GlobalContextProvider>

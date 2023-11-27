@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import { useTexture } from '@react-three/drei';
 import { ThreeElements, useFrame } from '@react-three/fiber';
 import { useRef } from 'react';

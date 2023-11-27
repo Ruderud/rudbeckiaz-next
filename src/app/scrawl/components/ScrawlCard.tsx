@@ -2,8 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import * as cheerio from 'cheerio';
 
-// export const runtime = 'edge';
-
 export const getMetadata = async (url: string) => {
   const res = await fetch(url);
   const data = await res.text();

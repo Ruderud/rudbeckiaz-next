@@ -1,30 +1,17 @@
-import styled from 'styled-components';
+import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 
-// type StyledButtonProps = {
-//   variant?: 'primary' | 'secondary';
-// };
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+  variant?: 'primary' | 'secondary';
+};
 
-// const _StyledButton = styled.button<StyledButtonProps>(({ variant }) => [
-//   tw`rounded py-2 px-5`,
-//   tw`disabled:bg-gray-400`,
-//   tw`hover:bg-opacity-70`,
-//   variant === 'primary' && tw`bg-blue-500`,
-//   variant === 'secondary' && tw`bg-orange-500`,
-
-//   css`
-//     color: ${theme`colors.white`};
-//   `,
-// ]);
-
-const StyledButton = styled.button`
-  border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
-  &:disabled {
-    bg-color: #ccc;
-  }
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-`;
+const StyledButton = (props: ButtonProps) => {
+  const { className, variant, ...rest } = props;
+  const tailwindClassName = `
+    ${className === undefined ? '' : className} 
+    ${variant === 'primary' ? 'bg-blue-500' : 'bg-green-500'} 
+    rounded py-2 px-5 disabled:bg-gray-400 hover:bg-opacity-70 text-white
+  `;
+  return <button className={tailwindClassName} {...rest} />;
+};
 
 export { StyledButton as Button };

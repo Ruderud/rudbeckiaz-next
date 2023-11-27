@@ -17,6 +17,7 @@
     "@babel/core": "^7.23.0",
     "@babel/plugin-syntax-typescript": "^7.22.5",
     "@dimforge/rapier3d-compat": "^0.11.2",
+    "@emotion/react": "^11.11.1",
     "@react-three/drei": "^9.83.9",
     "@react-three/fiber": "^8.14.1",
     "@react-three/postprocessing": "^2.15.1",
