@@ -5,7 +5,7 @@ type LightStageProps = {
   isHover?: boolean;
 };
 
-export const LightStage = ({ isHover = false }: LightStageProps) => {
+const LightStage = ({ isHover = false }: LightStageProps) => {
   const keepOutTexture = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/mysterybox/keep_out.png');
 
   return (
@@ -36,3 +36,5 @@ export const LightStage = ({ isHover = false }: LightStageProps) => {
     </>
   );
 };
+
+export default LightStage;

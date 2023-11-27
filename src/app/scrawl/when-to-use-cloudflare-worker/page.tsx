@@ -1,9 +1,10 @@
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const runtime = 'edge';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'When to use cloudflare-worker',
   description: 'When to use cloudflare-worker???',
   openGraph: {

@@ -1,8 +1,9 @@
 import { Main } from '@/components/Ui/Main';
+import { Metadata } from 'next';
 
 export const runtime = 'edge';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'aws lambda에서의 websocket컨셉',
   description:
     '서버리스 환경에서의 websocket connect 연결 관리는 인스턴스가 있는 환경과 다르다. 그렇다면 어떻게 관리해야할까?',

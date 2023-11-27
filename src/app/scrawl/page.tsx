@@ -1,6 +1,7 @@
+import { Metadata } from 'next';
 import ScrawlCard from './components/ScrawlCard';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Rud - scrawl',
   description: 'Unleash Random Thoughts',
 };

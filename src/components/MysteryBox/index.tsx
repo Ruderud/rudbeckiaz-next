@@ -1,9 +1,13 @@
 'use client';
 
 import * as THREE from 'three';
+import { lazy } from 'react';
 import { CameraControls, Edges, Loader, useTexture } from '@react-three/drei';
 import { Canvas, ThreeElements, useThree } from '@react-three/fiber';
-import { MacBook, Side, DirtCube, LightStage } from './components';
+const MacBook = lazy(() => import('./components/MacBook'));
+const Side = lazy(() => import('./components/Side'));
+const DirtCube = lazy(() => import('./components/DirtCube'));
+const LightStage = lazy(() => import('./components/LightStage'));
 import { Suspense, useRef, useState } from 'react';
 import { BackGroundScene } from '../ThreejsScenes/BackGround';
 
@@ -154,14 +158,11 @@ const MysteryBox = () => {
           <BackGroundScene isStaticPage={false} />
           <MysteryBoxScene />
         </Suspense>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} />
         <CameraControls
           makeDefault
           minDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 4 : undefined}
           maxDistance={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 50 : undefined}
           // current three side only support polarAngle
-          // minPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 윗면 제한
           maxPolarAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 아랫면 제한
           maxAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? Math.PI / 2 : undefined} // 시계반대방향 회전 제한
           minAzimuthAngle={process.env.NEXT_PUBLIC_BUILD_MODE === 'prod' ? 0 : undefined} // 시계방향 회전 제한

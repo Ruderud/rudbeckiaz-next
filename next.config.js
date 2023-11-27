@@ -1,12 +1,9 @@
 const withTwin = require('./withTwin.js');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withTwin({
+const nextConfig = {
   reactStrictMode: false,
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
-  },
-  // output: 'export',
+  compiler: {},
   images: {
     remotePatterns: [
       {
@@ -23,6 +20,9 @@ const nextConfig = withTwin({
       },
     ],
   },
-});
+  experimental: {
+    turbo: {},
+  },
+};
 
 module.exports = nextConfig;

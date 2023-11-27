@@ -55,8 +55,8 @@ export const BackGroundScene = ({ isStaticPage }: BackGroundSceneProps) => {
           <Cloud
             opacity={0.8}
             speed={0.4} // Rotation speed
-            width={15} // Width of the full cloud
-            depth={0.8} // Z-dir depth
+            // width={15} // Width of the full cloud
+            // depth={0.8} // Z-dir depth
             segments={100} // Number of particles
             color={'rgb(255, 255, 255)'}
           />

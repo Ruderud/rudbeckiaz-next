@@ -79,7 +79,7 @@ type MacBookProps = ThreeElements['group'] & {
   mockDisplay?: boolean;
 };
 
-export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBookProps) => {
+const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBookProps) => {
   const { nodes, materials } = useGLTF(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/macbook/mac-draco.glb') as any;
 
   const screenRef = useRef<THREE.Group>(null);
@@ -144,3 +144,5 @@ export const MacBook = ({ isOpen = false, mockDisplay = true, ...props }: MacBoo
     </group>
   );
 };
+
+export default MacBook;

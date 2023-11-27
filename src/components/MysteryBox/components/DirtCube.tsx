@@ -7,7 +7,7 @@ type CubeProps = ThreeElements['mesh'] & {
   isHover?: boolean;
 };
 
-export const DirtCube = ({ isHover = false, ...props }: CubeProps) => {
+const DirtCube = ({ isHover = false, ...props }: CubeProps) => {
   const cubeRef = useRef<any>();
   const dirtTexture = useTexture(process.env.NEXT_PUBLIC_CDN_BASE_URL + '/minecraft/dirt.jpg');
   useFrame((state) => {
@@ -28,3 +28,5 @@ export const DirtCube = ({ isHover = false, ...props }: CubeProps) => {
     </mesh>
   );
 };
+
+export default DirtCube;

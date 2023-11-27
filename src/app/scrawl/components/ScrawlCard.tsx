@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 
 // export const runtime = 'edge';

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { DarkModeButton } from './DarkModeButton';
 import { elementIds } from '@/utils/elementIds';
 
+// TODO: styled component로 전환, tailwindcss 제거
 export const TopBar = () => {
   return (
     <nav

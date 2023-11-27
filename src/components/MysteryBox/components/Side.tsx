@@ -12,7 +12,7 @@ type SideProps = {
   spotLightOff?: boolean;
 };
 
-export const Side = ({
+const Side = ({
   rotation = [0, 0, 0],
   bg = '#f0f0f0',
   children,
@@ -58,3 +58,5 @@ export const Side = ({
     </MeshPortalMaterial>
   );
 };
+
+export default Side;
